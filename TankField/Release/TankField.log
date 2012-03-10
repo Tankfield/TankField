@@ -1,0 +1,26 @@
+﻿Build started 3/10/2012 1:17:48 PM.
+     1>Project "d:\TankFieldProject\TankField\TankField\TankField.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Release\TankField.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         c:\Program Files\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Application.cpp main.cpp
+         Application.cpp
+         main.cpp
+       Link:
+         c:\Program Files\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"d:\TankFieldProject\TankField\Release\TankField.exe" /NOLOGO SDL.lib SDLmain.lib SDL_image.lib SDL_ttf.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Release\TankField.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"d:\TankFieldProject\TankField\Release\TankField.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"d:\TankFieldProject\TankField\Release\TankField.lib" /MACHINE:X86 Release\Application.obj
+         Release\main.obj
+         Generating code
+     1>d:\tankfieldproject\tankfield\tankfield\application.cpp(31): warning C4715: 'Application::initialize' : not all control paths return a value
+         Finished generating code
+     1>SDLmain.lib(SDL_win32_main.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'SDLmain.lib(SDL_win32_main.obj)' or at 'd:\TankFieldProject\TankField\Release\vc100.pdb'; linking object as if no debug info
+         TankField.vcxproj -> d:\TankFieldProject\TankField\Release\TankField.exe
+       Manifest:
+         C:\Program Files\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"d:\TankFieldProject\TankField\Release\TankField.exe;#1" /manifest Release\TankField.exe.intermediate.manifest
+       FinalizeBuildStatus:
+         Deleting file "Release\TankField.unsuccessfulbuild".
+         Touching "Release\TankField.lastbuildstate".
+     1>Done Building Project "d:\TankFieldProject\TankField\TankField\TankField.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:02.48
