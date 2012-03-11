@@ -1,0 +1,13 @@
+/ipch
+
+*.sdf
+*.suo
+*.ilk
+*.idb
+*.pdb
+*.obj
+*.tlog
+*.manifest
+*.lastbuildstate
+*.log
+*.intermediate.manifest
