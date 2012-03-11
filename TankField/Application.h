@@ -1,8 +1,8 @@
 
-
-#include <SDL\SDL.h>
 #ifndef _Applicaiton_H
 #define _Application_H
+#include <SDL\SDL.h>
+
 class Application{
 
 private:
@@ -17,13 +17,17 @@ private:
 
 	void handleEvents();
 
+	void render();
+
 public:
+
 
 	Application();
 	~Application();
 
-
 	void Execute();
+
+	SDL_Surface* getScreen();
 
 };
 

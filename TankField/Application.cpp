@@ -1,10 +1,7 @@
 #include "Application.h"
 
 Application::Application(){
-	if(this->initialize())
-		this->isRunning = true;
-	else 
-		this->isRunning = false;
+	this->isRunning = this->initialize();
 }
 
 Application::~Application(){
@@ -28,6 +25,8 @@ bool Application::initialize(){
 	if(this->displaySurface == NULL){
 		return false;
 	}
+
+	return true;
 }
 
 
@@ -47,5 +46,13 @@ void Application::Execute(){
 
 	while(this->isRunning){
 		this->handleEvents();
+		this->render();
 	}
+}
+SDL_Surface* Application::getScreen(){
+		return displaySurface;
+}
+
+void Application::render(){
+	SDL_Flip(displaySurface);
 }
