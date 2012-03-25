@@ -1,5 +1,6 @@
 #include "Application.h"
 
+
 Application::Application(){
 	this->isRunning = this->initialize();
 }
@@ -21,6 +22,13 @@ bool Application::initialize(){
 
 	SDL_WM_SetCaption("TANKFIELD", NULL);
 	this->displaySurface = SDL_SetVideoMode(800, 600 , 32, SDL_SWSURFACE);
+	
+
+	//TODO to remove
+	tank = new Object(new Texture("tank.png", displaySurface));
+
+	//TODO to remove
+	bg = new Background(displaySurface);
 
 	if(this->displaySurface == NULL){
 		return false;
@@ -36,6 +44,14 @@ void Application::handleEvents(){
 		case SDL_QUIT:
 			this->isRunning = false;
 			break;
+		case SDL_KEYDOWN:
+			if (event.key.keysym.sym == SDLK_LEFT){
+				tank->moveLeft();
+			}
+			if (event.key.keysym.sym == SDLK_RIGHT){
+				tank->moveRight();
+			}
+			break;
 		
 		}
 	}
@@ -49,10 +65,9 @@ void Application::Execute(){
 		this->render();
 	}
 }
-SDL_Surface* Application::getScreen(){
-		return displaySurface;
-}
 
 void Application::render(){
+	bg->drawTexture(0,0);
+	tank->render();
 	SDL_Flip(displaySurface);
 }

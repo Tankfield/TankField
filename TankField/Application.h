@@ -2,11 +2,15 @@
 #ifndef _Applicaiton_H
 #define _Application_H
 #include <SDL\SDL.h>
+#include "Object.h"
+#include "Background.h"
 
 class Application{
 
 private:
 	
+	Background* bg;
+
 	bool isRunning;
 
 	SDL_Event event;
@@ -19,6 +23,8 @@ private:
 
 	void render();
 
+	Object* tank;
+
 public:
 
 
@@ -26,8 +32,6 @@ public:
 	~Application();
 
 	void Execute();
-
-	SDL_Surface* getScreen();
 
 };
 

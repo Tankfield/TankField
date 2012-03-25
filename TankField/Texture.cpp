@@ -19,7 +19,7 @@ SDL_Surface* Texture::loadImage(const char *filename){
 	return (SDL_DisplayFormatAlpha(IMG_Load(filename)));
 }
 
-void Texture::draw(int x, int y){
+void Texture::drawTexture(int x, int y){
 	SDL_Rect tempRect;
 	tempRect.x = x;
 	tempRect.y = y;

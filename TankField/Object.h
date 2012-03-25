@@ -5,12 +5,18 @@
 
 class Object{
 	
-	unsigned int x, y;
+	float x, y;
 
 public:
 	Object(Texture *texture);
 	//~Object();
 	Texture *texture;
+
+	float getX() const;
+	float getY() const;
+	void moveLeft();
+	void moveRight();
+	void render();
 };
 
 
