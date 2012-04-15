@@ -21,7 +21,7 @@ bool Application::initialize(){
 	}
 
 	SDL_WM_SetCaption("TANKFIELD", NULL);
-	this->displaySurface = SDL_SetVideoMode(800, 600 , 32, SDL_SWSURFACE);
+	this->displaySurface = SDL_SetVideoMode(1200, 600 , 32, SDL_SWSURFACE);
 	
 
 	//TODO to remove
