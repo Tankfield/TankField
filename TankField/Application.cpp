@@ -34,26 +34,48 @@ bool Application::initialize(){
 		return false;
 	}
 
+	//
+	memset(this->keyState, false, sizeof(this->keyState));
+	
 	return true;
 }
 
 
 void Application::handleEvents(){
+	
+
 	while(SDL_PollEvent(&event)){
 		switch(event.type){
 		case SDL_QUIT:
 			this->isRunning = false;
 			break;
 		case SDL_KEYDOWN:
-			if (event.key.keysym.sym == SDLK_LEFT){
-				tank->moveLeft();
-			}
-			if (event.key.keysym.sym == SDLK_RIGHT){
-				tank->moveRight();
-			}
+			this->keyState[event.key.keysym.sym] = true;
+			
 			break;
-		
+			
+		case SDL_KEYUP:
+			this->keyState[event.key.keysym.sym] = false;
+			break;
 		}
+	}
+}
+
+void Application::handleInput(){
+	if (this->keyState[SDLK_UP]){
+		tank->moveUp();
+	}
+
+	if (this->keyState[SDLK_DOWN]){
+		tank->moveDown();
+	}
+
+	if (this->keyState[SDLK_LEFT]){
+		tank->moveLeft();
+	}
+
+	if (this->keyState[SDLK_RIGHT]){
+		tank->moveRight();
 	}
 
 }
@@ -62,6 +84,7 @@ void Application::Execute(){
 
 	while(this->isRunning){
 		this->handleEvents();
+		this->handleInput();
 		this->render();
 	}
 }
@@ -71,3 +94,5 @@ void Application::render(){
 	tank->render();
 	SDL_Flip(displaySurface);
 }
+
+

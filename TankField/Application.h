@@ -21,9 +21,13 @@ private:
 
 	void handleEvents();
 
+	void handleInput();
+
 	void render();
 
 	Object* tank;
+
+	bool keyState[322];
 
 public:
 

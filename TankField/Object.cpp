@@ -2,25 +2,27 @@
 
 Object::Object(Texture *texture){
 	this->texture = texture;
-	y = 0;
-	x = 0;
+	this->position.x = 500;
+	this->position.y = 200;
 }
 
-float Object::getX() const {
-	return x;
-}
-float Object::getY() const {
-	return y;
-}
 
+void Object::moveUp(){
+	position += Vector2D(0, -1);
+}
+void Object::moveDown(){
+	position += Vector2D(0, 1);
+}
 void Object::moveLeft(){
-	x-=10;
+	position += Vector2D(-1, 0);
+}
+void Object::moveRight(){
+	position += Vector2D(1, 0);
 }
 
-void Object::moveRight(){
-	x+=10;
-}
+
 
 void Object::render(){
-	texture->drawTexture((int)x,(int)y);
+	texture->drawTexture((int)this->position.x,(int)this->position.y);
 }
+
