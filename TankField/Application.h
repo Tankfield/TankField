@@ -4,6 +4,7 @@
 #include <SDL\SDL.h>
 #include "Object.h"
 #include "Background.h"
+#include "Animation.h"
 
 class Application{
 

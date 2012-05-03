@@ -1,32 +1,26 @@
 #ifndef _Animation_H
 #define _Animation_H
 
-#include <SDL\SDL.h>
+#include "Texture.h"
 
-class Animation{
-private:
-	int currentFrame;
-	int frameInc;
+class Animation : public Texture{
+	private:
+		unsigned int tilesX;
+		unsigned int tilesY;
+		unsigned int frameRate;
 
-private:
-	int frameRate;
-	long oldTime;
+		unsigned int currentFrame;
+		const unsigned int maxFrame;
 
-public:
-	int maxFrames;
-	bool oscillate;
+		const float frameTime;
+		float frameTimeLeft;
 
-	Animation();
-	
-	void Animate();
-	
-	void setFrameRate(int rate);
+	public:
+		Animation(const char* filename, SDL_Surface *screen, unsigned int tilesX, unsigned int tilesY, unsigned int frameRate);
 
-	void setCurrentFrame(int frame);
-
-	int getCurrentFrame();
-
-
+		virtual void update();
+		//to rename to draw
+		virtual void drawTexture(int x, int y);
 };
 
 #endif

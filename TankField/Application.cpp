@@ -1,6 +1,5 @@
 #include "Application.h"
 
-
 Application::Application(){
 	this->isRunning = this->initialize();
 }
@@ -20,12 +19,12 @@ bool Application::initialize(){
 		return false;
 	}
 
-	SDL_WM_SetCaption("TANKFIELD", NULL);
+	SDL_WM_SetCaption("Tankfield", NULL);
 	this->displaySurface = SDL_SetVideoMode(1200, 600 , 32, SDL_SWSURFACE);
 	
 
 	//TODO to remove
-	tank = new Object(new Texture("tank.png", displaySurface));
+	tank = new Object(new Animation("tank.png", displaySurface, 1, 4, 5));
 
 	//TODO to remove
 	bg = new Background(displaySurface);
@@ -64,18 +63,22 @@ void Application::handleEvents(){
 void Application::handleInput(){
 	if (this->keyState[SDLK_UP]){
 		tank->moveUp();
+		tank->texture->update();
 	}
 
 	if (this->keyState[SDLK_DOWN]){
 		tank->moveDown();
+		tank->texture->update();
 	}
 
 	if (this->keyState[SDLK_LEFT]){
 		tank->moveLeft();
+		tank->texture->update();
 	}
 
 	if (this->keyState[SDLK_RIGHT]){
 		tank->moveRight();
+		tank->texture->update();
 	}
 
 }
@@ -84,7 +87,7 @@ void Application::Execute(){
 
 	while(this->isRunning){
 		this->handleEvents();
-		this->handleInput();
+		this->handleInput();		
 		this->render();
 	}
 }

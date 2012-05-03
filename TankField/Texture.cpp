@@ -1,7 +1,5 @@
 #include "Texture.h"
 
-
-
 Texture::Texture(const char* filename, SDL_Surface *screen)
 : displaySurface(screen) {
 	this->surface = this->loadImage(filename);
@@ -19,6 +17,10 @@ SDL_Surface* Texture::loadImage(const char *filename){
 	return (SDL_DisplayFormatAlpha(IMG_Load(filename)));
 }
 
+void Texture::update() 
+{}
+
+//to rename to draw
 void Texture::drawTexture(int x, int y){
 	SDL_Rect tempRect;
 	tempRect.x = x;

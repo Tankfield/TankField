@@ -8,21 +8,22 @@
 
 class Texture{
 	SDL_Surface* loadImage(const char *filename);
-	SDL_Surface *surface;
-	unsigned int width;
-	unsigned int height;
-	
+
 
 public:
 	Texture(const char* filename, SDL_Surface *screen);
 	~Texture();
 
 	virtual void drawTexture(int x, int y);
-
 	unsigned int getWidth();
 	unsigned int getHeight();
 
+	virtual void update();
+
 protected:
 	SDL_Surface *displaySurface;
+	SDL_Surface *surface;
+	unsigned int width;
+	unsigned int height;
 };
 #endif

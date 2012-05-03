@@ -1,58 +1,42 @@
 #include "Animation.h"
 
-Animation::Animation(){
-	currentFrame = 0;
-	maxFrames = 0;
-	frameInc = 1;
-	frameRate = 100;
-	oldTime = 0;
-	oscillate = false;
+Animation::Animation(const char* filename, SDL_Surface *screen, unsigned int tilesX, unsigned int tilesY, unsigned int frameRate)
+: Texture(filename, screen), currentFrame(1), frameTime(1.0f / frameRate), frameTimeLeft(frameTime), maxFrame(tilesX * tilesY)
+{
+	this->tilesX = tilesX;
+	this->tilesY = tilesY;
+	this->frameRate = frameRate;
 }
 
-void Animation::Animate(){
-	if(oldTime + frameRate > SDL_GetTicks()){
-		return;
-	}
+void Animation::update(){
+	static float lastTime = SDL_GetTicks() / 1000.0f;
 
-	oldTime = SDL_GetTicks();
+	float timeSinceLastTime = (SDL_GetTicks() / 1000.0f) - lastTime;
+	
+	frameTimeLeft -= timeSinceLastTime;
 
-	currentFrame +=frameInc;
-
-	if(oscillate){
-		if(frameInc > 0){
-			if(currentFrame >= maxFrames){
-				frameInc = -frameInc;
-			}
+	if (frameTimeLeft <= 0.0f){
+		if (currentFrame == maxFrame){
+			currentFrame = 1;
 		}else{
-			if(currentFrame <= 0){
-				frameInc = -frameInc;
-			}
+			currentFrame++;
 		}
-	}else{
-		if(currentFrame >= maxFrames){
-			currentFrame = 0;
-		}
+		frameTimeLeft = frameTime;
 	}
+
+	lastTime = SDL_GetTicks() / 1000.0f;
 }
 
-void Animation::setFrameRate(int rate){
-	frameRate = rate;
+void Animation::drawTexture(int x, int y){
+	SDL_Rect destRect;
+	destRect.x = x;
+	destRect.y = y;
+
+	SDL_Rect frameRect;
+	frameRect.x = currentFrame % tilesX * width / tilesX;
+	frameRect.y = (currentFrame / tilesX - 1) * height / tilesY;
+	frameRect.w = width / tilesX;
+	frameRect.h = height / tilesY;
+
+	SDL_BlitSurface(surface, &frameRect, displaySurface, &destRect);
 }
-
-void Animation::setCurrentFrame(int frame){
-	if(frame < 0 || frame >=maxFrames){
-		return;
-	}
-	currentFrame = frame;
-}
-
-int Animation::getCurrentFrame(){
-	return currentFrame;
-}
-
-
-
-
-
-
-
