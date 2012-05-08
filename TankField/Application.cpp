@@ -61,6 +61,7 @@ void Application::handleEvents(){
 }
 
 void Application::handleInput(){
+	tank->stop();
 	if (this->keyState[SDLK_UP]){
 		tank->moveUp();
 		tank->texture->update();
@@ -88,6 +89,7 @@ void Application::Execute(){
 	while(this->isRunning){
 		this->handleEvents();
 		this->handleInput();		
+		tank->update();
 		this->render();
 	}
 }

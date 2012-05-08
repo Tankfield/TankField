@@ -11,6 +11,7 @@ class Object{
 public:
 
 	Vector2D position;
+	Vector2D direction;
 	float speed;
 	Texture *texture;
 	
@@ -22,7 +23,9 @@ public:
 	void moveDown();
 	void moveLeft();
 	void moveRight();
+	void stop();
 
+	virtual void update();
 	void render();
 };
 
