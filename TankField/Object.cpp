@@ -1,7 +1,7 @@
 #include "Object.h"
 
 Object::Object(Texture *texture)
-	: direction(0,0), speed(500) {
+	: velocity(0,0), speed(500) {
 	this->texture = texture;
 	this->position.x = 500;
 	this->position.y = 200;
@@ -9,24 +9,23 @@ Object::Object(Texture *texture)
 
 
 void Object::moveUp(){
-	//position += Vector2D(0, -1);
-	direction = Vector2D(0, -1);
+	velocity = Vector2D(0, -1) * speed;
 }
+
 void Object::moveDown(){
-	//position += Vector2D(0, 1);
-	direction = Vector2D(0, 1);
+	velocity = Vector2D(0, 1) * speed;
 }
+
 void Object::moveLeft(){
-	//position += Vector2D(-1, 0);
-	direction = Vector2D(-1, 0);
+	velocity = Vector2D(-1, 0) * speed;
 }
+
 void Object::moveRight(){
-	//position += Vector2D(1, 0);
-	direction = Vector2D(1, 0);
+	velocity = Vector2D(1, 0) * speed;
 }
 
 void Object::stop(){
-	direction = Vector2D(0, 0);
+	velocity = Vector2D(0, 0);
 }
 
 void Object::update(){
@@ -34,7 +33,7 @@ void Object::update(){
 
 	float timeSinceLastTime = (SDL_GetTicks() / 1000.0f) - lastTime;
 
-	position += direction * (timeSinceLastTime * speed);
+	position += velocity * timeSinceLastTime;
 
 	texture->update();
 

@@ -11,7 +11,7 @@ class Object{
 public:
 
 	Vector2D position;
-	Vector2D direction;
+	Vector2D velocity;
 	float speed;
 	Texture *texture;
 	
