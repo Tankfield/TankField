@@ -15,12 +15,19 @@ class Animation : public Texture{
 		const float frameTime;
 		float frameTimeLeft;
 
+		bool isBackward;
+		bool stopped;
+
 	public:
 		Animation(const char* filename, SDL_Surface *screen, unsigned int tilesX, unsigned int tilesY, unsigned int frameRate);
 
 		virtual void update();
 		//to rename to draw
 		virtual void drawTexture(int x, int y);
+
+		void runForward();
+		void runBackward();
+		void stop();
 };
 
 #endif

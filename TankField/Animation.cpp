@@ -1,7 +1,7 @@
 #include "Animation.h"
 
 Animation::Animation(const char* filename, SDL_Surface *screen, unsigned int tilesX, unsigned int tilesY, unsigned int frameRate)
-: Texture(filename, screen), currentFrame(1), frameTime(1.0f / frameRate), frameTimeLeft(frameTime), maxFrame(tilesX * tilesY)
+: Texture(filename, screen), currentFrame(0), frameTime(1.0f / frameRate), frameTimeLeft(frameTime), maxFrame(tilesX * tilesY), isBackward(false), stopped(true)
 {
 	this->tilesX = tilesX;
 	this->tilesY = tilesY;
@@ -15,13 +15,24 @@ void Animation::update(){
 	
 	frameTimeLeft -= timeSinceLastTime;
 
-	if (frameTimeLeft <= 0.0f){
-		if (currentFrame == maxFrame){
-			currentFrame = 1;
-		}else{
-			currentFrame++;
+	if (!stopped) {
+		if (frameTimeLeft <= 0.0f){
+			if (!isBackward) {
+				if (currentFrame == maxFrame - 1){
+					currentFrame = 0;
+				}else{
+					currentFrame++;
+				}
+			}
+			else {
+				if (currentFrame == 0){
+					currentFrame = maxFrame-1;
+				}else{
+					currentFrame--;
+				}
+			}
+			frameTimeLeft = frameTime;
 		}
-		frameTimeLeft = frameTime;
 	}
 
 	lastTime = SDL_GetTicks() / 1000.0f;
@@ -33,10 +44,22 @@ void Animation::drawTexture(int x, int y){
 	destRect.y = y;
 
 	SDL_Rect frameRect;
-	frameRect.x = currentFrame % tilesX * width / tilesX;
-	frameRect.y = (currentFrame / tilesX - 1) * height / tilesY;
 	frameRect.w = width / tilesX;
 	frameRect.h = height / tilesY;
+	frameRect.x = currentFrame % tilesX * frameRect.w;
+	frameRect.y = currentFrame / tilesX * frameRect.h;
 
 	SDL_BlitSurface(surface, &frameRect, displaySurface, &destRect);
+}
+
+void Animation::runForward() {
+	isBackward = false;
+}
+
+void Animation::runBackward() {
+	isBackward = true;
+}
+
+void Animation::stop() {
+	stopped = true;
 }
