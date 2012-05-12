@@ -12,6 +12,10 @@ Object::Object(): velocity(0,0), speed(500) {
 	this->position.y = 200;
 }
 
+Object::~Object(){
+	delete texture;
+}
+
 
 void Object::moveUp(){
 	velocity = Vector2D(0, -1) * speed;

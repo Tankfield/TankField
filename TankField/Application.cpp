@@ -26,7 +26,7 @@ bool Application::initialize(){
 	weapon = new Weapon(new Animation("textures/weapon.png", displaySurface, 1, 1, 50));
 
 	//TODO to remove
-	tank = new Tank(new Animation("textures/tank.png", displaySurface, 4, 5, 50), *weapon);
+	tank = new Tank(new Animation("textures/tank.png", displaySurface, 4, 5, 50), weapon);
 
 	//TODO to remove
 	bg = new Background(displaySurface);
