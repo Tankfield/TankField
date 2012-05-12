@@ -17,7 +17,7 @@ public:
 	
 	Object(Texture *texture);
 	Object();
-	//~Object();
+	~Object();
 	
 
 	void moveUp();
