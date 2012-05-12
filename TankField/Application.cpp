@@ -24,7 +24,7 @@ bool Application::initialize(){
 	
 
 	//TODO to remove
-	tank = new Object(new Animation("zilen.png", displaySurface, 4, 5, 50));
+	tank = new Object(new Animation("tank.png", displaySurface, 1, 4, 50));
 
 	//TODO to remove
 	bg = new Background(displaySurface);
