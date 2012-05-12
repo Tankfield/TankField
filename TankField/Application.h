@@ -6,6 +6,8 @@
 #include "Background.h"
 #include "Animation.h"
 #include "Tank.h"
+#include "Weapon.h"
+#include "Vector2D.h"
 
 class Application{
 
@@ -28,6 +30,8 @@ private:
 	void render();
 
 	Tank* tank;
+
+	Weapon* weapon;
 
 	bool keyState[322];
 

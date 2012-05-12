@@ -22,9 +22,11 @@ bool Application::initialize(){
 	SDL_WM_SetCaption("Tankfield", NULL);
 	this->displaySurface = SDL_SetVideoMode(1200, 600 , 32, SDL_SWSURFACE);
 	
+	//TODO to remove
+	weapon = new Weapon(new Animation("textures/weapon.png", displaySurface, 1, 1, 50));
 
 	//TODO to remove
-	tank = new Tank(new Animation("textures/tank.png", displaySurface, 4, 5, 50));
+	tank = new Tank(new Animation("textures/tank.png", displaySurface, 4, 5, 50), *weapon);
 
 	//TODO to remove
 	bg = new Background(displaySurface);

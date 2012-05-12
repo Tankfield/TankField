@@ -27,7 +27,7 @@ public:
 	void stop();
 
 	virtual void update();
-	void render();
+	virtual void render();
 };
 
 

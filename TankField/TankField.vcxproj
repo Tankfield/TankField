@@ -73,6 +73,7 @@
     <ClCompile Include="Tank.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Vector2D.cpp" />
+    <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -82,6 +83,7 @@
     <ClInclude Include="Tank.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Vector2D.h" />
+    <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
