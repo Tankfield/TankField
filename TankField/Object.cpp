@@ -7,6 +7,11 @@ Object::Object(Texture *texture)
 	this->position.y = 200;
 }
 
+Object::Object(): velocity(0,0), speed(500) {
+	this->position.x = 500;
+	this->position.y = 200;
+}
+
 
 void Object::moveUp(){
 	velocity = Vector2D(0, -1) * speed;

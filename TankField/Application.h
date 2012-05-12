@@ -5,6 +5,7 @@
 #include "Object.h"
 #include "Background.h"
 #include "Animation.h"
+#include "Tank.h"
 
 class Application{
 
@@ -26,7 +27,7 @@ private:
 
 	void render();
 
-	Object* tank;
+	Tank* tank;
 
 	bool keyState[322];
 

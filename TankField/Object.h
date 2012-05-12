@@ -16,6 +16,7 @@ public:
 	Texture *texture;
 	
 	Object(Texture *texture);
+	Object();
 	//~Object();
 	
 
