@@ -31,6 +31,10 @@ bool Application::initialize(){
 	//TODO to remove
 	bg = new Background(displaySurface);
 
+	ter= new Terrain(displaySurface);
+
+	gro= new Ground(displaySurface);
+
 	if(this->displaySurface == NULL){
 		return false;
 	}
@@ -98,6 +102,8 @@ void Application::Execute(){
 
 void Application::render(){
 	bg->drawTexture(0,0);
+	ter->drawTexture(200,200);
+	gro->drawTexture(0,500);
 	tank->render();
 	SDL_Flip(displaySurface);
 }

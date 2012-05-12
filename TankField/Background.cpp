@@ -6,7 +6,6 @@ Background::Background(SDL_Surface* screen) : Texture(getBackground(), screen){
 
 const char* Background::getBackground(){
 
-	//TO ADD - random background generator
 	int n;
 	srand(time(NULL));
 	n=rand() %3;

@@ -8,12 +8,18 @@
 #include "Tank.h"
 #include "Weapon.h"
 #include "Vector2D.h"
+#include "Terrain.h"
+#include "Ground.h"
 
 class Application{
 
 private:
 	
 	Background* bg;
+
+	Terrain* ter;
+
+	Ground* gro;
 
 	bool isRunning;
 
