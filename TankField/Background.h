@@ -2,6 +2,7 @@
 #define _Background_H
 #include "Texture.h"
 #include <SDL\SDL.h>
+#include <time.h>
 
 
 class Background : public Texture{
