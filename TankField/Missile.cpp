@@ -2,7 +2,7 @@
 
 Missile::Missile(Texture* texture, Vector2D vel, Vector2D pos) : Object(texture){
 	position = pos;
-	velocity = vel * 1000;
+	velocity = vel * 500;
 }
 
 //int wind = -300;
@@ -10,6 +10,12 @@ Missile::Missile(Texture* texture, Vector2D vel, Vector2D pos) : Object(texture)
 //int koef = 1000; //koeficient
 
 void Missile::update(){
+
+	if (this->outOfScreen()){
+		dead = true;
+		return;
+	}
+
 	static float lastTime = SDL_GetTicks() / 1000.0f;
 
 	float timeSinceLastTime = (SDL_GetTicks() / 1000.0f) - lastTime;
@@ -23,6 +29,6 @@ void Missile::update(){
 
 }
 
-void Missile::redner(){
-	this->texture->draw((int)this->position.x,(int)this->position.y);
+void Missile::render(){
+   	this->texture->draw((int)this->position.x,(int)this->position.y);
 }

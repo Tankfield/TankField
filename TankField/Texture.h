@@ -12,6 +12,7 @@ class Texture{
 
 public:
 	Texture(const char* filename, SDL_Surface *screen);
+	Texture(const Texture &other);
 	~Texture();
 
 	virtual void draw(int x, int y);

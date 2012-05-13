@@ -1,6 +1,9 @@
 
 #ifndef _Applicaiton_H
 #define _Application_H
+#include <sstream>
+using std::ostringstream;
+
 #include <SDL\SDL.h>
 #include "Object.h"
 #include "Background.h"
@@ -37,6 +40,8 @@ private:
 	void render();
 
 	Tank* tank;
+
+	Animation* tankAnimation;
 
 	Weapon* weapon;
 

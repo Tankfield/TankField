@@ -1,12 +1,14 @@
+#include <algorithm>
 #include "Object.h"
+#include "Globals.h"
 
 vector<Object*> Object::allObjects;
 
 Object::Object(Texture *texture)
-	: velocity(0,0), speed(500) {
+	: velocity(0,0), speed(500), dead(false) {
 	this->texture = texture;
-	this->position.x = 500;
-	this->position.y = 200;
+	this->position.x = 0;
+	this->position.y = 400;
 
 	allObjects.push_back(this);
 }
@@ -82,12 +84,28 @@ Texture *Object::getTexture(){
 	return this->texture;
 }
 
+void Object::removeDead()
+{
+	for (vector<Object*>::iterator it = allObjects.begin(); it != allObjects.end();)	{
+		if ((*it)->dead)
+		{
+			delete *it;
 
+			it = allObjects.erase(it);
+		}
+		else
+		{
+			it++;
+		}
+	}
+}
 
 void Object::updateAll() {
 	for (vector<Object*>::iterator it = allObjects.begin(); it != allObjects.end(); it++)	{
 		(*it)->update();
 	}
+
+	Object::removeDead();
 }
 
 void Object::renderAll() {
@@ -104,3 +122,10 @@ void Object::deleteAll() {
 	allObjects.clear();
 }
 
+bool Object::outOfScreen()
+{
+	if (position.x < 0 || position.x > (WINDOW_WIDTH - texture->getWidth()) || position.y > (WINDOW_HEIGHT - texture->getHeight())){
+			return true;
+	}
+	return false;
+}

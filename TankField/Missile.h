@@ -8,9 +8,10 @@ class Missile : public Object{
 
 public:
 
-	Missile(Texture* texture, Vector2D vel, Vector2D pos);
+	Missile(Texture* texture, Vector2D vel, Vector2D pos);	
+
 	virtual void update();
-	virtual void redner();
+	virtual void render();
 };
 
 

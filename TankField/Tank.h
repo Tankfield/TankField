@@ -10,6 +10,12 @@ public:
 	
 	void fire();
 
+	virtual void moveUp();
+	virtual void moveDown();
+	virtual void moveLeft();
+	virtual void moveRight();
+	virtual void stop();
+
 	virtual void update();
 	virtual void render();
 };

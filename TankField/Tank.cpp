@@ -4,6 +4,31 @@ Tank::Tank(Texture* texture, Weapon* weapon) : Object(texture) {
 	this->weapon = weapon;
 }
 
+void Tank::fire(){
+	this->weapon->fireMissile();
+}
+
+void Tank::moveUp(){
+	velocity = Vector2D(0, -1) * speed;
+}
+
+void Tank::moveDown(){
+	velocity = Vector2D(0, 1) * speed;
+}
+
+void Tank::moveLeft(){
+	velocity = Vector2D(-1, 0) * speed;
+}
+
+void Tank::moveRight(){
+	velocity = Vector2D(1, 0) * speed;
+}
+
+void Tank::stop(){
+	velocity = Vector2D(0, 0);
+	
+}
+
 void Tank::update(){
 
 	static float lastTime = SDL_GetTicks() / 1000.0f;
@@ -25,6 +50,4 @@ void Tank::render(){
 	weapon->getTexture()->draw((int)weapon->getPositionX(),(int)weapon->getPositionY());
 }
 
-void Tank::fire(){
-	this->weapon->fireMissile(Vector2D(weapon->getPositionX() + 20, weapon->getPositionY() + 20));
-}
+

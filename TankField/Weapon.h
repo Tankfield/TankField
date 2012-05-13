@@ -7,13 +7,28 @@
 
 
 class Weapon : public Object{
+private:
+	int degrees;
+
 public:
+
 	Texture* missileTexture;
 	Vector2D missileVelocity;
+
 	Weapon(Texture* texture, Vector2D pos);
 	Weapon(Texture* texture);
 
-	void fireMissile(Vector2D pos);
+	float missileDelay;
+	bool firedMissile;
+
+	int getDegrees();
+	void incDegrees();
+	void decDegrees();
+
+	void fireMissile();
+
+	virtual void update();
+
 
 };
 

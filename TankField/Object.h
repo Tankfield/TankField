@@ -18,18 +18,22 @@ protected:
 	float speed;
 	Texture *texture;
 
+	bool dead;
+
 public:
 	Object(Texture *texture);
-	~Object();
+	virtual ~Object();
 	
-	void moveUp();
-	void moveDown();
-	void moveLeft();
-	void moveRight();
-	void stop();
+	virtual void moveUp();
+	virtual void moveDown();
+	virtual void moveLeft();
+	virtual void moveRight();
+	virtual void stop();
 
 	virtual void update();
 	virtual void render();
+
+	bool outOfScreen();
 
 	float getPositionX();
 	float getPositionY();
@@ -46,6 +50,7 @@ public:
 	static void updateAll();
 	static void renderAll();
 	static void deleteAll();
+	static void removeDead();
 };
 
 

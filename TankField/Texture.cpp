@@ -8,6 +8,12 @@ Texture::Texture(const char* filename, SDL_Surface *screen)
 	this->height = this->surface->h;
 };
 
+Texture::Texture(const Texture &other){
+	width = other.width;
+	height = other.height;
+	displaySurface = other.displaySurface;
+	surface = SDL_DisplayFormatAlpha(other.surface);
+}
 
 Texture::~Texture(){
 	SDL_FreeSurface(surface);

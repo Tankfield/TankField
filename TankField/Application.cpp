@@ -1,3 +1,4 @@
+#include "Globals.h"
 #include "Application.h"
 
 Application::Application(){
@@ -22,14 +23,17 @@ bool Application::initialize(){
 	}
 	//
 	SDL_WM_SetCaption("Tankfield", NULL);
-	this->displaySurface = SDL_SetVideoMode(1200, 600 , 32, SDL_SWSURFACE);
+	this->displaySurface = SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT , 32, SDL_SWSURFACE);
 	
 	//TODO to remove
-	weapon = new Weapon(new Animation("textures/weapon.png", displaySurface, 1, 1, 50));
+	weapon = new Weapon(new Texture("textures/weapon.png", displaySurface));
 	weapon->missileTexture = new Texture("textures/rocket.png", displaySurface);
-	weapon->missileVelocity = Vector2D(40);
 	//TODO to remove
-	tank = new Tank(new Animation("textures/tank.png", displaySurface, 4, 5, 50), weapon);
+
+			
+	
+	tankAnimation = new Animation("textures/tank.png", displaySurface, 4, 5, 50);
+	tank = new Tank(tankAnimation, weapon);
 
 	//TODO to remove
 	bg = new Background(displaySurface);
@@ -69,24 +73,37 @@ void Application::handleEvents(){
 }
 
 void Application::handleInput(){
+	static bool downPressed = false;
+	static bool upPressed = false;
+
 	tank->stop();
+	tankAnimation->stop();
 	if (this->keyState[SDLK_UP]){
-		tank->moveUp();
-		tank->getTexture()->update();
+		upPressed = true;
 	}
+	else if(upPressed)
+	{
+		upPressed = false;
+		tank->weapon->decDegrees();
+		}
 
 	if (this->keyState[SDLK_DOWN]){
-		tank->moveDown();
-		tank->getTexture()->update();
+		downPressed = true;
+	}
+	else if(downPressed) {
+		tank->weapon->incDegrees();
+		downPressed = false;
 	}
 
 	if (this->keyState[SDLK_LEFT]){
 		tank->moveLeft();
+		tankAnimation->runBackward();
 		tank->getTexture()->update();
 	}
 
 	if (this->keyState[SDLK_RIGHT]){
 		tank->moveRight();
+		tankAnimation->runForward();
 		tank->getTexture()->update();
 	}
 
@@ -103,6 +120,10 @@ void Application::Execute(){
 		this->handleInput();		
 
 		Object::updateAll();
+		
+		ostringstream ostr;
+		ostr << tank->weapon->getDegrees();
+		SDL_WM_SetCaption(ostr.str().c_str(), NULL);
 
 		this->render();
 	}
@@ -114,7 +135,7 @@ void Application::render(){
 	gro->draw(0,500);
 	
 	Object::renderAll();
-
+	
 	SDL_Flip(displaySurface);
 }
 
