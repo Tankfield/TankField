@@ -30,7 +30,7 @@ public:
 	virtual void moveRight();
 	virtual void stop();
 
-	virtual void update();
+	virtual void update(float timeSinceLastTime);
 	virtual void render();
 
 	bool outOfScreen();
@@ -47,7 +47,7 @@ public:
 
 	Texture *getTexture();
 
-	static void updateAll();
+	static void updateAll(float timeSinceLastTime);
 	static void renderAll();
 	static void deleteAll();
 	static void removeDead();

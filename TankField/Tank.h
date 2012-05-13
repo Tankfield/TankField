@@ -16,7 +16,7 @@ public:
 	virtual void moveRight();
 	virtual void stop();
 
-	virtual void update();
+	virtual void update(float timeSinceLastTime);
 	virtual void render();
 };
 

@@ -23,7 +23,7 @@ class Animation : public Texture{
 		bool isBackward;
 		bool stopped;
 
-		virtual void update();
+		virtual void update(float timeSinceLastTime);
 		virtual void draw(int x, int y);
 
 		void runForward();

@@ -23,7 +23,7 @@ SDL_Surface* Texture::loadImage(const char *filename){
 	return (SDL_DisplayFormatAlpha(IMG_Load(filename)));
 }
 
-void Texture::update() 
+void Texture::update(float timeSinceLastTime) 
 {}
 
 

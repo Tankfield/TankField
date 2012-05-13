@@ -19,7 +19,7 @@ public:
 	unsigned int getWidth();
 	unsigned int getHeight();
 
-	virtual void update();
+	virtual void update(float timeSinceLastTime);
 
 protected:
 	SDL_Surface *displaySurface;

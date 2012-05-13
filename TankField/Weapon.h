@@ -27,7 +27,7 @@ public:
 
 	void fireMissile();
 
-	virtual void update();
+	virtual void update(float timeSinceLastTime);
 
 
 };

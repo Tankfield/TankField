@@ -87,6 +87,7 @@ void Application::handleInput(){
 		tank->weapon->decDegrees();
 		}
 
+
 	if (this->keyState[SDLK_DOWN]){
 		downPressed = true;
 	}
@@ -95,16 +96,15 @@ void Application::handleInput(){
 		downPressed = false;
 	}
 
+
 	if (this->keyState[SDLK_LEFT]){
 		tank->moveLeft();
 		tankAnimation->runBackward();
-		tank->getTexture()->update();
 	}
 
 	if (this->keyState[SDLK_RIGHT]){
 		tank->moveRight();
 		tankAnimation->runForward();
-		tank->getTexture()->update();
 	}
 
 	if (this->keyState[SDLK_SPACE]){
@@ -119,7 +119,14 @@ void Application::Execute(){
 		this->handleEvents();
 		this->handleInput();		
 
-		Object::updateAll();
+		
+	static float lastTime = SDL_GetTicks() / 1000.0f;
+
+	float timeSinceLastTime = (SDL_GetTicks() / 1000.0f) - lastTime;
+
+	lastTime = SDL_GetTicks() / 1000.0f;
+
+		Object::updateAll(timeSinceLastTime);
 		
 		ostringstream ostr;
 		ostr << tank->weapon->getDegrees();

@@ -38,16 +38,10 @@ void Object::stop(){
 	velocity = Vector2D(0, 0);
 }
 
-void Object::update(){
-	static float lastTime = SDL_GetTicks() / 1000.0f;
-
-	float timeSinceLastTime = (SDL_GetTicks() / 1000.0f) - lastTime;
-
+void Object::update(float timeSinceLastTime){
 	position += velocity * timeSinceLastTime;
 
-	texture->update();
-
-	lastTime = SDL_GetTicks() / 1000.0f;
+	texture->update(timeSinceLastTime);
 }
 
 void Object::render(){
@@ -100,9 +94,9 @@ void Object::removeDead()
 	}
 }
 
-void Object::updateAll() {
+void Object::updateAll(float timeSinceLastTime) {
 	for (vector<Object*>::iterator it = allObjects.begin(); it != allObjects.end(); it++)	{
-		(*it)->update();
+		(*it)->update(timeSinceLastTime);
 	}
 
 	Object::removeDead();

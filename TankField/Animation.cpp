@@ -8,10 +8,7 @@ Animation::Animation(const char* filename, SDL_Surface *screen, unsigned int til
 	this->frameRate = frameRate;
 }
 
-void Animation::update(){
-	static float lastTime = SDL_GetTicks() / 1000.0f;
-
-	float timeSinceLastTime = (SDL_GetTicks() / 1000.0f) - lastTime;
+void Animation::update(float timeSinceLastTime){
 	
 	frameTimeLeft -= timeSinceLastTime;
 
@@ -34,8 +31,6 @@ void Animation::update(){
 			frameTimeLeft = frameTime;
 		}
 	}
-
-	lastTime = SDL_GetTicks() / 1000.0f;
 }
 
 void Animation::draw(int x, int y){

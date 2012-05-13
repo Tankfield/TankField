@@ -29,20 +29,15 @@ void Tank::stop(){
 	
 }
 
-void Tank::update(){
-
-	static float lastTime = SDL_GetTicks() / 1000.0f;
-
-	float timeSinceLastTime = (SDL_GetTicks() / 1000.0f) - lastTime;
+void Tank::update(float timeSinceLastTime){
 
 	position += velocity * timeSinceLastTime;
 
-	texture->update();
+	texture->update(timeSinceLastTime);
 
 	weapon->setPositionX((this->position.x + 50));
 	weapon->setPositionY((this->position.y - 55));
 
-	lastTime = SDL_GetTicks() / 1000.0f;
 }
 
 void Tank::render(){

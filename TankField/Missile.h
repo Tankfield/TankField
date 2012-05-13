@@ -10,7 +10,7 @@ public:
 
 	Missile(Texture* texture, Vector2D vel, Vector2D pos);	
 
-	virtual void update();
+	virtual void update(float timeSinceLastTime);
 	virtual void render();
 };
 
