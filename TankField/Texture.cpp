@@ -20,8 +20,8 @@ SDL_Surface* Texture::loadImage(const char *filename){
 void Texture::update() 
 {}
 
-//to rename to draw
-void Texture::drawTexture(int x, int y){
+
+void Texture::draw(int x, int y){
 	SDL_Rect tempRect;
 	tempRect.x = x;
 	tempRect.y = y;

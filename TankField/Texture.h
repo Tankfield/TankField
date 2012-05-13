@@ -14,7 +14,7 @@ public:
 	Texture(const char* filename, SDL_Surface *screen);
 	~Texture();
 
-	virtual void drawTexture(int x, int y);
+	virtual void draw(int x, int y);
 	unsigned int getWidth();
 	unsigned int getHeight();
 

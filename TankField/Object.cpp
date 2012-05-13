@@ -49,7 +49,7 @@ void Object::update(){
 }
 
 void Object::render(){
-	texture->drawTexture((int)this->position.x,(int)this->position.y);
+	texture->draw((int)this->position.x,(int)this->position.y);
 }
 
 

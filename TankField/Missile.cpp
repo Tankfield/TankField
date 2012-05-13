@@ -1,10 +1,9 @@
 #include "Missile.h"
 
-Missile::Missile(Texture* texture) : Object(texture){
-	position = Vector2D(100,500);
-	velocity = Vector2D(45) * 1000;
+Missile::Missile(Texture* texture, Vector2D vel, Vector2D pos) : Object(texture){
+	position = pos;
+	velocity = vel * 1000;
 }
-
 
 //int wind = -300;
 //int gravity = 700;
@@ -25,5 +24,5 @@ void Missile::update(){
 }
 
 void Missile::redner(){
-	this->texture->drawTexture((int)this->position.x,(int)this->position.y);
+	this->texture->draw((int)this->position.x,(int)this->position.y);
 }

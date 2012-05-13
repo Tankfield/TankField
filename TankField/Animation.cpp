@@ -38,7 +38,7 @@ void Animation::update(){
 	lastTime = SDL_GetTicks() / 1000.0f;
 }
 
-void Animation::drawTexture(int x, int y){
+void Animation::draw(int x, int y){
 	SDL_Rect destRect;
 	destRect.x = x;
 	destRect.y = y;

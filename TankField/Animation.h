@@ -22,8 +22,7 @@ class Animation : public Texture{
 		Animation(const char* filename, SDL_Surface *screen, unsigned int tilesX, unsigned int tilesY, unsigned int frameRate);
 
 		virtual void update();
-		//to rename to draw
-		virtual void drawTexture(int x, int y);
+		virtual void draw(int x, int y);
 
 		void runForward();
 		void runBackward();

@@ -5,7 +5,7 @@ Application::Application(){
 }
 
 Application::~Application(){
-	Object::deleteAll();
+	//Object::deleteAll();
 
 	if(this->displaySurface != NULL) {
 		SDL_FreeSurface(displaySurface);
@@ -26,7 +26,8 @@ bool Application::initialize(){
 	
 	//TODO to remove
 	weapon = new Weapon(new Animation("textures/weapon.png", displaySurface, 1, 1, 50));
-
+	weapon->missileTexture = new Texture("textures/rocket.png", displaySurface);
+	weapon->missileVelocity = Vector2D(40);
 	//TODO to remove
 	tank = new Tank(new Animation("textures/tank.png", displaySurface, 4, 5, 50), weapon);
 
@@ -90,7 +91,7 @@ void Application::handleInput(){
 	}
 
 	if (this->keyState[SDLK_SPACE]){
-		//new Missile(new Texture("textures/rocket.png", displaySurface));
+		tank->fire();
 	}
 
 }
@@ -108,9 +109,9 @@ void Application::Execute(){
 }
 
 void Application::render(){
-	bg->drawTexture(0,0);
-	ter->drawTexture(200,200);
-	gro->drawTexture(0,500);
+	bg->draw(0,0);
+	ter->draw(200,200);
+	gro->draw(0,500);
 	
 	Object::renderAll();
 

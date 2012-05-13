@@ -7,6 +7,8 @@ class Tank : public Object{
 public:
 	Weapon* weapon;
 	Tank(Texture* texture, Weapon* weapon);
+	
+	void fire();
 
 	virtual void update();
 	virtual void render();

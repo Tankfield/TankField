@@ -21,6 +21,10 @@ void Tank::update(){
 }
 
 void Tank::render(){
-	this->texture->drawTexture((int)this->position.x,(int)this->position.y);
-	weapon->texture->drawTexture((int)weapon->position.x,(int)weapon->position.y);
+	this->texture->draw((int)this->position.x,(int)this->position.y);
+	weapon->texture->draw((int)weapon->position.x,(int)weapon->position.y);
+}
+
+void Tank::fire(){
+	this->weapon->fireMissile(Vector2D(weapon->position.x + 20, weapon->position.y + 20));
 }
