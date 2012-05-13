@@ -14,17 +14,17 @@ void Tank::update(){
 
 	texture->update();
 
-	weapon->position.x = this->position.x + 50;
-	weapon->position.y = this->position.y - 55;
+	weapon->setPositionX((this->position.x + 50));
+	weapon->setPositionY((this->position.y - 55));
 
 	lastTime = SDL_GetTicks() / 1000.0f;
 }
 
 void Tank::render(){
 	this->texture->draw((int)this->position.x,(int)this->position.y);
-	weapon->texture->draw((int)weapon->position.x,(int)weapon->position.y);
+	weapon->getTexture()->draw((int)weapon->getPositionX(),(int)weapon->getPositionY());
 }
 
 void Tank::fire(){
-	this->weapon->fireMissile(Vector2D(weapon->position.x + 20, weapon->position.y + 20));
+	this->weapon->fireMissile(Vector2D(weapon->getPositionX() + 20, weapon->getPositionY() + 20));
 }

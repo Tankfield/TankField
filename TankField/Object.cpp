@@ -52,6 +52,37 @@ void Object::render(){
 	texture->draw((int)this->position.x,(int)this->position.y);
 }
 
+float Object::getPositionX(){
+	return this->position.x;
+}
+float Object::getPositionY(){
+	return this->position.y;
+}
+float Object::getVelocityX(){
+	return this->velocity.x;
+}
+float Object::getVelocityY(){
+	return this->velocity.y;
+}
+
+void Object::setPositionX(float x){
+	this->position.x = x;
+}
+void Object::setPositionY(float y){
+	this->position.y = y;
+}
+void Object::setVelocityX(float x){
+	this->velocity.x = x;
+}
+void Object::setVelocityY(float y){
+	this->velocity.y = y;
+}
+
+Texture *Object::getTexture(){
+	return this->texture;
+}
+
+
 
 void Object::updateAll() {
 	for (vector<Object*>::iterator it = allObjects.begin(); it != allObjects.end(); it++)	{

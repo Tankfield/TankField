@@ -72,22 +72,22 @@ void Application::handleInput(){
 	tank->stop();
 	if (this->keyState[SDLK_UP]){
 		tank->moveUp();
-		tank->texture->update();
+		tank->getTexture()->update();
 	}
 
 	if (this->keyState[SDLK_DOWN]){
 		tank->moveDown();
-		tank->texture->update();
+		tank->getTexture()->update();
 	}
 
 	if (this->keyState[SDLK_LEFT]){
 		tank->moveLeft();
-		tank->texture->update();
+		tank->getTexture()->update();
 	}
 
 	if (this->keyState[SDLK_RIGHT]){
 		tank->moveRight();
-		tank->texture->update();
+		tank->getTexture()->update();
 	}
 
 	if (this->keyState[SDLK_SPACE]){
