@@ -39,9 +39,11 @@ private:
 
 	void render();
 
-	Tank* tank;
+	Tank *tank;
 
-	Animation* tankAnimation;
+	Animation *tankAnimation;
+
+	Animation *weaponAnimation;
 
 	Weapon* weapon;
 

@@ -21,18 +21,19 @@ bool Application::initialize(){
 		this->displaySurface = NULL;
 		return false;
 	}
-	//
 	SDL_WM_SetCaption("Tankfield", NULL);
 	this->displaySurface = SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT , 32, SDL_SWSURFACE);
 	
 	//TODO to remove
-	weapon = new Weapon(new Texture("textures/weapon.png", displaySurface));
-	weapon->missileTexture = new Texture("textures/rocket.png", displaySurface);
+	weaponAnimation = new Animation("textures/weapon.png", displaySurface, 3, 5, 15);
+	weapon = new Weapon(weaponAnimation);
+
+	weapon->missileTexture = new Texture("textures/missile.png", displaySurface);
 	//TODO to remove
 
 			
 	
-	tankAnimation = new Animation("textures/tank.png", displaySurface, 4, 5, 30);
+	tankAnimation = new Animation("textures/grtank.png", displaySurface, 4, 5, 30);
 	tank = new Tank(tankAnimation, weapon);
 
 	//TODO to remove
@@ -78,21 +79,27 @@ void Application::handleInput(){
 
 	tank->stop();
 	tankAnimation->stop();
+	weaponAnimation->stop();
 	if (this->keyState[SDLK_UP]){
 		upPressed = true;
 	}
-	else if(upPressed)
-	{
-		upPressed = false;
-		tank->weapon->decDegrees();
+	else if(upPressed){
+		if(tank->weapon->getDegrees() > -65){
+			tank->weapon->decDegrees();
+			weaponAnimation->runForward();
 		}
+		upPressed = false;
+	}
 
 
 	if (this->keyState[SDLK_DOWN]){
 		downPressed = true;
 	}
 	else if(downPressed) {
-		tank->weapon->incDegrees();
+		if(tank->weapon->getDegrees() < 75){
+			tank->weapon->incDegrees();
+			weaponAnimation->runBackward();
+		}
 		downPressed = false;
 	}
 
@@ -118,7 +125,6 @@ void Application::Execute(){
 	while(this->isRunning){
 		this->handleEvents();
 		this->handleInput();		
-
 		
 	static float lastTime = SDL_GetTicks() / 1000.0f;
 

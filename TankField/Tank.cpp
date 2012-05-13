@@ -35,8 +35,10 @@ void Tank::update(float timeSinceLastTime){
 
 	texture->update(timeSinceLastTime);
 
-	weapon->setPositionX((this->position.x + 50));
+	weapon->setPositionX((this->position.x + 30));
 	weapon->setPositionY((this->position.y - 55));
+
+	weapon->update(timeSinceLastTime);
 
 }
 
