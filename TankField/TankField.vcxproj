@@ -70,6 +70,7 @@
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Missile.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Tank.cpp" />
     <ClCompile Include="Terrain.cpp" />
@@ -82,6 +83,7 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="Background.h" />
     <ClInclude Include="Ground.h" />
+    <ClInclude Include="Missile.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Tank.h" />
     <ClInclude Include="Terrain.h" />

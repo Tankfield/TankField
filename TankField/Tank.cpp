@@ -1,9 +1,7 @@
 #include "Tank.h"
 
-Tank::Tank(Texture* texture, Weapon* weapon) : Object() {
-	this->texture = texture;
+Tank::Tank(Texture* texture, Weapon* weapon) : Object(texture) {
 	this->weapon = weapon;
-	this->update();
 }
 
 void Tank::update(){

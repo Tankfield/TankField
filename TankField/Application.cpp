@@ -5,6 +5,8 @@ Application::Application(){
 }
 
 Application::~Application(){
+	Object::deleteAll();
+
 	if(this->displaySurface != NULL) {
 		SDL_FreeSurface(displaySurface);
 	}
@@ -18,7 +20,7 @@ bool Application::initialize(){
 		this->displaySurface = NULL;
 		return false;
 	}
-
+	//
 	SDL_WM_SetCaption("Tankfield", NULL);
 	this->displaySurface = SDL_SetVideoMode(1200, 600 , 32, SDL_SWSURFACE);
 	
@@ -56,7 +58,6 @@ void Application::handleEvents(){
 			break;
 		case SDL_KEYDOWN:
 			this->keyState[event.key.keysym.sym] = true;
-			
 			break;
 			
 		case SDL_KEYUP:
@@ -88,6 +89,10 @@ void Application::handleInput(){
 		tank->texture->update();
 	}
 
+	if (this->keyState[SDLK_SPACE]){
+		//new Missile(new Texture("textures/rocket.png", displaySurface));
+	}
+
 }
 
 void Application::Execute(){
@@ -95,7 +100,9 @@ void Application::Execute(){
 	while(this->isRunning){
 		this->handleEvents();
 		this->handleInput();		
-		tank->update();
+
+		Object::updateAll();
+
 		this->render();
 	}
 }
@@ -104,7 +111,9 @@ void Application::render(){
 	bg->drawTexture(0,0);
 	ter->drawTexture(200,200);
 	gro->drawTexture(0,500);
-	tank->render();
+	
+	Object::renderAll();
+
 	SDL_Flip(displaySurface);
 }
 

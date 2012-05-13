@@ -1,15 +1,14 @@
 #include "Object.h"
 
+vector<Object*> Object::allObjects;
+
 Object::Object(Texture *texture)
 	: velocity(0,0), speed(500) {
 	this->texture = texture;
 	this->position.x = 500;
 	this->position.y = 200;
-}
 
-Object::Object(): velocity(0,0), speed(500) {
-	this->position.x = 500;
-	this->position.y = 200;
+	allObjects.push_back(this);
 }
 
 Object::~Object(){
@@ -51,5 +50,26 @@ void Object::update(){
 
 void Object::render(){
 	texture->drawTexture((int)this->position.x,(int)this->position.y);
+}
+
+
+void Object::updateAll() {
+	for (vector<Object*>::iterator it = allObjects.begin(); it != allObjects.end(); it++)	{
+		(*it)->update();
+	}
+}
+
+void Object::renderAll() {
+	for (vector<Object*>::iterator it = allObjects.begin(); it != allObjects.end(); it++)	{
+		(*it)->render();
+	}
+}
+
+void Object::deleteAll() {
+	for (vector<Object*>::iterator it = allObjects.begin(); it != allObjects.end(); it++)	{
+		delete (*it);
+	}
+
+	allObjects.clear();
 }
 

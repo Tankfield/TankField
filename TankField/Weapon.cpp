@@ -1,13 +1,8 @@
 #include "Weapon.h"
 
-Weapon::Weapon(Texture* texture, Vector2D pos) : Object()
-{
-	this->texture = texture;
+Weapon::Weapon(Texture* texture, Vector2D pos) : Object(texture) {
 	this->position = pos;
 }
 
-Weapon::Weapon(Texture* texture){
-	this->texture = texture;
-};
-
-Weapon::Weapon(){};
+Weapon::Weapon(Texture* texture) : Object(texture) 
+{}

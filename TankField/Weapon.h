@@ -8,9 +8,8 @@ public:
 
 	Weapon(Texture* texture, Vector2D pos);
 	Weapon(Texture* texture);
-	Weapon();
 
-	
+	//void fireMissile();
 
 };
 

@@ -53,10 +53,12 @@ void Animation::drawTexture(int x, int y){
 }
 
 void Animation::runForward() {
+	stopped = false;
 	isBackward = false;
 }
 
 void Animation::runBackward() {
+	stopped = false;
 	isBackward = true;
 }
 
