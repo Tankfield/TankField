@@ -5,7 +5,7 @@
 vector<Object*> Object::allObjects;
 
 Object::Object(Texture *texture)
-	: velocity(0,0), speed(500), dead(false) {
+	: velocity(0,0), speed(300), dead(false) {
 	this->texture = texture;
 	this->position.x = 0;
 	this->position.y = 400;
@@ -118,7 +118,7 @@ void Object::deleteAll() {
 
 bool Object::outOfScreen()
 {
-	if (position.x < 0 || position.x > (WINDOW_WIDTH - texture->getWidth()) || position.y > (WINDOW_HEIGHT - texture->getHeight())){
+	if (position.x + texture->getWidth() < 0 || position.x > WINDOW_WIDTH || position.y > WINDOW_HEIGHT) {
 			return true;
 	}
 	return false;

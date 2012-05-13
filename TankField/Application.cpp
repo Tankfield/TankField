@@ -32,7 +32,7 @@ bool Application::initialize(){
 
 			
 	
-	tankAnimation = new Animation("textures/tank.png", displaySurface, 4, 5, 50);
+	tankAnimation = new Animation("textures/tank.png", displaySurface, 4, 5, 30);
 	tank = new Tank(tankAnimation, weapon);
 
 	//TODO to remove
