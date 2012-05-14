@@ -19,12 +19,22 @@ public:
 	unsigned int getWidth();
 	unsigned int getHeight();
 
-	virtual void update(float timeSinceLastTime);
+	virtual SDL_Rect getBounds();
 
-protected:
+	virtual void update(float timeSinceLastTime);	
+
+	void lock();
+
+	unsigned int getAlpha(int x, int y);
+
+	void unlock();
 	SDL_Surface *displaySurface;
+protected:
+	
 	SDL_Surface *surface;
+
 	unsigned int width;
 	unsigned int height;
 };
+
 #endif

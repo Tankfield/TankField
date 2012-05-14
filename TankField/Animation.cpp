@@ -38,11 +38,7 @@ void Animation::draw(int x, int y){
 	destRect.x = x;
 	destRect.y = y;
 
-	SDL_Rect frameRect;
-	frameRect.w = width / tilesX;
-	frameRect.h = height / tilesY;
-	frameRect.x = currentFrame % tilesX * frameRect.w;
-	frameRect.y = currentFrame / tilesX * frameRect.h;
+	SDL_Rect frameRect = getBounds();
 
 	SDL_BlitSurface(surface, &frameRect, displaySurface, &destRect);
 }
@@ -59,4 +55,16 @@ void Animation::runBackward() {
 
 void Animation::stop() {
 	stopped = true;
+}
+
+SDL_Rect Animation::getBounds()
+{
+	SDL_Rect bounds;
+
+	bounds.w = width / tilesX;
+	bounds.h = height / tilesY;
+	bounds.x = currentFrame % tilesX * bounds.w;
+	bounds.y = currentFrame / tilesX * bounds.h;	
+
+	return bounds;
 }

@@ -14,7 +14,7 @@ public:
 
 	Texture* missileTexture;
 	Vector2D missileVelocity;
-
+	
 	Weapon(Texture* texture, Vector2D pos);
 	Weapon(Texture* texture);
 

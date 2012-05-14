@@ -8,9 +8,12 @@ class Animation : public Texture{
 		unsigned int tilesX;
 		unsigned int tilesY;
 		unsigned int frameRate;
+		unsigned int tileh;
+		unsigned int tilew;
 
 		unsigned int currentFrame;
 		const unsigned int maxFrame;
+
 
 		const float frameTime;
 		float frameTimeLeft;
@@ -25,6 +28,8 @@ class Animation : public Texture{
 
 		virtual void update(float timeSinceLastTime);
 		virtual void draw(int x, int y);
+
+		virtual SDL_Rect getBounds();
 
 		void runForward();
 		void runBackward();

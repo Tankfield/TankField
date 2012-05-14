@@ -34,6 +34,7 @@ public:
 	virtual void render();
 
 	bool outOfScreen();
+	bool checkCollision(Object *object);
 
 	float getPositionX();
 	float getPositionY();
@@ -44,6 +45,8 @@ public:
 	void setPositionY(float y);
 	void setVelocityX(float x);
 	void setVelocityY(float y);
+
+	SDL_Rect getTextureIntersection(SDL_Rect objectIntersection);
 
 	Texture *getTexture();
 

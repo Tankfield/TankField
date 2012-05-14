@@ -6,6 +6,7 @@ Texture::Texture(const char* filename, SDL_Surface *screen)
 
 	this->width = this->surface->w;
 	this->height = this->surface->h;
+
 };
 
 Texture::Texture(const Texture &other){
@@ -39,4 +40,55 @@ unsigned int Texture::getWidth(){
 }
 unsigned int Texture::getHeight(){
 	return height;
+}
+
+SDL_Rect Texture::getBounds()
+{
+	SDL_Rect bounds;
+
+	bounds.x = 0;
+	bounds.y = 0;
+	bounds.w = width;
+	bounds.h = height;
+
+	return bounds;
+}
+
+
+void Texture::lock() {
+	SDL_LockSurface(surface);
+}
+
+void Texture::unlock() {
+	SDL_UnlockSurface(surface);
+}
+
+unsigned int Texture::getAlpha(int x, int y) {
+    int bpp = surface->format->BytesPerPixel;
+    Uint8* p = (Uint8*)surface->pixels + y * surface->pitch + x * bpp;
+    Uint32 pixelColor;
+     
+    switch(bpp) {
+        case(1):
+            pixelColor = *p;
+            break;
+        case(2):
+            pixelColor = *(Uint16*)p;
+            break;
+
+        case(3):
+            if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
+                pixelColor = p[0] << 16 | p[1] << 8 | p[2];
+            else
+                pixelColor = p[0] | p[1] << 8 | p[2] << 16;
+            break;
+        case(4):
+            pixelColor = *(Uint32*)p;
+            break;
+    }
+     
+    Uint8 red, green, blue, alpha;
+    SDL_GetRGBA(pixelColor, surface->format, &red, &green, &blue, &alpha);
+ 
+    return alpha;
 }

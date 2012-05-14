@@ -123,3 +123,54 @@ bool Object::outOfScreen()
 	}
 	return false;
 }
+
+SDL_Rect Object::getTextureIntersection(SDL_Rect objectIntersection) {
+	SDL_Rect textureBounds = texture->getBounds();
+
+	SDL_Rect textureIntersection;
+
+	// Don't ask why it's like that
+	textureIntersection.x = textureBounds.x + ((int)(objectIntersection.x - position.x) % texture->getWidth());
+	textureIntersection.y = textureBounds.y + ((int)(objectIntersection.y - position.y) % texture->getHeight());
+	textureIntersection.w = objectIntersection.w - (objectIntersection.x - textureIntersection.x);
+	textureIntersection.h = objectIntersection.h - (objectIntersection.y - textureIntersection.y);
+
+	return textureIntersection;
+}
+
+bool Object::checkCollision(Object *object) {
+	#define MIN(x, y) (x < y) ? x : y
+	#define MAX(x, y) (x > y) ? x : y
+
+	SDL_Rect intersectionRect;
+	int x2, y2;
+
+	intersectionRect.x = MAX(position.x, object->position.x);
+	intersectionRect.y = MAX(position.y, object->position.y);
+
+	x2 = MIN(position.x + texture->getBounds().w, object->position.x + object->texture->getBounds().w);
+	y2 = MIN(position.y + texture->getBounds().h, object->position.y + object->texture->getBounds().h);	
+	
+	if ((x2 - intersectionRect.x > 0) && (y2 - intersectionRect.y > 0)) {		
+		intersectionRect.w = x2 - intersectionRect.x;
+		intersectionRect.h = y2 - intersectionRect.y;
+	}
+	else {
+		return false;
+	}
+	
+	SDL_Rect textureAIntersection = getTextureIntersection(intersectionRect);
+	SDL_Rect textureBIntersection = object->getTextureIntersection(intersectionRect);
+	
+	int threshold = 200;
+
+	for (int y = 0; y < intersectionRect.h; y++) {
+		for (int x = 0; x < intersectionRect.w; x++) {
+			if ((texture->getAlpha(textureAIntersection.x + x, textureAIntersection.y + y) > threshold) && (object->getTexture()->getAlpha(textureBIntersection.x + x, textureBIntersection.y + y > threshold))) {
+ 				return true;
+			}
+		}
+	}		
+
+	return false;
+}
