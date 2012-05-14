@@ -36,7 +36,7 @@ void Tank::moveRight(){
 void Tank::stop(){
 	velocity = Vector2D(0, 0);
 	
-}//tv
+}
 
 void Tank::update(float timeSinceLastTime){
 
@@ -44,8 +44,8 @@ void Tank::update(float timeSinceLastTime){
 
 	texture->update(timeSinceLastTime);
 
-	weapon->setPositionX((this->position.x - weaponPosition.x));//weapPos e 
-	weapon->setPositionY((this->position.y - weaponPosition.y));//iz4ezva v tanka
+	weapon->setPositionX((this->position.x - weaponPosition.x));
+	weapon->setPositionY((this->position.y - weaponPosition.y));
 
 	weapon->update(timeSinceLastTime);
 
@@ -57,7 +57,5 @@ void Tank::render(){
 }
 
 void Tank::onCollision(Object *object) {
-	//if (dynamic_cast<Terrain*>(object) != NULL){
-		
-	//}
+
 }

@@ -20,9 +20,9 @@ void Application::loadContent(){
 	terrain = new Terrain(displaySurface);
 	ground = new Ground(displaySurface);
 	weaponAnimation1 = new Animation("textures/weapon.png", displaySurface, 3, 5, 15);
-	weapon1 = new Weapon(weaponAnimation1);
+	weapon1 = new Weapon(weaponAnimation1, TANK1_WEAPON_DEGREES);
 	weaponAnimation2 = new Animation("textures/redweapon.png", displaySurface, 3, 5, 15);
-	weapon2 = new Weapon(weaponAnimation2);
+	weapon2 = new Weapon(weaponAnimation2, TANK2_WEAPON_DEGREES);
 	weapon1->missileTexture = new Texture("textures/missile.png", displaySurface);
 	weapon2->missileTexture = new Texture("textures/missile.png", displaySurface);
 	tankAnimation1 = new Animation("textures/grtank.png", displaySurface, 4, 5, 30);
@@ -49,7 +49,10 @@ bool Application::initialize(){
 	}
 	memset(this->keyState, false, sizeof(this->keyState));
 	
+	static int wind=0;
+
 	return true;
+
 }
 
 
@@ -119,7 +122,7 @@ void Application::handleInput(){
 		player1->tankAnimation->runForward();
 	}
 
-	if (this->keyState[SDLK_SPACE]){
+	if (this->keyState[SDLK_KP2]){
 		tank1->fire();
 	}
 
@@ -129,9 +132,9 @@ void Application::handleInput(){
 		wPressed = true;
 	}
 	else if(wPressed){
-		if(player2->tank->weapon->getDegrees() > -65){
+		if(player2->tank->weapon->getDegrees() > -75){
 			player2->tank->weapon->decDegrees();
-			player2->weaponAnimation->runForward();
+			player2->weaponAnimation->runBackward();
 		}
 		wPressed = false;
 	}
@@ -141,9 +144,9 @@ void Application::handleInput(){
 		sPressed = true;
 	}
 	else if(sPressed) {
-		if(player2->tank->weapon->getDegrees() < 75){
+		if(player2->tank->weapon->getDegrees() < 65){
 			player2->tank->weapon->incDegrees();
-			player2->weaponAnimation->runBackward();
+			player2->weaponAnimation->runForward();
 		}
 		sPressed = false;
 	}
@@ -155,8 +158,10 @@ void Application::handleInput(){
 	}
 
 	if (this->keyState[SDLK_d]){
-		player2->tank->moveRight();
-		player2->tankAnimation->runForward();
+		if(!player2->tank->outOfScreen()){
+			player2->tank->moveRight();
+			player2->tankAnimation->runForward();
+		}
 	}
 
 	if (this->keyState[SDLK_SPACE]){

@@ -15,8 +15,7 @@ public:
 	Texture* missileTexture;
 	Vector2D missileVelocity;
 	
-	Weapon(Texture* texture, Vector2D pos);
-	Weapon(Texture* texture);
+	Weapon(Texture* texture, int weaponDegrees);
 
 	float missileDelay;
 	bool firedMissile;

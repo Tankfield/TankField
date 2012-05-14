@@ -1,4 +1,6 @@
 #include "Missile.h"
+#include "Tank.h"
+#include "Weapon.h"
 
 Missile::Missile(Texture* texture, Vector2D vel, Vector2D pos) : Object(texture, pos){
 	position = pos;
@@ -34,6 +36,11 @@ void Missile::onCollision(Object *object) {
 	if (dynamic_cast<Ground*>(object) != NULL){
 		this->dead = true;
 	}
-
+	if (dynamic_cast<Tank*>(object) != NULL){
+		this->dead = true;
+	}
+	if (dynamic_cast<Tank*>(object) != NULL){
+		this->dead = true;
+	}
 
 }

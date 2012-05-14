@@ -124,7 +124,7 @@ void Object::deleteAll() {
 
 bool Object::outOfScreen()
 {
-	if (position.x + texture->getWidth() < 0 || position.x > WINDOW_WIDTH || position.y > WINDOW_HEIGHT) {
+	if (position.x  < 0 || position.x + (this->texture->getWidth() / 5) > WINDOW_WIDTH || position.y > WINDOW_HEIGHT) {
 			return true;
 	}
 	return false;

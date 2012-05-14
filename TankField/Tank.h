@@ -2,7 +2,6 @@
 #define _Tank_H
 #include "Object.h"
 #include "Weapon.h"
-#include "Terrain.h"
 
 class Tank : public Object{
 
@@ -29,4 +28,4 @@ public:
 	virtual void onCollision(Object *object);
 };
 
-#endif//4akai trqbva da smenim polojeniq na orujiqta
+#endif

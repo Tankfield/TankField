@@ -1,10 +1,7 @@
 #include "Weapon.h"
 
-Weapon::Weapon(Texture* texture, Vector2D pos) : Object(texture,Vector2D(0,0)), firedMissile(false), degrees(40), missileDelay(3), missileVelocity(40){
-	this->position = pos;
-}
 
-Weapon::Weapon(Texture* texture) : Object(texture, Vector2D(0,0)), firedMissile(false), degrees(75)
+Weapon::Weapon(Texture* texture, int weaponDegrees) : Object(texture, Vector2D(0,0)), firedMissile(false), degrees(weaponDegrees)
 {}
 
 
@@ -36,7 +33,6 @@ void Weapon::update(float timeSinceLastTime){
 	if(firedMissile){
 		missileDelay -= timeSinceLastTime;
 	}
-
 
 	if (missileDelay < 0){
 		firedMissile = false;
