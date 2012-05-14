@@ -1,7 +1,16 @@
 #include "Tank.h"
 
-Tank::Tank(Texture* texture, Weapon* weapon) : Object(texture) {
+
+Tank::Tank(Texture* texture, Weapon* weapon, Vector2D tankPos, Vector2D weaponPos) : Object(texture, tankPos) {
 	this->weapon = weapon;
+	weaponPosition = weaponPos;
+}
+
+float Tank::getWeaponPositionX(){
+	return weaponPosition.x;
+}
+float Tank::getWeaponPositionY(){
+	return weaponPosition.y;
 }
 
 void Tank::fire(){
@@ -27,7 +36,7 @@ void Tank::moveRight(){
 void Tank::stop(){
 	velocity = Vector2D(0, 0);
 	
-}
+}//tv
 
 void Tank::update(float timeSinceLastTime){
 
@@ -35,8 +44,8 @@ void Tank::update(float timeSinceLastTime){
 
 	texture->update(timeSinceLastTime);
 
-	weapon->setPositionX((this->position.x + 30));
-	weapon->setPositionY((this->position.y - 55));
+	weapon->setPositionX((this->position.x - weaponPosition.x));//weapPos e 
+	weapon->setPositionY((this->position.y - weaponPosition.y));//iz4ezva v tanka
 
 	weapon->update(timeSinceLastTime);
 
@@ -47,4 +56,8 @@ void Tank::render(){
 	weapon->getTexture()->draw((int)weapon->getPositionX(),(int)weapon->getPositionY());
 }
 
-
+void Tank::onCollision(Object *object) {
+	//if (dynamic_cast<Terrain*>(object) != NULL){
+		
+	//}
+}

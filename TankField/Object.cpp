@@ -4,11 +4,10 @@
 
 vector<Object*> Object::allObjects;
 
-Object::Object(Texture *texture)
+Object::Object(Texture *texture, Vector2D pos = Vector2D(0,0))
 	: velocity(0,0), speed(300), dead(false) {
 	this->texture = texture;
-	this->position.x = 0;
-	this->position.y = 400;
+	this->position = pos;
 
 	allObjects.push_back(this);
 }
@@ -80,30 +79,37 @@ Texture *Object::getTexture(){
 
 void Object::removeDead()
 {
-	for (vector<Object*>::iterator it = allObjects.begin(); it != allObjects.end();)	{
-		if ((*it)->dead)
-		{
+	for (vector<Object*>::iterator it = allObjects.begin(); it != allObjects.end();){
+		if ((*it)->dead){
 			delete *it;
 
 			it = allObjects.erase(it);
 		}
-		else
-		{
+		else{
 			it++;
 		}
 	}
 }
 
 void Object::updateAll(float timeSinceLastTime) {
-	for (vector<Object*>::iterator it = allObjects.begin(); it != allObjects.end(); it++)	{
+	for (vector<Object*>::iterator it = allObjects.begin(); it != allObjects.end(); it++){
 		(*it)->update(timeSinceLastTime);
+
+		for (vector<Object*>::iterator it2 = allObjects.begin(); it2 != allObjects.end(); it2++) {
+			if (it != it2) {
+				if ((*it)->checkCollision(*it2)) {
+					(*it)->onCollision(*it2);
+					(*it2)->onCollision(*it);
+				}
+			}
+		}
 	}
 
 	Object::removeDead();
 }
 
 void Object::renderAll() {
-	for (vector<Object*>::iterator it = allObjects.begin(); it != allObjects.end(); it++)	{
+	for (vector<Object*>::iterator it = allObjects.begin(); it != allObjects.end(); it++){
 		(*it)->render();
 	}
 }
@@ -172,4 +178,8 @@ bool Object::checkCollision(Object *object) {
 	}		
 
 	return false;
+}
+
+void Object::onCollision(Object *object) {
+
 }

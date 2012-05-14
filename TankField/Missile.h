@@ -2,6 +2,8 @@
 #define _Missile_H
 
 #include "Object.h"
+#include "Ground.h"
+#include "Terrain.h"
 
 class Missile : public Object{
 
@@ -11,6 +13,8 @@ public:
 
 	virtual void update(float timeSinceLastTime);
 	virtual void render();
+
+	virtual void onCollision(Object *object);
 };
 
 

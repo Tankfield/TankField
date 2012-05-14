@@ -35,6 +35,7 @@ private:
 	void handleEvents();
 	void handleInput();
 	void render();
+	void update();
 	
 
 	Tank *tank1;
@@ -56,7 +57,7 @@ public:
 	Application();
 	~Application();
 
-	void Execute();
+	void execute();
 
 };
 

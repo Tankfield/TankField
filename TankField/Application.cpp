@@ -26,9 +26,9 @@ void Application::loadContent(){
 	weapon1->missileTexture = new Texture("textures/missile.png", displaySurface);
 	weapon2->missileTexture = new Texture("textures/missile.png", displaySurface);
 	tankAnimation1 = new Animation("textures/grtank.png", displaySurface, 4, 5, 30);
-	tank1 = new Tank(tankAnimation1, weapon1);
+	tank1 = new Tank(tankAnimation1, weapon1, Vector2D(TANK1_POS_Y,TANK1_POS_X), Vector2D(TANK1_WEAPON_POS_X,TANK1_WEAPON_POS_Y));
 	tankAnimation2 = new Animation("textures/redtank.png", displaySurface, 4, 5, 30);
-	tank2 = new Tank(tankAnimation2, weapon2);
+	tank2 = new Tank(tankAnimation2, weapon2, Vector2D(TANK2_POS_Y,TANK2_POS_X), Vector2D(TANK2_WEAPON_POS_X,TANK2_WEAPON_POS_Y));
 	player1 = new Player(tank1, tankAnimation1, weaponAnimation1);
 	player2 = new Player(tank2, tankAnimation2, weaponAnimation2);	
 }
@@ -108,8 +108,10 @@ void Application::handleInput(){
 
 
 	if (this->keyState[SDLK_LEFT]){
-		player1->tank->moveLeft();
-		player1->tankAnimation->runBackward();
+		if(!player1->tank->outOfScreen()){
+			player1->tank->moveLeft();
+			player1->tankAnimation->runBackward();
+		}
 	}
 
 	if (this->keyState[SDLK_RIGHT]){
@@ -163,33 +165,35 @@ void Application::handleInput(){
 
 }
 
-void Application::Execute(){
+void Application::update(){
+	
+	static float lastTime = SDL_GetTicks() / 1000.0f;
+	
+	float timeSinceLastTime = (SDL_GetTicks() / 1000.0f) - lastTime;
+
+	lastTime = SDL_GetTicks() / 1000.0f;
+
+	Object::updateAll(timeSinceLastTime);
+		
+	//ostringstream ostr;
+	//ostr << player1->tank->weapon->getDegrees() << " " << player2->tank->weapon->getDegrees();
+	//SDL_WM_SetCaption(ostr.str().c_str(), NULL);
+
+}
+
+void Application::execute(){
 
 	while(this->isRunning){
 		this->handleEvents();
 		this->handleInput();		
-		
-		static float lastTime = SDL_GetTicks() / 1000.0f;
-	
-		float timeSinceLastTime = (SDL_GetTicks() / 1000.0f) - lastTime;
-
-		lastTime = SDL_GetTicks() / 1000.0f;
-
-		Object::updateAll(timeSinceLastTime);
-		
-		ostringstream ostr;
-		ostr << player1->tank->weapon->getDegrees() << " " << player2->tank->weapon->getDegrees();
-		SDL_WM_SetCaption(ostr.str().c_str(), NULL);
-
+		this->update();
 		this->render();
 	}
 }
 
 void Application::render(){
 	background->draw(0,0);
-	
 	Object::renderAll();
-	
 	SDL_Flip(displaySurface);
 }
 

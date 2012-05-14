@@ -17,11 +17,11 @@ protected:
 	Vector2D velocity;
 	float speed;
 	Texture *texture;
-
+	
 	bool dead;
 
 public:
-	Object(Texture *texture);
+	Object(Texture *texture, Vector2D position);
 	virtual ~Object();
 	
 	virtual void moveUp();
@@ -35,6 +35,8 @@ public:
 
 	bool outOfScreen();
 	bool checkCollision(Object *object);
+
+	virtual void onCollision(Object *object);
 
 	float getPositionX();
 	float getPositionY();

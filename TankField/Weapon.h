@@ -28,8 +28,8 @@ public:
 	void fireMissile();
 
 	virtual void update(float timeSinceLastTime);
-
-
+	virtual void onCollision(Object *object);
+	
 };
 
 
