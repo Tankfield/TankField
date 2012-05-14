@@ -129,7 +129,6 @@ SDL_Rect Object::getTextureIntersection(SDL_Rect objectIntersection) {
 
 	SDL_Rect textureIntersection;
 
-	// Don't ask why it's like that
 	textureIntersection.x = textureBounds.x + ((int)(objectIntersection.x - position.x) % texture->getWidth());
 	textureIntersection.y = textureBounds.y + ((int)(objectIntersection.y - position.y) % texture->getHeight());
 	textureIntersection.w = objectIntersection.w - (objectIntersection.x - textureIntersection.x);

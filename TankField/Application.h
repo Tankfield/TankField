@@ -20,9 +20,9 @@ class Application{
 
 private:
 	
-	Background* bg;
-	Terrain* ter;
-	Ground* gro;
+	Background* background;
+	Terrain* terrain;
+	Ground* ground;
 
 	bool isRunning;
 

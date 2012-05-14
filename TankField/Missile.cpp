@@ -15,8 +15,6 @@ void Missile::update(float timeSinceLastTime){
 		dead = true;
 		return;
 	}
-
-	static bool falling = false;
 	
 	position += velocity * timeSinceLastTime;
 	velocity += Vector2D(0, 700) * timeSinceLastTime;

@@ -16,6 +16,9 @@ Application::~Application(){
 }
 
 void Application::loadContent(){
+	background = new Background(displaySurface);
+	terrain = new Terrain(displaySurface);
+	ground = new Ground(displaySurface);
 	weaponAnimation1 = new Animation("textures/weapon.png", displaySurface, 3, 5, 15);
 	weapon1 = new Weapon(weaponAnimation1);
 	weaponAnimation2 = new Animation("textures/redweapon.png", displaySurface, 3, 5, 15);
@@ -27,10 +30,7 @@ void Application::loadContent(){
 	tankAnimation2 = new Animation("textures/redtank.png", displaySurface, 4, 5, 30);
 	tank2 = new Tank(tankAnimation2, weapon2);
 	player1 = new Player(tank1, tankAnimation1, weaponAnimation1);
-	player2 = new Player(tank2, tankAnimation2, weaponAnimation2);
-	bg = new Background(displaySurface);
-	ter= new Terrain(displaySurface);
-	gro= new Ground(displaySurface);
+	player2 = new Player(tank2, tankAnimation2, weaponAnimation2);	
 }
 
 bool Application::initialize(){
@@ -186,9 +186,7 @@ void Application::Execute(){
 }
 
 void Application::render(){
-	bg->draw(0,0);
-	ter->draw(200,200);
-	gro->draw(0,500);
+	background->draw(0,0);
 	
 	Object::renderAll();
 	

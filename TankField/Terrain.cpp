@@ -1,7 +1,8 @@
 #include "Terrain.h"
 
 
-Terrain::Terrain(SDL_Surface* screen) : Texture(getTerrain(), screen){
+Terrain::Terrain(SDL_Surface* screen) : Object(new Texture(getTerrain(), screen)){
+	position = Vector2D(200,200);
 }
 
 const char* Terrain::getTerrain(){
