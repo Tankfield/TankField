@@ -14,15 +14,14 @@ using std::ostringstream;
 #include "Terrain.h"
 #include "Ground.h"
 #include "Missile.h"
+#include "Player.h"
 
 class Application{
 
 private:
 	
 	Background* bg;
-
 	Terrain* ter;
-
 	Ground* gro;
 
 	bool isRunning;
@@ -32,20 +31,20 @@ private:
 	SDL_Surface *displaySurface;
 
 	bool initialize();
-
 	void handleEvents();
-
 	void handleInput();
-
 	void render();
 
-	Tank *tank;
-
-	Animation *tankAnimation;
-
-	Animation *weaponAnimation;
-
-	Weapon* weapon;
+	Tank *tank1;
+	Tank *tank2;
+	Player *player1;
+	Player *player2;
+	Animation *tankAnimation1;
+	Animation *tankAnimation2;
+	Animation *weaponAnimation1;
+	Animation *weaponAnimation2;
+	Weapon* weapon1;
+	Weapon* weapon2;
 
 	bool keyState[322];
 

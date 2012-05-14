@@ -2,6 +2,7 @@
 #define _Player_H
 
 #include "Tank.h"
+#include "Animation.h"
 
 class Player{
 
@@ -10,8 +11,12 @@ private:
 
 public:
 	Tank *tank;
+	Animation *tankAnimation;
+	Animation *weaponAnimation;
 
-	Player(Tank *tank);
+	Player(Tank *tank, Animation *tankAnimation, Animation *weaponAnimation);
+
+	void stop();
 };
 
 
