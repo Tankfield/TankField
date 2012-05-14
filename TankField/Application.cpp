@@ -48,8 +48,6 @@ bool Application::initialize(){
 		return false;
 	}
 	memset(this->keyState, false, sizeof(this->keyState));
-	
-	static int wind=0;
 
 	return true;
 
@@ -179,6 +177,8 @@ void Application::update(){
 	lastTime = SDL_GetTicks() / 1000.0f;
 
 	Object::updateAll(timeSinceLastTime);
+
+	
 		
 	//ostringstream ostr;
 	//ostr << player1->tank->weapon->getDegrees() << " " << player2->tank->weapon->getDegrees();

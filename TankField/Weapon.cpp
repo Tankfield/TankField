@@ -20,7 +20,7 @@ void Weapon::decDegrees(){
 void Weapon::fireMissile(){
 	if(!firedMissile){
 		Texture *missileTextureCopy = new Texture(*missileTexture);
- 		new Missile(missileTextureCopy, missileVelocity, Vector2D(position.x + 20, position.y + 20));
+ 		new Missile(missileTextureCopy, missileVelocity, Vector2D(position.x + 40, position.y + 20));
 		firedMissile = true;
 		missileDelay = 0.5;
 	}

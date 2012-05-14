@@ -7,9 +7,7 @@ Missile::Missile(Texture* texture, Vector2D vel, Vector2D pos) : Object(texture,
 	velocity = vel * 1000;
 }
 
-//int wind = -300;
-//int gravity = 700;
-//int koef = 1000; //koeficient
+
 void Missile::update(float timeSinceLastTime){
 
 	if (this->outOfScreen()){
@@ -18,7 +16,7 @@ void Missile::update(float timeSinceLastTime){
 	}
 	
 	position += velocity * timeSinceLastTime;
-	velocity += Vector2D(0, 700) * timeSinceLastTime;
+	velocity += Vector2D(0, 900) * timeSinceLastTime;
 
 }
 
