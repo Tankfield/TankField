@@ -30,10 +30,12 @@ private:
 
 	SDL_Surface *displaySurface;
 
+	void loadContent();
 	bool initialize();
 	void handleEvents();
 	void handleInput();
 	void render();
+	
 
 	Tank *tank1;
 	Tank *tank2;

@@ -15,6 +15,24 @@ Application::~Application(){
 	SDL_Quit();
 }
 
+void Application::loadContent(){
+	weaponAnimation1 = new Animation("textures/weapon.png", displaySurface, 3, 5, 15);
+	weapon1 = new Weapon(weaponAnimation1);
+	weaponAnimation2 = new Animation("textures/redweapon.png", displaySurface, 3, 5, 15);
+	weapon2 = new Weapon(weaponAnimation2);
+	weapon1->missileTexture = new Texture("textures/missile.png", displaySurface);
+	weapon2->missileTexture = new Texture("textures/missile.png", displaySurface);
+	tankAnimation1 = new Animation("textures/grtank.png", displaySurface, 4, 5, 30);
+	tank1 = new Tank(tankAnimation1, weapon1);
+	tankAnimation2 = new Animation("textures/redtank.png", displaySurface, 4, 5, 30);
+	tank2 = new Tank(tankAnimation2, weapon2);
+	player1 = new Player(tank1, tankAnimation1, weaponAnimation1);
+	player2 = new Player(tank2, tankAnimation2, weaponAnimation2);
+	bg = new Background(displaySurface);
+	ter= new Terrain(displaySurface);
+	gro= new Ground(displaySurface);
+}
+
 bool Application::initialize(){
 	
 	if(SDL_Init(SDL_INIT_EVERYTHING) != 0){
@@ -23,38 +41,12 @@ bool Application::initialize(){
 	}
 	SDL_WM_SetCaption("Tankfield", NULL);
 	this->displaySurface = SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT , 32, SDL_SWSURFACE);
-	
-	//TODO to remove
-	weaponAnimation1 = new Animation("textures/weapon.png", displaySurface, 3, 5, 15);
-	weapon1 = new Weapon(weaponAnimation1);
-	weaponAnimation2 = new Animation("textures/redweapon.png", displaySurface, 3, 5, 15);
-	weapon2 = new Weapon(weaponAnimation2);
 
-	weapon1->missileTexture = new Texture("textures/missile.png", displaySurface);
-	weapon2->missileTexture = new Texture("textures/missile.png", displaySurface);
-	//TODO to remove
-
-			
-	
-	tankAnimation1 = new Animation("textures/grtank.png", displaySurface, 4, 5, 30);
-	tank1 = new Tank(tankAnimation1, weapon1);
-	tankAnimation2 = new Animation("textures/redtank.png", displaySurface, 4, 5, 30);
-	tank2 = new Tank(tankAnimation2, weapon2);
-
-	player1 = new Player(tank1, tankAnimation1, weaponAnimation1);
-	player2 = new Player(tank2, tankAnimation2, weaponAnimation2);
-	//TODO to remove
-	bg = new Background(displaySurface);
-
-	ter= new Terrain(displaySurface);
-
-	gro= new Ground(displaySurface);
+	loadContent();
 
 	if(this->displaySurface == NULL){
 		return false;
 	}
-
-	//
 	memset(this->keyState, false, sizeof(this->keyState));
 	
 	return true;
@@ -86,16 +78,11 @@ void Application::handleInput(){
 	static bool wPressed = false;
 	static bool sPressed = false;
 
-	//To add player->stop()
-	//player1->tank->stop();
-	//player1->tankAnimation->stop();
-	//player1->weaponAnimation->stop();
+
 	player1->stop();
-	//player2->tank->stop();
-	//player2->tankAnimation->stop();
-	//player2->weaponAnimation->stop();
 	player2->stop();
 
+	//player1 controls
 	if (this->keyState[SDLK_UP]){
 		upPressed = true;
 	}
@@ -134,7 +121,7 @@ void Application::handleInput(){
 		tank1->fire();
 	}
 
-	//////////////////////
+	//player2 controls
 
 	if (this->keyState[SDLK_w]){
 		wPressed = true;
@@ -182,11 +169,11 @@ void Application::Execute(){
 		this->handleEvents();
 		this->handleInput();		
 		
-	static float lastTime = SDL_GetTicks() / 1000.0f;
+		static float lastTime = SDL_GetTicks() / 1000.0f;
+	
+		float timeSinceLastTime = (SDL_GetTicks() / 1000.0f) - lastTime;
 
-	float timeSinceLastTime = (SDL_GetTicks() / 1000.0f) - lastTime;
-
-	lastTime = SDL_GetTicks() / 1000.0f;
+		lastTime = SDL_GetTicks() / 1000.0f;
 
 		Object::updateAll(timeSinceLastTime);
 		
