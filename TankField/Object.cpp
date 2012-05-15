@@ -77,12 +77,10 @@ Texture *Object::getTexture(){
 	return this->texture;
 }
 
-void Object::removeDead()
-{
+void Object::removeDead(){
 	for (vector<Object*>::iterator it = allObjects.begin(); it != allObjects.end();){
 		if ((*it)->dead){
 			delete *it;
-
 			it = allObjects.erase(it);
 		}
 		else{
@@ -95,7 +93,7 @@ void Object::updateAll(float timeSinceLastTime) {
 	for (vector<Object*>::iterator it = allObjects.begin(); it != allObjects.end(); it++){
 		(*it)->update(timeSinceLastTime);
 
-		for (vector<Object*>::iterator it2 = allObjects.begin(); it2 != allObjects.end(); it2++) {
+		for (vector<Object*>::iterator it2 = allObjects.begin(); it2 != allObjects.end(); it2++){
 			if (it != it2) {
 				if ((*it)->checkCollision(*it2)) {
 					(*it)->onCollision(*it2);
@@ -122,8 +120,7 @@ void Object::deleteAll() {
 	allObjects.clear();
 }
 
-bool Object::outOfScreen()
-{
+bool Object::outOfScreen(){
 	if (position.x  < 0 || position.x + (this->texture->getWidth() / 5) > WINDOW_WIDTH || position.y > WINDOW_HEIGHT) {
 			return true;
 	}
@@ -180,6 +177,4 @@ bool Object::checkCollision(Object *object) {
 	return false;
 }
 
-void Object::onCollision(Object *object) {
-
-}
+void Object::onCollision(Object *object){}

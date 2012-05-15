@@ -5,7 +5,7 @@
 
 Missile::Missile(Texture* texture, Vector2D vel, Vector2D pos) : Object(texture, pos){
 	position = pos;
-	velocity = vel * 1000;
+	velocity = vel * MISSILE_FIRE_POWER;
 }
 
 
@@ -17,7 +17,7 @@ void Missile::update(float timeSinceLastTime){
 	}
 	
 	position += velocity * timeSinceLastTime;
-	velocity += Vector2D(wind * 400, 900) * timeSinceLastTime;
+	velocity += Vector2D(wind * WIND_POWER, GRAVITY) * timeSinceLastTime;
 
 }
 

@@ -1,4 +1,5 @@
 #include "Weapon.h"
+#include "Globals.h"
 
 
 Weapon::Weapon(Texture* texture, int weaponDegrees) : Object(texture, Vector2D(0,0)), firedMissile(false), degrees(weaponDegrees)
@@ -20,9 +21,9 @@ void Weapon::decDegrees(){
 void Weapon::fireMissile(){
 	if(!firedMissile){
 		Texture *missileTextureCopy = new Texture(*missileTexture);
- 		new Missile(missileTextureCopy, missileVelocity, Vector2D(position.x + 40, position.y + 20));
+ 		new Missile(missileTextureCopy, missileVelocity, Vector2D(position.x + 40, position.y + 28));
 		firedMissile = true;
-		missileDelay = 0.5;
+		missileDelay = MISSILE_DELAY;
 	}
 }
 
@@ -36,7 +37,7 @@ void Weapon::update(float timeSinceLastTime){
 
 	if (missileDelay < 0){
 		firedMissile = false;
-		missileDelay = 5;
+		missileDelay = MISSILE_DELAY;
 		missileVelocity = Vector2D(degrees);
 	}
 }

@@ -66,7 +66,6 @@ void Application::handleEvents(){
 		case SDL_KEYDOWN:
 			this->keyState[event.key.keysym.sym] = true;
 			break;
-			
 		case SDL_KEYUP:
 			this->keyState[event.key.keysym.sym] = false;
 			break;
@@ -85,55 +84,13 @@ void Application::handleInput(){
 	player2->stop();
 
 	//player1 controls
-	if (this->keyState[SDLK_UP]){
-		upPressed = true;
-	}
-	else if(upPressed){
-		if(player1->tank->weapon->getDegrees() > -65){
-			player1->tank->weapon->decDegrees();
-			player1->weaponAnimation->runForward();
-		}
-		upPressed = false;
-	}
-
-
-	if (this->keyState[SDLK_DOWN]){
-		downPressed = true;
-	}
-	else if(downPressed) {
-		if(player1->tank->weapon->getDegrees() < 75){
-			player1->tank->weapon->incDegrees();
-			player1->weaponAnimation->runBackward();
-		}
-		downPressed = false;
-	}
-
-
-	if (this->keyState[SDLK_LEFT]){
-		if(!player1->tank->outOfScreen()){
-			player1->tank->moveLeft();
-			player1->tankAnimation->runBackward();
-		}
-	}
-
-	if (this->keyState[SDLK_RIGHT]){
-		player1->tank->moveRight();
-		player1->tankAnimation->runForward();
-	}
-
-	if (this->keyState[SDLK_KP2]){
-		tank1->fire();
-	}
-
-	//player2 controls
-
 	if (this->keyState[SDLK_w]){
 		wPressed = true;
 	}
 	else if(wPressed){
-		if(player2->tank->weapon->getDegrees() > -75){
-			player2->tank->weapon->decDegrees();
-			player2->weaponAnimation->runBackward();
+		if(player1->tank->weapon->getDegrees() > -65){
+			player1->tank->weapon->decDegrees();
+			player1->weaponAnimation->runForward();
 		}
 		wPressed = false;
 	}
@@ -143,27 +100,69 @@ void Application::handleInput(){
 		sPressed = true;
 	}
 	else if(sPressed) {
-		if(player2->tank->weapon->getDegrees() < 65){
-			player2->tank->weapon->incDegrees();
-			player2->weaponAnimation->runForward();
+		if(player1->tank->weapon->getDegrees() < 75){
+			player1->tank->weapon->incDegrees();
+			player1->weaponAnimation->runBackward();
 		}
 		sPressed = false;
 	}
 
 
 	if (this->keyState[SDLK_a]){
+		if(!player1->tank->outOfScreen()){
+			player1->tank->moveLeft();
+			player1->tankAnimation->runBackward();
+		}
+	}
+
+	if (this->keyState[SDLK_d]){
+		player1->tank->moveRight();
+		player1->tankAnimation->runForward();
+	}
+
+	if (this->keyState[SDLK_SPACE]){
+		tank1->fire();
+	}
+
+	//player2 controls
+
+	if (this->keyState[SDLK_DOWN]){
+		downPressed = true;
+	}
+	else if(downPressed){
+		if(player2->tank->weapon->getDegrees() > -75){
+			player2->tank->weapon->decDegrees();
+			player2->weaponAnimation->runBackward();
+		}
+		downPressed = false;
+	}
+
+
+	if (this->keyState[SDLK_UP]){
+		upPressed = true;
+	}
+	else if(upPressed){
+		if(player2->tank->weapon->getDegrees() < 65){
+			player2->tank->weapon->incDegrees();
+			player2->weaponAnimation->runForward();
+		}
+		upPressed = false;
+	}
+
+
+	if (this->keyState[SDLK_LEFT]){
 		player2->tank->moveLeft();
 		player2->tankAnimation->runBackward();
 	}
 
-	if (this->keyState[SDLK_d]){
+	if (this->keyState[SDLK_RIGHT]){
 		if(!player2->tank->outOfScreen()){
 			player2->tank->moveRight();
 			player2->tankAnimation->runForward();
 		}
 	}
 
-	if (this->keyState[SDLK_SPACE]){
+	if (this->keyState[SDLK_KP3]){
 		tank2->fire();
 	}
 
@@ -172,14 +171,14 @@ void Application::handleInput(){
 void Application::update(){
 	
 	static float lastTime = SDL_GetTicks() / 1000.0f;
-	static float windDelay = 3;
+	static float windDelay = WIND_DELAY;
 	
 	float timeSinceLastTime = (SDL_GetTicks() / 1000.0f) - lastTime;
 
 	windDelay -= timeSinceLastTime;
 
 	if(windDelay <= 0){
-		wind = (rand() % 8) - 4;
+		wind = (rand() % 7 + 1) - 4;
 	}
 
 	lastTime = SDL_GetTicks() / 1000.0f;

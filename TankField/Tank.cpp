@@ -1,7 +1,7 @@
 #include "Tank.h"
 
 
-Tank::Tank(Texture* texture, Weapon* weapon, Vector2D tankPos, Vector2D weaponPos) : Object(texture, tankPos), health(3) {
+Tank::Tank(Texture* texture, Weapon* weapon, Vector2D tankPos, Vector2D weaponPos) : Object(texture, tankPos), health(5) {
 	this->weapon = weapon;
 	weaponPosition = weaponPos;
 }
