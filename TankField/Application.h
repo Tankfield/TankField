@@ -1,10 +1,11 @@
 
 #ifndef _Applicaiton_H
 #define _Application_H
-#include <sstream>
-using std::ostringstream;
+#include <string>
+using std::string;
 
 #include <SDL\SDL.h>
+#include <SDL/SDL_ttf.h>
 #include "Object.h"
 #include "Background.h"
 #include "Animation.h"
@@ -36,7 +37,6 @@ private:
 	void handleInput();
 	void render();
 	void update();
-	
 
 	Tank *tank1;
 	Tank *tank2;

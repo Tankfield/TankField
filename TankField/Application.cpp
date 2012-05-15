@@ -6,7 +6,7 @@ Application::Application(){
 }
 
 Application::~Application(){
-	//Object::deleteAll();
+	Object::deleteAll();
 
 	if(this->displaySurface != NULL) {
 		SDL_FreeSurface(displaySurface);
@@ -48,6 +48,7 @@ bool Application::initialize(){
 		return false;
 	}
 	memset(this->keyState, false, sizeof(this->keyState));
+	srand(time(NULL));
 
 	return true;
 
@@ -171,8 +172,15 @@ void Application::handleInput(){
 void Application::update(){
 	
 	static float lastTime = SDL_GetTicks() / 1000.0f;
+	static float windDelay = 3;
 	
 	float timeSinceLastTime = (SDL_GetTicks() / 1000.0f) - lastTime;
+
+	windDelay -= timeSinceLastTime;
+
+	if(windDelay <= 0){
+		wind = (rand() % 8) - 4;
+	}
 
 	lastTime = SDL_GetTicks() / 1000.0f;
 
@@ -184,13 +192,6 @@ void Application::update(){
 	if(player2->tank->isDead()){
 		player2->tank->setPositionY(0); 
 	}
-
-	
-		
-	//ostringstream ostr;
-	//ostr << player1->tank->weapon->getDegrees() << " " << player2->tank->weapon->getDegrees();
-	//SDL_WM_SetCaption(ostr.str().c_str(), NULL);
-
 }
 
 void Application::execute(){
@@ -208,5 +209,6 @@ void Application::render(){
 	Object::renderAll();
 	SDL_Flip(displaySurface);
 }
+
 
 

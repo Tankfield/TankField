@@ -10,3 +10,5 @@
 #define TANK2_POS_Y 1100
 #define TANK1_WEAPON_DEGREES 75
 #define TANK2_WEAPON_DEGREES -75
+
+extern float wind;

@@ -1,6 +1,7 @@
 #include "Missile.h"
 #include "Tank.h"
 #include "Weapon.h"
+#include "Globals.h"
 
 Missile::Missile(Texture* texture, Vector2D vel, Vector2D pos) : Object(texture, pos){
 	position = pos;
@@ -16,7 +17,7 @@ void Missile::update(float timeSinceLastTime){
 	}
 	
 	position += velocity * timeSinceLastTime;
-	velocity += Vector2D(0, 900) * timeSinceLastTime;
+	velocity += Vector2D(wind * 400, 900) * timeSinceLastTime;
 
 }
 
