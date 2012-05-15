@@ -178,6 +178,13 @@ void Application::update(){
 
 	Object::updateAll(timeSinceLastTime);
 
+	if(player1->tank->isDead()){
+		player1->tank->setPositionY(0); 
+	}
+	if(player2->tank->isDead()){
+		player2->tank->setPositionY(0); 
+	}
+
 	
 		
 	//ostringstream ostr;

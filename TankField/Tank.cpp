@@ -1,7 +1,7 @@
 #include "Tank.h"
 
 
-Tank::Tank(Texture* texture, Weapon* weapon, Vector2D tankPos, Vector2D weaponPos) : Object(texture, tankPos) {
+Tank::Tank(Texture* texture, Weapon* weapon, Vector2D tankPos, Vector2D weaponPos) : Object(texture, tankPos), health(3) {
 	this->weapon = weapon;
 	weaponPosition = weaponPos;
 }
@@ -11,6 +11,13 @@ float Tank::getWeaponPositionX(){
 }
 float Tank::getWeaponPositionY(){
 	return weaponPosition.y;
+}
+
+bool Tank::isDead(){
+	if(this->health == 0){
+		return true;
+	}
+	return false;
 }
 
 void Tank::fire(){
@@ -57,5 +64,7 @@ void Tank::render(){
 }
 
 void Tank::onCollision(Object *object) {
-
+	if (dynamic_cast<Missile*>(object) != NULL){
+		this->health--;
+	}
 }

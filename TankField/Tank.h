@@ -7,12 +7,15 @@ class Tank : public Object{
 
 private:
 	Vector2D weaponPosition;
+	int health;
 public:
 	Weapon* weapon;
 	Tank(Texture* texture, Weapon* weapon, Vector2D tankPos, Vector2D weaponPos);
 	
 	float getWeaponPositionX();
 	float getWeaponPositionY();
+
+	bool isDead();
 
 	void fire();
 

@@ -6,8 +6,6 @@
 
 class Player{
 
-private:
-	int health;
 
 public:
 	Tank *tank;
