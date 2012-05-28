@@ -45,6 +45,7 @@ bool Application::initialize(){
 		this->displaySurface = NULL;
 		return false;
 	}
+	SDL_WM_SetIcon(SDL_LoadBMP("icon.bmp"), NULL);
 	SDL_WM_SetCaption("Tankfield", NULL);
 	this->displaySurface = SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT , 32, SDL_SWSURFACE);
 
