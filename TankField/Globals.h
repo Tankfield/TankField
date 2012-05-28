@@ -14,11 +14,11 @@
 #define TANK1_WEAPON_DEGREES 75
 #define TANK2_WEAPON_DEGREES -75
 
-#define WIND_DELAY 2
+#define WIND_DELAY 5
 #define MISSILE_DELAY 0.5
 
 #define MISSILE_FIRE_POWER 1100
 #define GRAVITY 1100
-#define WIND_POWER 700
+#define WIND_POWER 150
 
 extern float wind;

@@ -15,6 +15,8 @@ public:
 	float getWeaponPositionX();
 	float getWeaponPositionY();
 
+	int getHealth();
+
 	bool isDead();
 
 	void fire();

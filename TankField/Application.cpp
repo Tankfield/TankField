@@ -11,6 +11,11 @@ Application::~Application(){
 	if(this->displaySurface != NULL) {
 		SDL_FreeSurface(displaySurface);
 	}
+	SDL_FreeSurface(message);
+	
+    TTF_CloseFont(font);
+
+    TTF_Quit();
 
 	SDL_Quit();
 }
@@ -31,6 +36,7 @@ void Application::loadContent(){
 	tank2 = new Tank(tankAnimation2, weapon2, Vector2D(TANK2_POS_Y,TANK2_POS_X), Vector2D(TANK2_WEAPON_POS_X,TANK2_WEAPON_POS_Y));
 	player1 = new Player(tank1, tankAnimation1, weaponAnimation1);
 	player2 = new Player(tank2, tankAnimation2, weaponAnimation2);	
+	
 }
 
 bool Application::initialize(){
@@ -47,6 +53,15 @@ bool Application::initialize(){
 	if(this->displaySurface == NULL){
 		return false;
 	}
+
+	if(TTF_Init() == -1){
+        return false;
+    }
+
+	font = TTF_OpenFont("arial.ttf", 40);
+
+	SDL_Color textColor ={0, 0, 0};
+	
 	memset(this->keyState, false, sizeof(this->keyState));
 	srand(time(NULL));
 
@@ -179,6 +194,7 @@ void Application::update(){
 
 	if(windDelay <= 0){
 		wind = (rand() % 7 + 1) - 4;
+		windDelay = WIND_DELAY;
 	}
 
 	lastTime = SDL_GetTicks() / 1000.0f;
@@ -206,9 +222,28 @@ void Application::execute(){
 
 void Application::render(){
 	background->draw(0,0);
+	//player2
+	itoa(player1->tank->getHealth(),buffer,10);
+	message = TTF_RenderText_Solid(font, buffer, textColor);
+	apply_surface(20, 20, message, displaySurface);
+	//player2
+	itoa(player2->tank->getHealth(),buffer,10);
+	message = TTF_RenderText_Solid(font, buffer, textColor);
+	apply_surface(1170, 20, message, displaySurface);
+	//wind
+	itoa(wind,buffer,10);
+	message = TTF_RenderText_Solid(font, buffer, textColor);
+	apply_surface(600, 150, message, displaySurface);
+
 	Object::renderAll();
 	SDL_Flip(displaySurface);
+	
 }
 
-
+void Application::apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination){
+    SDL_Rect offset;
+    offset.x = x;
+    offset.y = y;
+    SDL_BlitSurface(source, NULL, destination, &offset);
+}
 

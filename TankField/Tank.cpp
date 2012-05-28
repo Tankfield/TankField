@@ -12,6 +12,9 @@ float Tank::getWeaponPositionX(){
 float Tank::getWeaponPositionY(){
 	return weaponPosition.y;
 }
+int Tank::getHealth(){
+	return health;
+}
 
 bool Tank::isDead(){
 	if(this->health == 0){

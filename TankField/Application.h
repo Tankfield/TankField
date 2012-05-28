@@ -1,8 +1,8 @@
 
 #ifndef _Applicaiton_H
 #define _Application_H
-#include <string>
-using std::string;
+
+#include "SDL/SDL_ttf.h"
 
 #include <SDL\SDL.h>
 #include <SDL/SDL_ttf.h>
@@ -24,12 +24,15 @@ private:
 	Background* background;
 	Terrain* terrain;
 	Ground* ground;
-
+	
+	TTF_Font *font;
+	SDL_Color textColor;
 	bool isRunning;
 
 	SDL_Event event;
 
 	SDL_Surface *displaySurface;
+	SDL_Surface *message;
 
 	void loadContent();
 	bool initialize();
@@ -37,6 +40,7 @@ private:
 	void handleInput();
 	void render();
 	void update();
+	void apply_surface(int x, int y, SDL_Surface* source, SDL_Surface* destination);
 
 	Tank *tank1;
 	Tank *tank2;
@@ -50,6 +54,7 @@ private:
 	Weapon* weapon2;
 
 	bool keyState[322];
+	char buffer [33];
 
 public:
 
