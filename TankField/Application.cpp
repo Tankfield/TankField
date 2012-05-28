@@ -200,6 +200,7 @@ void Application::execute(){
 		this->handleInput();		
 		this->update();
 		this->render();
+		SDL_Delay(2);
 	}
 }
 
