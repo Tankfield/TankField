@@ -32,7 +32,7 @@ private:
 	SDL_Event event;
 
 	SDL_Surface *displaySurface;
-	SDL_Surface *message;
+	SDL_Surface *displayText;
 
 	void loadContent();
 	bool initialize();
@@ -40,7 +40,7 @@ private:
 	void handleInput();
 	void render();
 	void update();
-	void apply_surface(int x, int y, SDL_Surface* source, SDL_Surface* destination);
+	void showText(int x, int y, SDL_Surface* source, SDL_Surface* destination);
 
 	Tank *tank1;
 	Tank *tank2;

@@ -11,7 +11,7 @@ Application::~Application(){
 	if(this->displaySurface != NULL) {
 		SDL_FreeSurface(displaySurface);
 	}
-	SDL_FreeSurface(message);
+	SDL_FreeSurface(displayText);
 	
     TTF_CloseFont(font);
 
@@ -225,23 +225,23 @@ void Application::render(){
 	background->draw(0,0);
 	//player2
 	itoa(player1->tank->getHealth(),buffer,10);
-	message = TTF_RenderText_Solid(font, buffer, textColor);
-	apply_surface(20, 20, message, displaySurface);
+	displayText = TTF_RenderText_Solid(font, buffer, textColor);
+	showText(20, 20, displayText, displaySurface);
 	//player2
 	itoa(player2->tank->getHealth(),buffer,10);
-	message = TTF_RenderText_Solid(font, buffer, textColor);
-	apply_surface(1170, 20, message, displaySurface);
+	displayText = TTF_RenderText_Solid(font, buffer, textColor);
+	showText(1170, 20, displayText, displaySurface);
 	//wind
 	itoa(wind,buffer,10);
-	message = TTF_RenderText_Solid(font, buffer, textColor);
-	apply_surface(600, 150, message, displaySurface);
+	displayText = TTF_RenderText_Solid(font, buffer, textColor);
+	showText(600, 150, displayText, displaySurface);
 
 	Object::renderAll();
 	SDL_Flip(displaySurface);
 	
 }
 
-void Application::apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination){
+void Application::showText( int x, int y, SDL_Surface* source, SDL_Surface* destination){
     SDL_Rect offset;
     offset.x = x;
     offset.y = y;
