@@ -16,6 +16,7 @@ public:
 	float getWeaponPositionY();
 
 	int getHealth();
+	void setHealth(int hp);
 
 	bool isDead();
 

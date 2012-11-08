@@ -31,9 +31,9 @@ void Application::loadContent(){
 	weapon1->missileTexture = new Texture("textures/missile.png", displaySurface);
 	weapon2->missileTexture = new Texture("textures/missile.png", displaySurface);
 	tankAnimation1 = new Animation("textures/grtank.png", displaySurface, 4, 5, 30);
-	tank1 = new Tank(tankAnimation1, weapon1, Vector2D(TANK1_POS_Y,TANK1_POS_X), Vector2D(TANK1_WEAPON_POS_X,TANK1_WEAPON_POS_Y));
+	tank1 = new Tank(tankAnimation1, weapon1, Vector2D(TANK1_POS_X,TANK1_POS_Y), Vector2D(TANK1_WEAPON_POS_X,TANK1_WEAPON_POS_Y));
 	tankAnimation2 = new Animation("textures/redtank.png", displaySurface, 4, 5, 30);
-	tank2 = new Tank(tankAnimation2, weapon2, Vector2D(TANK2_POS_Y,TANK2_POS_X), Vector2D(TANK2_WEAPON_POS_X,TANK2_WEAPON_POS_Y));
+	tank2 = new Tank(tankAnimation2, weapon2, Vector2D(TANK2_POS_X,TANK2_POS_Y), Vector2D(TANK2_WEAPON_POS_X,TANK2_WEAPON_POS_Y));
 	player1 = new Player(tank1, tankAnimation1, weaponAnimation1);
 	player2 = new Player(tank2, tankAnimation2, weaponAnimation2);	
 	
@@ -132,8 +132,10 @@ void Application::handleInput(){
 	}
 
 	if (this->keyState[SDLK_d]){
-		player1->tank->moveRight();
-		player1->tankAnimation->runForward();
+		if(player1->tank->getPositionX() < 125){
+			player1->tank->moveRight();
+			player1->tankAnimation->runForward();
+		}
 	}
 
 	if (this->keyState[SDLK_SPACE]){
@@ -167,8 +169,10 @@ void Application::handleInput(){
 
 
 	if (this->keyState[SDLK_LEFT]){
-		player2->tank->moveLeft();
-		player2->tankAnimation->runBackward();
+		if(player2->tank->getPositionX() > 940){
+			player2->tank->moveLeft();
+			player2->tankAnimation->runBackward();
+		}
 	}
 
 	if (this->keyState[SDLK_RIGHT]){
@@ -180,6 +184,10 @@ void Application::handleInput(){
 
 	if (this->keyState[SDLK_KP3]){
 		tank2->fire();
+	}
+
+	if (this->keyState[SDLK_r]){
+		reset();
 	}
 
 }
@@ -208,6 +216,15 @@ void Application::update(){
 	if(player2->tank->isDead()){
 		player2->tank->setPositionY(0); 
 	}
+}
+
+void Application::reset(){
+	tank1->setHealth(5);
+	tank2->setHealth(5);
+	tank1->setPositionX(TANK1_POS_X);
+	tank1->setPositionY(TANK1_POS_Y);
+	tank2->setPositionX(TANK2_POS_X);
+	tank2->setPositionY(TANK2_POS_Y);
 }
 
 void Application::execute(){

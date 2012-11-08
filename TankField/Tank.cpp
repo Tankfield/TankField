@@ -16,6 +16,10 @@ int Tank::getHealth(){
 	return health;
 }
 
+void Tank::setHealth(int hp){
+	health = hp;
+}
+
 bool Tank::isDead(){
 	if(this->health == 0){
 		return true;

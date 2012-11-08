@@ -40,6 +40,7 @@ private:
 	void handleInput();
 	void render();
 	void update();
+	void reset();
 	void showText(int x, int y, SDL_Surface* source, SDL_Surface* destination);
 
 	Tank *tank1;
