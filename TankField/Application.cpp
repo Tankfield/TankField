@@ -125,14 +125,16 @@ void Application::handleInput(){
 
 
 	if (this->keyState[SDLK_a]){
-		if(!player1->tank->outOfScreen()){
-			player1->tank->moveLeft();
-			player1->tankAnimation->runBackward();
+		if(!this->keyState[SDLK_d]){
+			if(!player1->tank->outOfScreen()){
+				player1->tank->moveLeft();
+				player1->tankAnimation->runBackward();
+			}
 		}
 	}
 
 	if (this->keyState[SDLK_d]){
-		if(player1->tank->getPositionX() < 125){
+		if(!this->keyState[SDLK_a]){
 			player1->tank->moveRight();
 			player1->tankAnimation->runForward();
 		}
@@ -169,16 +171,18 @@ void Application::handleInput(){
 
 
 	if (this->keyState[SDLK_LEFT]){
-		if(player2->tank->getPositionX() > 940){
+		if(!this->keyState[SDLK_RIGHT]){
 			player2->tank->moveLeft();
 			player2->tankAnimation->runBackward();
 		}
 	}
 
 	if (this->keyState[SDLK_RIGHT]){
-		if(!player2->tank->outOfScreen()){
-			player2->tank->moveRight();
-			player2->tankAnimation->runForward();
+		if(!this->keyState[SDLK_LEFT]){
+			if(!player2->tank->outOfScreen()){
+				player2->tank->moveRight();
+				player2->tankAnimation->runForward();
+			}
 		}
 	}
 

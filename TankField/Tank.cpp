@@ -74,4 +74,9 @@ void Tank::onCollision(Object *object) {
 	if (dynamic_cast<Missile*>(object) != NULL){
 		this->health--;
 	}
+	//to fix!!!
+	if (dynamic_cast<Terrain*>(object) != NULL){
+		this->position += (this->velocity * (-1)/10);
+		SDL_Delay(2);
+	}	
 }
