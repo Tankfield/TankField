@@ -17,7 +17,7 @@ protected:
 	Vector2D velocity;
 	float speed;
 	Texture *texture;
-	
+
 	bool dead;
 
 public:

@@ -16,6 +16,8 @@ public:
 	virtual void render();
 
 	virtual void onCollision(Object *object);
+	bool isDead();
+	void goDead();
 };
 
 

@@ -18,7 +18,6 @@ public:
 	Weapon(Texture* texture, int weaponDegrees);
 
 	float missileDelay;
-	bool firedMissile;
 
 	int getDegrees();
 	void incDegrees();

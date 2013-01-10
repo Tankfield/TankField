@@ -6,13 +6,14 @@
 Missile::Missile(Texture* texture, Vector2D vel, Vector2D pos) : Object(texture, pos){
 	position = pos;
 	velocity = vel * MISSILE_FIRE_POWER;
+	dead = false;
 }
 
 
 void Missile::update(float timeSinceLastTime){
 
 	if (this->outOfScreen()){
-		dead = true;
+		this->goDead();
 		return;
 	}
 	
@@ -27,19 +28,24 @@ void Missile::render(){
 
 void Missile::onCollision(Object *object) {
 	if (dynamic_cast<Missile*>(object) != NULL){
-		this->dead = true;
+		this->goDead();
 	}
 	if (dynamic_cast<Terrain*>(object) != NULL){
-		this->dead = true;
+		this->goDead();
 	}
 	if (dynamic_cast<Ground*>(object) != NULL){
-		this->dead = true;
+		this->goDead();
 	}
 	if (dynamic_cast<Tank*>(object) != NULL){
-		this->dead = true;
+		this->goDead();
 	}
-	if (dynamic_cast<Tank*>(object) != NULL){
-		this->dead = true;
-	}
+}
 
+bool Missile::isDead(){
+	return dead;
+}
+
+void Missile::goDead(){
+	this->dead = true;
+	firedMissile = false;
 }

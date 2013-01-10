@@ -49,7 +49,6 @@ void Tank::moveRight(){
 
 void Tank::stop(){
 	velocity = Vector2D(0, 0);
-	
 }
 
 void Tank::update(float timeSinceLastTime){

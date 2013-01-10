@@ -141,7 +141,10 @@ void Application::handleInput(){
 	}
 
 	if (this->keyState[SDLK_SPACE]){
-		tank1->fire();
+		if(player1Turn){
+			tank1->fire();
+			firedMissile = true;
+		}
 	}
 
 	//player2 controls
@@ -187,9 +190,12 @@ void Application::handleInput(){
 	}
 
 	if (this->keyState[SDLK_KP3]){
-		tank2->fire();
+		if(player2Turn){
+			tank2->fire();
+			firedMissile = true;
+		}
 	}
-
+	//
 	if (this->keyState[SDLK_r]){
 		reset();
 	}
@@ -202,7 +208,9 @@ void Application::update(){
 	static float windDelay = WIND_DELAY;
 	
 	float timeSinceLastTime = (SDL_GetTicks() / 1000.0f) - lastTime;
-
+	if(toChangeTurn){
+		changeTurn();
+	}
 	windDelay -= timeSinceLastTime;
 
 	if(windDelay <= 0){
@@ -267,5 +275,20 @@ void Application::showText( int x, int y, SDL_Surface* source, SDL_Surface* dest
     offset.x = x;
     offset.y = y;
     SDL_BlitSurface(source, NULL, destination, &offset);
+}
+
+void Application::changeTurn(){
+	if(player1Turn){
+		player1Turn = false;
+		player2Turn = true;
+		toChangeTurn = false;
+		return;
+	}
+	if(player2Turn){
+		player2Turn = false;
+		player1Turn = true;
+		toChangeTurn = false;
+		return;
+	}
 }
 
