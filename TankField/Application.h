@@ -2,9 +2,7 @@
 #ifndef _Applicaiton_H
 #define _Application_H
 
-#include "SDL/SDL_ttf.h"
-
-#include <SDL\SDL.h>
+#include <SDL/SDL.h>
 #include <SDL/SDL_ttf.h>
 #include "Object.h"
 #include "Background.h"
