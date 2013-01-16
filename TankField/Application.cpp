@@ -36,7 +36,7 @@ void Application::loadContent(){
 	tank2 = new Tank(tankAnimation2, weapon2, Vector2D(TANK2_POS_X,TANK2_POS_Y), Vector2D(TANK2_WEAPON_POS_X,TANK2_WEAPON_POS_Y));
 	player1 = new Player(tank1, tankAnimation1, weaponAnimation1);
 	player2 = new Player(tank2, tankAnimation2, weaponAnimation2);	
-	
+	server = new Server();
 }
 
 bool Application::initialize(){

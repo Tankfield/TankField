@@ -14,6 +14,7 @@
 #include "Ground.h"
 #include "Missile.h"
 #include "Player.h"
+#include "Server.h"
 
 class Application{
 
@@ -52,6 +53,7 @@ private:
 	Animation *weaponAnimation2;
 	Weapon* weapon1;
 	Weapon* weapon2;
+	Server* server;
 
 	bool keyState[322];
 	char buffer [33];
