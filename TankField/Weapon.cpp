@@ -7,16 +7,21 @@ Weapon::Weapon(Texture* texture, int weaponDegrees) : Object(texture, Vector2D(0
 
 
 int Weapon::getDegrees(){
-	return degrees;
+	return this->degrees;
 }
 void Weapon::incDegrees(){
-	degrees += 10;
+	this->degrees += 10;
 	missileVelocity = Vector2D(degrees);
 }
 void Weapon::decDegrees(){
-	degrees -= 10;                           
+	this->degrees -= 10;                           
 	missileVelocity = Vector2D(degrees);
 }
+void Weapon::setDegrees(int degrees){
+	this->degrees = degrees;
+	missileVelocity = Vector2D(degrees);
+}
+
 
 void Weapon::fireMissile(){
 	if((!firedMissile)){
@@ -25,7 +30,7 @@ void Weapon::fireMissile(){
 		toChangeTurn = true;
 	}
 }
-//FIXXXXXX
+
 void Weapon::update(float timeSinceLastTime){
 
 	texture->update(timeSinceLastTime);

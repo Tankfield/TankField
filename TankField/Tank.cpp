@@ -5,7 +5,7 @@ Tank::Tank(Texture* texture, Weapon* weapon, Vector2D tankPos, Vector2D weaponPo
 	this->weapon = weapon;
 	weaponPosition = weaponPos;
 }
-
+//still not used!
 float Tank::getWeaponPositionX(){
 	return weaponPosition.x;
 }

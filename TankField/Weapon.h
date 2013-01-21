@@ -22,6 +22,7 @@ public:
 	int getDegrees();
 	void incDegrees();
 	void decDegrees();
+	void setDegrees(int deg);
 
 	void fireMissile();
 

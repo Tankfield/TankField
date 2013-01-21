@@ -7,14 +7,15 @@ class Client{
 private:
 	IPaddress ip;
 	TCPsocket socket;
-	int* dataToSend;
-	int* dataToRecv;
+	int dataToSend[1024];
+	int dataToRecv[1024];
 
 public:
 	Client();
 	~Client();
 
-	void sendpackets();
+	void sendPackets();
+	void setWeaponDegrees(int degrees);
 };
 
 #endif

@@ -36,7 +36,8 @@ void Application::loadContent(){
 	tank2 = new Tank(tankAnimation2, weapon2, Vector2D(TANK2_POS_X,TANK2_POS_Y), Vector2D(TANK2_WEAPON_POS_X,TANK2_WEAPON_POS_Y));
 	player1 = new Player(tank1, tankAnimation1, weaponAnimation1);
 	player2 = new Player(tank2, tankAnimation2, weaponAnimation2);	
-	server = new Server();
+	//server = new Server();
+	//ssclient = new Client();
 }
 
 bool Application::initialize(){
@@ -65,6 +66,10 @@ bool Application::initialize(){
 	
 	memset(this->keyState, false, sizeof(this->keyState));
 	srand(time(NULL));
+	
+	if(SDLNet_Init() < 0){
+		return false;
+	}
 
 	return true;
 
@@ -208,9 +213,11 @@ void Application::update(){
 	static float windDelay = WIND_DELAY;
 	
 	float timeSinceLastTime = (SDL_GetTicks() / 1000.0f) - lastTime;
+
 	if(toChangeTurn){
 		changeTurn();
 	}
+
 	windDelay -= timeSinceLastTime;
 
 	if(windDelay <= 0){
@@ -221,13 +228,21 @@ void Application::update(){
 	lastTime = SDL_GetTicks() / 1000.0f;
 
 	Object::updateAll(timeSinceLastTime);
+	
+	//server->createConnection();
+	//if(server->isConnected()){
+	//	tank2->weapon->setDegrees(server->getWeaponDegrees());
+	//}
+	//client->setWeaponDegrees(tank2->weapon->getDegrees());
+	//client->sendPackets();
 
-	if(player1->tank->isDead()){
-		player1->tank->setPositionY(0); 
-	}
-	if(player2->tank->isDead()){
-		player2->tank->setPositionY(0); 
-	}
+	//tanks go in the sky when dead :D
+	//if(player1->tank->isDead()){
+	//	player1->tank->setPositionY(0); 
+	//}
+	//if(player2->tank->isDead()){
+	//	player2->tank->setPositionY(0); 
+	//}
 }
 
 void Application::reset(){

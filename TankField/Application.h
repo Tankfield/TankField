@@ -15,6 +15,7 @@
 #include "Missile.h"
 #include "Player.h"
 #include "Server.h"
+#include "Client.h"
 
 class Application{
 
@@ -54,6 +55,7 @@ private:
 	Weapon* weapon1;
 	Weapon* weapon2;
 	Server* server;
+	Client* client;
 
 	bool keyState[322];
 	char buffer [33];

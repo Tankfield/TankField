@@ -8,15 +8,17 @@ private:
 	TCPsocket socket;
 	TCPsocket socket2;
 
-	int* dataToSend;
-	int* dataToRecv;
+	int dataToSend[1024];
+	int recievedData[1024];
 public:
-
+	
 	Server();
 	~Server();
 	void createConnection();
 	void recievePackets();
-
+	int getWeaponDegrees();
+	int getTankPositionX();
+	bool isConnected();
 };
 
 
