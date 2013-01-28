@@ -110,7 +110,7 @@ void Application::handleInput(){
 	player2->stop();
 
 	//player1 controls
-	if(singlePlayer || isServer){
+	if((singlePlayer && player1Turn) || (isServer && player1Turn)){
 		if (this->keyState[SDLK_w]){
 			wPressed = true;
 		}
@@ -152,14 +152,12 @@ void Application::handleInput(){
 		}
 
 		if (this->keyState[SDLK_SPACE]){
-			if(player1Turn){
-				tank1->fire();
-				firedMissile = true;
-			}
+			tank1->fire();
+			firedMissile = true;
 		}
 	}
 	//player2 controls
-	if(singlePlayer || isClient){
+	if((singlePlayer && player2Turn) || (isClient && player2Turn)){
 		if (this->keyState[SDLK_DOWN]){
 			downPressed = true;
 		}
@@ -201,10 +199,8 @@ void Application::handleInput(){
 		}
 
 		if (this->keyState[SDLK_KP3]){
-			if(player2Turn){
-				tank2->fire();
-				firedMissile = true;
-			}
+			tank2->fire();
+			firedMissile = true;
 		}
 	}
 	//resets
@@ -220,7 +216,7 @@ void Application::update(){
 	static float windDelay = WIND_DELAY;
 	
 	float timeSinceLastTime = (SDL_GetTicks() / 1000.0f) - lastTime;
-	if(isServer){
+	if(isServer && player1Turn){
 		if (server->clientConnected()) {	
 			int buffer4[2];
 			if (server->receiveData(&buffer4, sizeof(buffer))) {
@@ -236,7 +232,7 @@ void Application::update(){
 
 		}
 	}
-	else if(isClient){
+	else if(isClient && player2Turn){
 		int buffer2[2];
 		buffer2[0] = 100;
 		buffer2[1] = 200;
@@ -319,14 +315,22 @@ void Application::changeTurn(){
 	if(player1Turn){
 		player1Turn = false;
 		player2Turn = true;
+
 		toChangeTurn = false;
-		wind = (rand() % 7 + 1) - 4;
+		changeWind();
+		firedMissile = false;
 	}
 	else if(player2Turn){
 		player2Turn = false;
 		player1Turn = true;
+
 		toChangeTurn = false;
-		wind = (rand() % 7 + 1) - 4;
+		changeWind();
+		firedMissile = false;
 	}
+}
+
+void Application::changeWind(){
+	wind = (rand() % 7 + 1) - 4;
 }
 

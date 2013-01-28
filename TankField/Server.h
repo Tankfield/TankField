@@ -15,12 +15,14 @@ class Server{
 		Server(Uint16 port);
 		~Server();
 
+		// not usable for now
 		void start();
 		void stop();
 		bool isRunning();
+		//////////////////////
 		bool clientConnected();
 		bool receiveData(void *data, Uint32 size);
-		bool sendData(void *data, Uint32 size);
+		void sendData(void *data, Uint32 size);
 };
 
 

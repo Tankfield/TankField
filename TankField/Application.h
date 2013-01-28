@@ -43,6 +43,7 @@ private:
 	void reset();
 	void showText(int x, int y, SDL_Surface* source, SDL_Surface* destination);
 	void changeTurn();
+	void changeWind();
 
 	Tank *tank1;
 	Tank *tank2;

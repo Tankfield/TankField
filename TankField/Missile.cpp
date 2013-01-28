@@ -47,5 +47,7 @@ bool Missile::isDead(){
 
 void Missile::goDead(){
 	this->dead = true;
-	firedMissile = false;
+	toChangeTurn = true;
+	//firedMissile = false;
+	
 }

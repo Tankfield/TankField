@@ -44,10 +44,8 @@ bool Server::receiveData(void *data, Uint32 size) {
 	return false;
 }
 
-bool Server::sendData(void *data, Uint32 size) {
+void Server::sendData(void *data, Uint32 size) {
 	if (connected) {
-		return (SDLNet_TCP_Send(clientSocket, data, size) == size);
+		SDLNet_TCP_Send(clientSocket, data, size);
 	}
-
-	return false;
 }

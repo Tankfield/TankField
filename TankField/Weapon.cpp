@@ -27,7 +27,6 @@ void Weapon::fireMissile(){
 	if((!firedMissile)){
 		Texture *missileTextureCopy = new Texture(*missileTexture);
  		new Missile(missileTextureCopy, missileVelocity, Vector2D(position.x + 40, position.y + 28));
-		toChangeTurn = true;
 	}
 }
 
