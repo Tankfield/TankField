@@ -2,20 +2,20 @@
 #define _Client_H
 
 #include <SDL/SDL_net.h>
+#include <string>
 
 class Client{
 private:
 	IPaddress ip;
 	TCPsocket socket;
-	int dataToSend[1024];
-	int dataToRecv[1024];
+
+	bool connected;
 
 public:
-	Client();
+	Client(std::string host, Uint16 port);
 	~Client();
-
-	void sendPackets();
-	void setWeaponDegrees(int degrees);
+	void sendData(void *data, Uint32 size);
+	bool receiveData(void *data, Uint32 size);
 };
 
 #endif

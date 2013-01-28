@@ -36,8 +36,10 @@ void Application::loadContent(){
 	tank2 = new Tank(tankAnimation2, weapon2, Vector2D(TANK2_POS_X,TANK2_POS_Y), Vector2D(TANK2_WEAPON_POS_X,TANK2_WEAPON_POS_Y));
 	player1 = new Player(tank1, tankAnimation1, weaponAnimation1);
 	player2 = new Player(tank2, tankAnimation2, weaponAnimation2);	
-	//server = new Server();
-	//ssclient = new Client();
+	if (isServer)
+		server = new Server(3000);
+	if (isClient)
+		client = new Client(HOST_IP, 3000);
 }
 
 bool Application::initialize(){
@@ -47,9 +49,14 @@ bool Application::initialize(){
 		return false;
 	}
 	SDL_WM_SetIcon(SDL_LoadBMP("icon.bmp"), NULL);
-	SDL_WM_SetCaption("Tankfield", NULL);
+	SDL_WM_SetCaption("TankField", NULL);
 	this->displaySurface = SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT , 32, SDL_SWSURFACE);
 
+
+	if(SDLNet_Init() < 0){
+		return false;
+	}
+	
 	loadContent();
 
 	if(this->displaySurface == NULL){
@@ -67,9 +74,7 @@ bool Application::initialize(){
 	memset(this->keyState, false, sizeof(this->keyState));
 	srand(time(NULL));
 	
-	if(SDLNet_Init() < 0){
-		return false;
-	}
+	
 
 	return true;
 
@@ -105,102 +110,104 @@ void Application::handleInput(){
 	player2->stop();
 
 	//player1 controls
-	if (this->keyState[SDLK_w]){
-		wPressed = true;
-	}
-	else if(wPressed){
-		if(player1->tank->weapon->getDegrees() > -65){
-			player1->tank->weapon->decDegrees();
-			player1->weaponAnimation->runForward();
+	if(singlePlayer || isServer){
+		if (this->keyState[SDLK_w]){
+			wPressed = true;
 		}
-		wPressed = false;
-	}
-
-
-	if (this->keyState[SDLK_s]){
-		sPressed = true;
-	}
-	else if(sPressed) {
-		if(player1->tank->weapon->getDegrees() < 75){
-			player1->tank->weapon->incDegrees();
-			player1->weaponAnimation->runBackward();
+		else if(wPressed){
+			if(player1->tank->weapon->getDegrees() > -65){
+				player1->tank->weapon->decDegrees();
+				player1->weaponAnimation->runForward();
+			}
+			wPressed = false;
 		}
-		sPressed = false;
-	}
 
 
-	if (this->keyState[SDLK_a]){
-		if(!this->keyState[SDLK_d]){
-			if(!player1->tank->outOfScreen()){
-				player1->tank->moveLeft();
-				player1->tankAnimation->runBackward();
+		if (this->keyState[SDLK_s]){
+			sPressed = true;
+		}
+		else if(sPressed) {
+			if(player1->tank->weapon->getDegrees() < 75){
+				player1->tank->weapon->incDegrees();
+				player1->weaponAnimation->runBackward();
+			}
+			sPressed = false;
+		}
+
+
+		if (this->keyState[SDLK_a]){
+			if(!this->keyState[SDLK_d]){
+				if(!player1->tank->outOfScreen()){
+					player1->tank->moveLeft();
+					player1->tankAnimation->runBackward();
+				}
+			}
+		}
+
+		if (this->keyState[SDLK_d]){
+			if(!this->keyState[SDLK_a]){
+				player1->tank->moveRight();
+				player1->tankAnimation->runForward();
+			}
+		}
+
+		if (this->keyState[SDLK_SPACE]){
+			if(player1Turn){
+				tank1->fire();
+				firedMissile = true;
 			}
 		}
 	}
-
-	if (this->keyState[SDLK_d]){
-		if(!this->keyState[SDLK_a]){
-			player1->tank->moveRight();
-			player1->tankAnimation->runForward();
-		}
-	}
-
-	if (this->keyState[SDLK_SPACE]){
-		if(player1Turn){
-			tank1->fire();
-			firedMissile = true;
-		}
-	}
-
 	//player2 controls
-
-	if (this->keyState[SDLK_DOWN]){
-		downPressed = true;
-	}
-	else if(downPressed){
-		if(player2->tank->weapon->getDegrees() > -75){
-			player2->tank->weapon->decDegrees();
-			player2->weaponAnimation->runBackward();
+	if(singlePlayer || isClient){
+		if (this->keyState[SDLK_DOWN]){
+			downPressed = true;
 		}
-		downPressed = false;
-	}
-
-
-	if (this->keyState[SDLK_UP]){
-		upPressed = true;
-	}
-	else if(upPressed){
-		if(player2->tank->weapon->getDegrees() < 65){
-			player2->tank->weapon->incDegrees();
-			player2->weaponAnimation->runForward();
+		else if(downPressed){
+			if(player2->tank->weapon->getDegrees() > -75){
+				player2->tank->weapon->decDegrees();
+				player2->weaponAnimation->runBackward();
+			}
+			downPressed = false;
 		}
-		upPressed = false;
-	}
 
 
-	if (this->keyState[SDLK_LEFT]){
-		if(!this->keyState[SDLK_RIGHT]){
-			player2->tank->moveLeft();
-			player2->tankAnimation->runBackward();
+		if (this->keyState[SDLK_UP]){
+			upPressed = true;
 		}
-	}
+		else if(upPressed){
+			if(player2->tank->weapon->getDegrees() < 65){
+				player2->tank->weapon->incDegrees();
+				player2->weaponAnimation->runForward();
+			}
+			upPressed = false;
+		}
 
-	if (this->keyState[SDLK_RIGHT]){
-		if(!this->keyState[SDLK_LEFT]){
-			if(!player2->tank->outOfScreen()){
-				player2->tank->moveRight();
-				player2->tankAnimation->runForward();
+
+		if (this->keyState[SDLK_LEFT]){
+			if(!this->keyState[SDLK_RIGHT]){
+				player2->tank->moveLeft();
+				player2->tankAnimation->runBackward();
+			}
+		}
+
+		if (this->keyState[SDLK_RIGHT]){
+			if(!this->keyState[SDLK_LEFT]){
+				if(!player2->tank->outOfScreen()){
+					player2->tank->moveRight();
+					player2->tankAnimation->runForward();
+				}
+			}
+		}
+
+		if (this->keyState[SDLK_KP3]){
+			if(player2Turn){
+				tank2->fire();
+				firedMissile = true;
 			}
 		}
 	}
-
-	if (this->keyState[SDLK_KP3]){
-		if(player2Turn){
-			tank2->fire();
-			firedMissile = true;
-		}
-	}
-	//
+	//resets
 	if (this->keyState[SDLK_r]){
 		reset();
 	}
@@ -213,28 +220,44 @@ void Application::update(){
 	static float windDelay = WIND_DELAY;
 	
 	float timeSinceLastTime = (SDL_GetTicks() / 1000.0f) - lastTime;
+	if(isServer){
+		if (server->clientConnected()) {	
+			int buffer4[2];
+			if (server->receiveData(&buffer4, sizeof(buffer))) {
+				if((buffer4[0] == 100) && (buffer4[1] == 200)){
+					player1->tank->setPositionY(player1->tank->getPositionY() - 0.1);
+				}
+			}
+
+			int buffer3[2];
+			buffer3[0] = 100;
+			buffer3[1] = 200;
+			server->sendData(&buffer3, sizeof(buffer3));
+
+		}
+	}
+	else if(isClient){
+		int buffer2[2];
+		buffer2[0] = 100;
+		buffer2[1] = 200;
+		client->sendData(&buffer2, sizeof(buffer2));
+
+		int buffer[2];
+		if (client->receiveData(&buffer, sizeof(buffer))){
+			if((buffer[0] == 100) && (buffer[1] == 200)){
+				player2->tank->setPositionY(player2->tank->getPositionY() - 0.1);
+			}
+		}
+	}
 
 	if(toChangeTurn){
 		changeTurn();
-	}
-
-	windDelay -= timeSinceLastTime;
-
-	if(windDelay <= 0){
-		wind = (rand() % 7 + 1) - 4;
-		windDelay = WIND_DELAY;
 	}
 
 	lastTime = SDL_GetTicks() / 1000.0f;
 
 	Object::updateAll(timeSinceLastTime);
 	
-	//server->createConnection();
-	//if(server->isConnected()){
-	//	tank2->weapon->setDegrees(server->getWeaponDegrees());
-	//}
-	//client->setWeaponDegrees(tank2->weapon->getDegrees());
-	//client->sendPackets();
 
 	//tanks go in the sky when dead :D
 	//if(player1->tank->isDead()){
@@ -297,13 +320,13 @@ void Application::changeTurn(){
 		player1Turn = false;
 		player2Turn = true;
 		toChangeTurn = false;
-		return;
+		wind = (rand() % 7 + 1) - 4;
 	}
-	if(player2Turn){
+	else if(player2Turn){
 		player2Turn = false;
 		player1Turn = true;
 		toChangeTurn = false;
-		return;
+		wind = (rand() % 7 + 1) - 4;
 	}
 }
 

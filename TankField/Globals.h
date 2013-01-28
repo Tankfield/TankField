@@ -20,9 +20,15 @@
 #define MISSILE_FIRE_POWER 1100
 #define GRAVITY 1100
 #define WIND_POWER 150
+#define HOST_IP "77.70.87.39"
 
 extern float wind;
+//player turns
 extern bool toChangeTurn;
 extern bool firedMissile;
 extern bool player1Turn;
 extern bool player2Turn;
+//gamemode 
+extern bool isClient;
+extern bool isServer;
+extern bool singlePlayer;

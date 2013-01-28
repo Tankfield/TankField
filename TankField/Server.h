@@ -3,22 +3,24 @@
 #include <SDL/SDL_net.h>
 
 class Server{
-private:
-	IPaddress ip;
-	TCPsocket socket;
-	TCPsocket socket2;
+	private:
+		bool running;
+		bool connected;
 
-	int dataToSend[1024];
-	int recievedData[1024];
-public:
-	
-	Server();
-	~Server();
-	void createConnection();
-	void recievePackets();
-	int getWeaponDegrees();
-	int getTankPositionX();
-	bool isConnected();
+		IPaddress ip;
+		TCPsocket listenSocket;
+		TCPsocket clientSocket;
+
+	public:
+		Server(Uint16 port);
+		~Server();
+
+		void start();
+		void stop();
+		bool isRunning();
+		bool clientConnected();
+		bool receiveData(void *data, Uint32 size);
+		bool sendData(void *data, Uint32 size);
 };
 
 
