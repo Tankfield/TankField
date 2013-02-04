@@ -100,108 +100,17 @@ void Application::handleEvents(){
 }
 
 void Application::handleInput(){
-	static bool downPressed = false;
-	static bool upPressed = false;
-	static bool wPressed = false;
-	static bool sPressed = false;
-
 
 	player1->stop();
 	player2->stop();
 
 	//player1 controls
 	if((singlePlayer && player1Turn) || (isServer && player1Turn)){
-		if (this->keyState[SDLK_w]){
-			wPressed = true;
-		}
-		else if(wPressed){
-			if(player1->tank->weapon->getDegrees() > -65){
-				player1->tank->weapon->decDegrees();
-				player1->weaponAnimation->runForward();
-			}
-			wPressed = false;
-		}
-
-
-		if (this->keyState[SDLK_s]){
-			sPressed = true;
-		}
-		else if(sPressed) {
-			if(player1->tank->weapon->getDegrees() < 75){
-				player1->tank->weapon->incDegrees();
-				player1->weaponAnimation->runBackward();
-			}
-			sPressed = false;
-		}
-
-
-		if (this->keyState[SDLK_a]){
-			if(!this->keyState[SDLK_d]){
-				if(!player1->tank->outOfScreen()){
-					player1->tank->moveLeft();
-					player1->tankAnimation->runBackward();
-				}
-			}
-		}
-
-		if (this->keyState[SDLK_d]){
-			if(!this->keyState[SDLK_a]){
-				player1->tank->moveRight();
-				player1->tankAnimation->runForward();
-			}
-		}
-
-		if (this->keyState[SDLK_SPACE]){
-			tank1->fire();
-			firedMissile = true;
-		}
+		handlePlayer1Input(keyState[SDLK_a], keyState[SDLK_d], keyState[SDLK_w], keyState[SDLK_s], keyState[SDLK_SPACE]);
 	}
 	//player2 controls
 	if((singlePlayer && player2Turn) || (isClient && player2Turn)){
-		if (this->keyState[SDLK_DOWN]){
-			downPressed = true;
-		}
-		else if(downPressed){
-			if(player2->tank->weapon->getDegrees() > -75){
-				player2->tank->weapon->decDegrees();
-				player2->weaponAnimation->runBackward();
-			}
-			downPressed = false;
-		}
-
-
-		if (this->keyState[SDLK_UP]){
-			upPressed = true;
-		}
-		else if(upPressed){
-			if(player2->tank->weapon->getDegrees() < 65){
-				player2->tank->weapon->incDegrees();
-				player2->weaponAnimation->runForward();
-			}
-			upPressed = false;
-		}
-
-
-		if (this->keyState[SDLK_LEFT]){
-			if(!this->keyState[SDLK_RIGHT]){
-				player2->tank->moveLeft();
-				player2->tankAnimation->runBackward();
-			}
-		}
-
-		if (this->keyState[SDLK_RIGHT]){
-			if(!this->keyState[SDLK_LEFT]){
-				if(!player2->tank->outOfScreen()){
-					player2->tank->moveRight();
-					player2->tankAnimation->runForward();
-				}
-			}
-		}
-
-		if (this->keyState[SDLK_KP3]){
-			tank2->fire();
-			firedMissile = true;
-		}
+		handlePlayer2Input(keyState[SDLK_LEFT], keyState[SDLK_RIGHT], keyState[SDLK_UP], keyState[SDLK_DOWN], keyState[SDLK_KP3]);
 	}
 	//resets
 	if (this->keyState[SDLK_r]){
@@ -210,58 +119,175 @@ void Application::handleInput(){
 
 }
 
+void Application::handlePlayer1Input(bool leftButton, bool rightButton, bool upButton, bool downButton, bool fireButton){
+	static bool wPressed = false;
+	static bool sPressed = false;
+	if (upButton){
+			wPressed = true;
+		}
+	else if(wPressed){
+		if(player1->tank->weapon->getDegrees() > -65){
+			player1->tank->weapon->decDegrees();
+			player1->weaponAnimation->runForward();
+		}
+		wPressed = false;
+	}
+
+
+	if (downButton){
+		sPressed = true;
+	}
+	else if(sPressed) {
+		if(player1->tank->weapon->getDegrees() < 75){
+			player1->tank->weapon->incDegrees();
+			player1->weaponAnimation->runBackward();
+		}
+		sPressed = false;
+	}
+
+
+	if (leftButton){
+		if(!rightButton){
+			if(!player1->tank->outOfScreen()){
+				player1->tank->moveLeft();
+				player1->tankAnimation->runBackward();
+			}
+		}
+	}
+
+	if (rightButton){
+		if(!leftButton){
+			player1->tank->moveRight();
+			player1->tankAnimation->runForward();
+		}
+	}
+
+	if (fireButton){
+		tank1->fire();
+		firedMissile = true;
+	}
+
+
+	//NETWORKING
+	//sending info
+	if(isServer && player1Turn){
+		//sending if tank has moved
+		if(leftButton || rightButton){
+			setXPosition(player1->tank->getPositionX());
+			server->sendData(&xPosition, PACKET_SIZE);
+		}
+		//sending if weapon has moved
+		if(downButton || upButton){
+			setWepDegrees(player1->tank->weapon->getDegrees());
+			server->sendData(&wepDegrees, PACKET_SIZE); 
+		}
+		//sending if fired a missile
+		if(fireButton){
+			setFirePressed(fireButton);
+			server->sendData(&firePressed, PACKET_SIZE);
+		}
+	}
+}
+
+void Application::handlePlayer2Input(bool leftButton, bool rightButton, bool upButton, bool downButton, bool fireButton){
+	
+	static bool downPressed = false;
+	static bool upPressed = false;
+	
+	if (downButton){
+			downPressed = true;
+		}
+	else if(downPressed){
+		if(player2->tank->weapon->getDegrees() > -75){
+			player2->tank->weapon->decDegrees();
+			player2->weaponAnimation->runBackward();
+		}
+		downPressed = false;
+	}
+
+
+	if (upButton){
+		upPressed = true;
+	}
+	else if(upPressed){
+		if(player2->tank->weapon->getDegrees() < 65){
+			player2->tank->weapon->incDegrees();
+			player2->weaponAnimation->runForward();
+		}
+		upPressed = false;
+	}
+
+
+	if (leftButton){
+		if(!rightButton){
+			player2->tank->moveLeft();
+			player2->tankAnimation->runBackward();
+		}
+	}
+
+	if (rightButton){
+		if(!leftButton){
+			if(!player2->tank->outOfScreen()){
+				player2->tank->moveRight();
+				player2->tankAnimation->runForward();
+			}
+		}
+	}
+
+	if (fireButton){
+		tank2->fire();
+		firedMissile = true;
+	}
+	//NETWORKING
+	//sending info
+	if(isClient && player2Turn){
+		//sending if tank has moved
+		if(leftButton || rightButton){
+			setXPosition(player1->tank->getPositionX());
+			server->sendData(&xPosition, PACKET_SIZE);
+		}
+		//sending if weapon has moved
+		if(downButton || upButton){
+			setWepDegrees(player1->tank->weapon->getDegrees());
+			server->sendData(&wepDegrees, PACKET_SIZE); 
+		}
+		//sending if fired a missile
+		if(fireButton){
+			setFirePressed(fireButton);
+			server->sendData(&firePressed, PACKET_SIZE);
+		}
+	}
+}
+
 void Application::update(){
 	
 	static float lastTime = SDL_GetTicks() / 1000.0f;
 	static float windDelay = WIND_DELAY;
 	
 	float timeSinceLastTime = (SDL_GetTicks() / 1000.0f) - lastTime;
-	if(isServer && player1Turn){
-		if (server->clientConnected()) {	
-			int buffer4[2];
-			if (server->receiveData(&buffer4, sizeof(buffer))) {
-				if((buffer4[0] == 100) && (buffer4[1] == 200)){
-					player1->tank->setPositionY(player1->tank->getPositionY() - 0.1);
-				}
-			}
-
-			int buffer3[2];
-			buffer3[0] = 100;
-			buffer3[1] = 200;
-			server->sendData(&buffer3, sizeof(buffer3));
-
-		}
-	}
-	else if(isClient && player2Turn){
-		int buffer2[2];
-		buffer2[0] = 100;
-		buffer2[1] = 200;
-		client->sendData(&buffer2, sizeof(buffer2));
-
-		int buffer[2];
-		if (client->receiveData(&buffer, sizeof(buffer))){
-			if((buffer[0] == 100) && (buffer[1] == 200)){
-				player2->tank->setPositionY(player2->tank->getPositionY() - 0.1);
-			}
-		}
-	}
-
+	
 	if(toChangeTurn){
 		changeTurn();
 	}
 
+	//server part
+	if(isServer && player2Turn){
+		if (server->clientConnected()) {	
+			if (server->receiveData(&receivedData, PACKET_SIZE)) {
+			//get some info
+			}		
+		}
+	}
+	//client part
+	else if(isClient && player1Turn){
+		if (client->receiveData(&receivedData, PACKET_SIZE)){
+			//get some info
+		}
+	}
 	lastTime = SDL_GetTicks() / 1000.0f;
 
 	Object::updateAll(timeSinceLastTime);
-	
 
-	//tanks go in the sky when dead :D
-	//if(player1->tank->isDead()){
-	//	player1->tank->setPositionY(0); 
-	//}
-	//if(player2->tank->isDead()){
-	//	player2->tank->setPositionY(0); 
-	//}
 }
 
 void Application::reset(){
@@ -331,6 +357,21 @@ void Application::changeTurn(){
 }
 
 void Application::changeWind(){
-	wind = (rand() % 7 + 1) - 4;
+	//wind = (rand() % 7 + 1) - 4;
+}
+
+void Application::setXPosition(int data){
+	xPosition.type = 1;
+	xPosition.data = data;
+}
+
+void Application::setWepDegrees(int data){
+	wepDegrees.type = 2;
+	wepDegrees.data = data;
+}
+
+void Application::setFirePressed(int data){
+	firePressed.type = 3;
+	firePressed.data = data;
 }
 

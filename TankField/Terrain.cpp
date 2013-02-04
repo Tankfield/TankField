@@ -8,7 +8,7 @@ const char* Terrain::getTerrain(){
 
 	int n;
 	srand(time(NULL));
-	n=rand() %5;
+	n=0;
 	switch(n){
 		case 0:
 			return "textures/hill.png"; 

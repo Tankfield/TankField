@@ -20,7 +20,8 @@
 #define MISSILE_FIRE_POWER 1100
 #define GRAVITY 1100
 #define WIND_POWER 150
-#define HOST_IP "77.70.87.39"
+#define HOST_IP "localhost"
+#define PACKET_SIZE 8
 
 extern float wind;
 //player turns

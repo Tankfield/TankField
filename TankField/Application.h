@@ -38,12 +38,32 @@ private:
 	bool initialize();
 	void handleEvents();
 	void handleInput();
+	void handlePlayer1Input(bool leftButton, bool rightButton, bool upButton, bool downButton, bool fireButton);
+	void handlePlayer2Input(bool leftButton, bool rightButton, bool upButton, bool downButton, bool fireButton);
+	void handleReceivedData();
+
 	void render();
 	void update();
 	void reset();
+
 	void showText(int x, int y, SDL_Surface* source, SDL_Surface* destination);
+
 	void changeTurn();
 	void changeWind();
+
+	void setXPosition(int data);
+	void setWepDegrees(int data);
+	void setFirePressed(int data);
+
+	struct networkData{
+		int type;
+		int data;
+	};
+
+	networkData xPosition;
+	networkData wepDegrees;
+	networkData firePressed;
+	networkData receivedData;
 
 	Tank *tank1;
 	Tank *tank2;
