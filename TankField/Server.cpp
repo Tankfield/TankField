@@ -40,7 +40,7 @@ bool Server::receiveData(void *data, Uint32 size) {
 		SDLNet_SocketSet set;
 		set = SDLNet_AllocSocketSet(1);
 		SDLNet_TCP_AddSocket(set, clientSocket);
-		if(SDLNet_CheckSockets(set, 50) > 0)
+		if(SDLNet_CheckSockets(set, 5) > 0)
 		if ((SDLNet_TCP_Recv(clientSocket, data, size)) > 0) {
 			return true;
 		}	

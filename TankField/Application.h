@@ -52,8 +52,9 @@ private:
 	void changeWind();
 
 	void setXPosition(int data);
-	void setWepDegrees(int data);
 	void setFirePressed(int data);
+	void setUpIsPressed(int data);
+	void setDownIsPressed(int data);
 
 	struct networkData{
 		int type;
@@ -61,8 +62,9 @@ private:
 	};
 
 	networkData xPosition;
-	networkData wepDegrees;
 	networkData firePressed;
+	networkData upIsPressed;
+	networkData downIsPressed;
 	networkData receivedData;
 
 	Tank *tank1;

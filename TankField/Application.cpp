@@ -36,8 +36,11 @@ void Application::loadContent(){
 	tank2 = new Tank(tankAnimation2, weapon2, Vector2D(TANK2_POS_X,TANK2_POS_Y), Vector2D(TANK2_WEAPON_POS_X,TANK2_WEAPON_POS_Y));
 	player1 = new Player(tank1, tankAnimation1, weaponAnimation1);
 	player2 = new Player(tank2, tankAnimation2, weaponAnimation2);	
-	if (isServer)
+	if (isServer) {
 		server = new Server(3000);
+		while(!server->clientConnected()) { SDL_Delay(100); }
+	}	
+
 	if (isClient)
 		client = new Client(HOST_IP, 3000);
 }
@@ -177,9 +180,13 @@ void Application::handlePlayer1Input(bool leftButton, bool rightButton, bool upB
 			server->sendData(&xPosition, PACKET_SIZE);
 		}
 		//sending if weapon has moved
-		if(downButton || upButton){
-			setWepDegrees(player1->tank->weapon->getDegrees());
-			server->sendData(&wepDegrees, PACKET_SIZE); 
+		if(downButton){
+			setDownIsPressed(downButton);
+			server->sendData(&downIsPressed, PACKET_SIZE);
+		}
+		if(upButton){
+			setUpIsPressed(upButton);
+			server->sendData(&upIsPressed, PACKET_SIZE);
 		}
 		//sending if fired a missile
 		if(fireButton){
@@ -243,18 +250,83 @@ void Application::handlePlayer2Input(bool leftButton, bool rightButton, bool upB
 	if(isClient && player2Turn){
 		//sending if tank has moved
 		if(leftButton || rightButton){
-			setXPosition(player1->tank->getPositionX());
-			server->sendData(&xPosition, PACKET_SIZE);
+			setXPosition(player2->tank->getPositionX());
+			client->sendData(&xPosition, PACKET_SIZE);
 		}
 		//sending if weapon has moved
-		if(downButton || upButton){
-			setWepDegrees(player1->tank->weapon->getDegrees());
-			server->sendData(&wepDegrees, PACKET_SIZE); 
+		if(downButton){
+			setDownIsPressed(downButton);
+			client->sendData(&downIsPressed, PACKET_SIZE);
+		}
+		if(upButton){
+			setUpIsPressed(upButton);
+			client->sendData(&upIsPressed, PACKET_SIZE);
 		}
 		//sending if fired a missile
 		if(fireButton){
 			setFirePressed(fireButton);
-			server->sendData(&firePressed, PACKET_SIZE);
+			client->sendData(&firePressed, PACKET_SIZE);
+		}
+	}
+}
+
+void Application::handleReceivedData(){
+	static bool goUp = false;
+	static bool goDown = false;
+	//server part
+	if(isServer && player2Turn){
+		if (server->clientConnected()) {	
+			if (server->receiveData(&receivedData, PACKET_SIZE)) {
+				if(receivedData.type == 1){	
+					if(receivedData.data > player2->tank->getPositionX()){
+						player2->tank->moveRight();
+						player2->tankAnimation->runForward();
+					}
+					if(receivedData.data < player2->tank->getPositionX()){
+						player2->tank->moveLeft();
+						player2->tankAnimation->runBackward();
+					}
+				}
+				if(receivedData.type == 2){
+					if(receivedData.data){
+						tank2->fire();
+						firedMissile = true;
+					}
+				}
+				if(receivedData.type == 3){
+			
+				}
+				if(receivedData.type == 4){
+			
+				}
+			}		
+		}
+	}
+	//client part
+	else if(isClient && player1Turn){
+		if (client->receiveData(&receivedData, PACKET_SIZE)){
+			if(receivedData.type == 1){
+				if(receivedData.data > player1->tank->getPositionX()){
+					player1->tank->moveRight();
+					player1->tankAnimation->runForward();
+				}
+				else if(receivedData.data < player1->tank->getPositionX()){
+					player1->tank->moveLeft();
+					player1->tankAnimation->runBackward();
+				}	
+			}
+			if(receivedData.type == 2){
+				if(receivedData.data){
+					tank1->fire();
+					firedMissile = true;
+				}
+			}
+			if(receivedData.type == 3){
+			
+			}
+			if(receivedData.type == 4){
+			
+			}
 		}
 	}
 }
@@ -270,20 +342,8 @@ void Application::update(){
 		changeTurn();
 	}
 
-	//server part
-	if(isServer && player2Turn){
-		if (server->clientConnected()) {	
-			if (server->receiveData(&receivedData, PACKET_SIZE)) {
-			//get some info
-			}		
-		}
-	}
-	//client part
-	else if(isClient && player1Turn){
-		if (client->receiveData(&receivedData, PACKET_SIZE)){
-			//get some info
-		}
-	}
+	handleReceivedData();
+	
 	lastTime = SDL_GetTicks() / 1000.0f;
 
 	Object::updateAll(timeSinceLastTime);
@@ -365,13 +425,18 @@ void Application::setXPosition(int data){
 	xPosition.data = data;
 }
 
-void Application::setWepDegrees(int data){
-	wepDegrees.type = 2;
-	wepDegrees.data = data;
+void Application::setFirePressed(int data){
+	firePressed.type = 2;
+	firePressed.data = data;
 }
 
-void Application::setFirePressed(int data){
-	firePressed.type = 3;
-	firePressed.data = data;
+void Application::setUpIsPressed(int data){
+	upIsPressed.type = 3;
+	upIsPressed.data = data;
+}
+
+void Application::setDownIsPressed(int data){
+	downIsPressed.type = 4;
+	downIsPressed.data = data;
 }
 
