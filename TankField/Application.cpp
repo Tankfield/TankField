@@ -125,6 +125,8 @@ void Application::handleInput(){
 void Application::handlePlayer1Input(bool leftButton, bool rightButton, bool upButton, bool downButton, bool fireButton){
 	static bool wPressed = false;
 	static bool sPressed = false;
+	static bool sendButtonS = false;
+	static bool sendButtonW = false;
 	if (upButton){
 			wPressed = true;
 		}
@@ -132,6 +134,7 @@ void Application::handlePlayer1Input(bool leftButton, bool rightButton, bool upB
 		if(player1->tank->weapon->getDegrees() > -65){
 			player1->tank->weapon->decDegrees();
 			player1->weaponAnimation->runForward();
+			sendButtonW = true;
 		}
 		wPressed = false;
 	}
@@ -144,6 +147,7 @@ void Application::handlePlayer1Input(bool leftButton, bool rightButton, bool upB
 		if(player1->tank->weapon->getDegrees() < 75){
 			player1->tank->weapon->incDegrees();
 			player1->weaponAnimation->runBackward();
+			sendButtonS = true;
 		}
 		sPressed = false;
 	}
@@ -180,13 +184,15 @@ void Application::handlePlayer1Input(bool leftButton, bool rightButton, bool upB
 			server->sendData(&xPosition, PACKET_SIZE);
 		}
 		//sending if weapon has moved
-		if(downButton){
-			setDownIsPressed(downButton);
+		if(sendButtonS){
+			setDownIsPressed(sendButtonS);
 			server->sendData(&downIsPressed, PACKET_SIZE);
+			sendButtonS = false;
 		}
-		if(upButton){
-			setUpIsPressed(upButton);
+		if(sendButtonW){
+			setUpIsPressed(sendButtonW);
 			server->sendData(&upIsPressed, PACKET_SIZE);
+			sendButtonW = false;
 		}
 		//sending if fired a missile
 		if(fireButton){
@@ -200,14 +206,17 @@ void Application::handlePlayer2Input(bool leftButton, bool rightButton, bool upB
 	
 	static bool downPressed = false;
 	static bool upPressed = false;
+	static bool sendButtonUp = false;
+	static bool sendButtonDown = false;
 	
 	if (downButton){
-			downPressed = true;
-		}
+		downPressed = true;
+	}
 	else if(downPressed){
 		if(player2->tank->weapon->getDegrees() > -75){
 			player2->tank->weapon->decDegrees();
 			player2->weaponAnimation->runBackward();
+			sendButtonDown = true;
 		}
 		downPressed = false;
 	}
@@ -220,6 +229,7 @@ void Application::handlePlayer2Input(bool leftButton, bool rightButton, bool upB
 		if(player2->tank->weapon->getDegrees() < 65){
 			player2->tank->weapon->incDegrees();
 			player2->weaponAnimation->runForward();
+			sendButtonUp = true;
 		}
 		upPressed = false;
 	}
@@ -254,13 +264,15 @@ void Application::handlePlayer2Input(bool leftButton, bool rightButton, bool upB
 			client->sendData(&xPosition, PACKET_SIZE);
 		}
 		//sending if weapon has moved
-		if(downButton){
-			setDownIsPressed(downButton);
+		if(sendButtonDown){
+			setDownIsPressed(sendButtonDown);
 			client->sendData(&downIsPressed, PACKET_SIZE);
+			sendButtonDown = false;
 		}
-		if(upButton){
-			setUpIsPressed(upButton);
+		if(sendButtonUp){
+			setUpIsPressed(sendButtonUp);
 			client->sendData(&upIsPressed, PACKET_SIZE);
+			sendButtonUp = false;
 		}
 		//sending if fired a missile
 		if(fireButton){
@@ -294,10 +306,16 @@ void Application::handleReceivedData(){
 					}
 				}
 				if(receivedData.type == 3){
-			
+					if(receivedData.data){
+						player2->tank->weapon->incDegrees();
+						player2->weaponAnimation->runForward();
+					}
 				}
 				if(receivedData.type == 4){
-			
+					if(receivedData.data){
+						player2->tank->weapon->decDegrees();
+						player2->weaponAnimation->runBackward();
+					}
 				}
 			}		
 		}
@@ -315,6 +333,9 @@ void Application::handleReceivedData(){
 					player1->tankAnimation->runBackward();
 				}	
 			}
+			
+
+			
 			if(receivedData.type == 2){
 				if(receivedData.data){
 					tank1->fire();
@@ -322,10 +343,16 @@ void Application::handleReceivedData(){
 				}
 			}
 			if(receivedData.type == 3){
-			
+				if(receivedData.data){
+					player1->tank->weapon->decDegrees();
+					player1->weaponAnimation->runForward();
+				}
 			}
 			if(receivedData.type == 4){
-			
+				if(receivedData.data){
+					player1->tank->weapon->incDegrees();
+					player1->weaponAnimation->runBackward();
+				}
 			}
 		}
 	}

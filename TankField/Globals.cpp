@@ -5,7 +5,7 @@ bool toChangeTurn = false;
 bool firedMissile = false;
 bool player1Turn = true;
 bool player2Turn = false;
-#ifdef _DEBUG
+#ifndef _DEBUG
 bool isClient = false;
 bool isServer = true;
 bool singlePlayer = false;
