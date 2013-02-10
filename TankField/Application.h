@@ -16,6 +16,7 @@
 #include "Player.h"
 #include "Server.h"
 #include "Client.h"
+#include "Menu.h"
 
 class Application{
 
@@ -79,9 +80,12 @@ private:
 	Weapon* weapon2;
 	Server* server;
 	Client* client;
+	Menu* menu;
 
 	bool keyState[322];
 	char buffer [33];
+
+	bool showMenu;
 
 public:
 

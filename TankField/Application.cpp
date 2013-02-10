@@ -36,6 +36,9 @@ void Application::loadContent(){
 	tank2 = new Tank(tankAnimation2, weapon2, Vector2D(TANK2_POS_X,TANK2_POS_Y), Vector2D(TANK2_WEAPON_POS_X,TANK2_WEAPON_POS_Y));
 	player1 = new Player(tank1, tankAnimation1, weaponAnimation1);
 	player2 = new Player(tank2, tankAnimation2, weaponAnimation2);	
+
+	menu = new Menu(displaySurface, "textures/gui/gui.png");
+	
 	if (isServer) {
 		server = new Server(3000);
 		while(!server->clientConnected()) { SDL_Delay(100); }
@@ -77,7 +80,7 @@ bool Application::initialize(){
 	memset(this->keyState, false, sizeof(this->keyState));
 	srand(time(NULL));
 	
-	
+	showMenu = true;
 
 	return true;
 
@@ -103,9 +106,17 @@ void Application::handleEvents(){
 }
 
 void Application::handleInput(){
-
+	static bool escButton = false;
 	player1->stop();
 	player2->stop();
+
+	if (keyState[SDLK_ESCAPE]) {
+		escButton = true;
+	}
+	else if(escButton){
+		showMenu = !showMenu;
+		escButton = false;
+	}
 
 	//player1 controls
 	if((singlePlayer && player1Turn) || (isServer && player1Turn)){
@@ -359,21 +370,21 @@ void Application::handleReceivedData(){
 }
 
 void Application::update(){
-	
 	static float lastTime = SDL_GetTicks() / 1000.0f;
-	static float windDelay = WIND_DELAY;
+	//static float windDelay = WIND_DELAY;
 	
 	float timeSinceLastTime = (SDL_GetTicks() / 1000.0f) - lastTime;
-	
-	if(toChangeTurn){
-		changeTurn();
-	}
-
-	handleReceivedData();
-	
 	lastTime = SDL_GetTicks() / 1000.0f;
 
-	Object::updateAll(timeSinceLastTime);
+	//update if not in menu
+	if(!showMenu){
+		if(toChangeTurn){
+			changeTurn();
+		}
+
+		handleReceivedData();
+		Object::updateAll(timeSinceLastTime);
+	}
 
 }
 
@@ -398,21 +409,28 @@ void Application::execute(){
 }
 
 void Application::render(){
-	background->draw(0,0);
-	//player2
-	itoa(player1->tank->getHealth(),buffer,10);
-	displayText = TTF_RenderText_Solid(font, buffer, textColor);
-	showText(20, 20, displayText, displaySurface);
-	//player2
-	itoa(player2->tank->getHealth(),buffer,10);
-	displayText = TTF_RenderText_Solid(font, buffer, textColor);
-	showText(1170, 20, displayText, displaySurface);
-	//wind
-	itoa(wind,buffer,10);
-	displayText = TTF_RenderText_Solid(font, buffer, textColor);
-	showText(600, 150, displayText, displaySurface);
 
-	Object::renderAll();
+	if (showMenu)  {
+		menu->render();
+	}
+	else {
+		background->draw(0,0);
+		//player2
+		itoa(player1->tank->getHealth(),buffer,10);
+		displayText = TTF_RenderText_Solid(font, buffer, textColor);
+		showText(20, 20, displayText, displaySurface);
+		//player2
+		itoa(player2->tank->getHealth(),buffer,10);
+		displayText = TTF_RenderText_Solid(font, buffer, textColor);
+		showText(1170, 20, displayText, displaySurface);
+		//wind
+		itoa(wind,buffer,10);
+		displayText = TTF_RenderText_Solid(font, buffer, textColor);
+		showText(600, 150, displayText, displaySurface);
+
+		Object::renderAll();
+	}
+
 	SDL_Flip(displaySurface);
 	
 }

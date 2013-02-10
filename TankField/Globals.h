@@ -20,7 +20,8 @@
 #define MISSILE_FIRE_POWER 1100
 #define GRAVITY 1100
 #define WIND_POWER 150
-#define HOST_IP "78.90.125.149"
+#define HOST_IP "46.253.13.147"
+//46.253.13.147
 //78.90.125.149
 #define PACKET_SIZE 8
 
@@ -34,3 +35,4 @@ extern bool player2Turn;
 extern bool isClient;
 extern bool isServer;
 extern bool singlePlayer;
+extern bool inGame;

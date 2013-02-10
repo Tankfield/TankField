@@ -18,6 +18,8 @@ protected:
 	float speed;
 	Texture *texture;
 
+	bool toRender;
+	bool toChechCollision;
 	bool dead;
 
 public:
@@ -56,6 +58,7 @@ public:
 	static void renderAll();
 	static void deleteAll();
 	static void removeDead();
+
 };
 
 

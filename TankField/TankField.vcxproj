@@ -72,6 +72,7 @@
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Missile.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -89,6 +90,7 @@
     <ClInclude Include="Client.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Ground.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="Missile.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Player.h" />
