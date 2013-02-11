@@ -75,6 +75,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Missile.cpp" />
+    <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Server.cpp" />
@@ -94,6 +95,7 @@
     <ClInclude Include="Ground.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Missile.h" />
+    <ClInclude Include="Mouse.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Server.h" />

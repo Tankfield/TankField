@@ -5,12 +5,13 @@
 
 class Button : public Object{
 private:
+	bool pressed;
 
 public:	
 	Button(SDL_Surface* screen, char* texutre, Vector2D position);
-	~Button();
-
+	
 	virtual void render();
+	bool isPressed();
 };
 
 

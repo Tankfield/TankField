@@ -18,6 +18,7 @@
 #include "Client.h"
 #include "Menu.h"
 #include "Button.h"
+#include "Mouse.h"
 
 class Application{
 
@@ -37,6 +38,7 @@ private:
 	SDL_Surface *displayText;
 
 	void loadContent();
+	void loadMenuContent();
 	bool initialize();
 	void handleEvents();
 	void handleInput();
@@ -57,8 +59,6 @@ private:
 	void setFirePressed(int data);
 	void setUpIsPressed(int data);
 	void setDownIsPressed(int data);
-
-	void loadMenuContent();
 
 	struct networkData{
 		int type;
@@ -88,6 +88,9 @@ private:
 	Button* joinGameButton;
 	Button* createGameButton;
 	Button* exitGameButton;
+	Mouse* mouse;
+	int mouseX;
+	int mouseY;
 
 	bool keyState[322];
 	char buffer [33];

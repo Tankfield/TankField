@@ -7,9 +7,9 @@
 class Menu : public Object{
 private:
 
+
 public:	
 	Menu(SDL_Surface* screen, char* texutre);
-	~Menu();
 
 	virtual void render();
 };

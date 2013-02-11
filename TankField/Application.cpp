@@ -46,6 +46,15 @@ void Application::loadContent(){
 		client = new Client(HOST_IP, 3000);
 }
 
+void Application::loadMenuContent(){
+	menu = new Menu(displaySurface, "textures/gui/gui.png");
+	newGameButton = new Button(displaySurface, "textures/gui/newgame.png", Vector2D(360,190));
+	createGameButton = new Button(displaySurface, "textures/gui/create.png", Vector2D(330,290));
+	joinGameButton = new Button(displaySurface, "textures/gui/join.png", Vector2D(400,390));
+	exitGameButton = new Button(displaySurface, "textures/gui/exit.png", Vector2D(500,490));
+	mouse = new Mouse(displaySurface, "textures/gui/mouse.png");
+}
+
 bool Application::initialize(){
 	
 	if(SDL_Init(SDL_INIT_EVERYTHING) != 0){
@@ -63,7 +72,7 @@ bool Application::initialize(){
 	
 	loadContent();
 	loadMenuContent();
-
+	SDL_ShowCursor(0);
 	if(this->displaySurface == NULL){
 		return false;
 	}
@@ -415,6 +424,8 @@ void Application::render(){
 		createGameButton->render();
 		joinGameButton->render();
 		exitGameButton->render();
+		SDL_GetMouseState(&mouseX, &mouseY);
+		mouse->render(mouseX, mouseY);
 	}
 	else {
 		background->draw(0,0);
@@ -486,12 +497,4 @@ void Application::setUpIsPressed(int data){
 void Application::setDownIsPressed(int data){
 	downIsPressed.type = 4;
 	downIsPressed.data = data;
-}
-
-void Application::loadMenuContent(){
-	menu = new Menu(displaySurface, "textures/gui/gui.png");
-	newGameButton = new Button(displaySurface, "textures/gui/newgame.png", Vector2D(360,190));
-	createGameButton = new Button(displaySurface, "textures/gui/create.png", Vector2D(330,290));
-	joinGameButton = new Button(displaySurface, "textures/gui/join.png", Vector2D(400,390));
-	exitGameButton = new Button(displaySurface, "textures/gui/exit.png", Vector2D(500,490));
 }

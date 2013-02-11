@@ -95,7 +95,7 @@ void Object::updateAll(float timeSinceLastTime) {
 			(*it)->update(timeSinceLastTime);
 
 			for (vector<Object*>::iterator it2 = allObjects.begin(); it2 != allObjects.end(); it2++){
-				if (it != it2) {
+				if (it != it2 && ((*it2)->toCheckCollision)) {
 					if ((*it)->checkCollision(*it2)) {
 						(*it)->onCollision(*it2);
 						(*it2)->onCollision(*it);
