@@ -68,6 +68,7 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Background.cpp" />
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="Ground.cpp" />
@@ -87,6 +88,7 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="Background.h" />
+    <ClInclude Include="Button.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Ground.h" />

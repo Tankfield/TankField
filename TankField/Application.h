@@ -17,6 +17,7 @@
 #include "Server.h"
 #include "Client.h"
 #include "Menu.h"
+#include "Button.h"
 
 class Application{
 
@@ -57,6 +58,8 @@ private:
 	void setUpIsPressed(int data);
 	void setDownIsPressed(int data);
 
+	void loadMenuContent();
+
 	struct networkData{
 		int type;
 		int data;
@@ -81,6 +84,10 @@ private:
 	Server* server;
 	Client* client;
 	Menu* menu;
+	Button* newGameButton;
+	Button* joinGameButton;
+	Button* createGameButton;
+	Button* exitGameButton;
 
 	bool keyState[322];
 	char buffer [33];

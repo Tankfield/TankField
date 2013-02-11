@@ -19,7 +19,7 @@ protected:
 	Texture *texture;
 
 	bool toRender;
-	bool toChechCollision;
+	bool toCheckCollision;
 	bool dead;
 
 public:

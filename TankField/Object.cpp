@@ -5,7 +5,7 @@
 vector<Object*> Object::allObjects;
 
 Object::Object(Texture *texture, Vector2D pos = Vector2D(0,0))
-	: velocity(0,0), speed(300), dead(false), toRender(true), toChechCollision(true) {
+	: velocity(0,0), speed(300), dead(false), toRender(true), toCheckCollision(true) {
 	this->texture = texture;
 	this->position = pos;
 
@@ -91,7 +91,7 @@ void Object::removeDead(){
 
 void Object::updateAll(float timeSinceLastTime) {
 	for (vector<Object*>::iterator it = allObjects.begin(); it != allObjects.end(); it++){
-		if((*it)->toChechCollision){
+		if((*it)->toCheckCollision){
 			(*it)->update(timeSinceLastTime);
 
 			for (vector<Object*>::iterator it2 = allObjects.begin(); it2 != allObjects.end(); it2++){

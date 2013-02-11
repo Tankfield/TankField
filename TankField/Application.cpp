@@ -36,8 +36,6 @@ void Application::loadContent(){
 	tank2 = new Tank(tankAnimation2, weapon2, Vector2D(TANK2_POS_X,TANK2_POS_Y), Vector2D(TANK2_WEAPON_POS_X,TANK2_WEAPON_POS_Y));
 	player1 = new Player(tank1, tankAnimation1, weaponAnimation1);
 	player2 = new Player(tank2, tankAnimation2, weaponAnimation2);	
-
-	menu = new Menu(displaySurface, "textures/gui/gui.png");
 	
 	if (isServer) {
 		server = new Server(3000);
@@ -64,6 +62,7 @@ bool Application::initialize(){
 	}
 	
 	loadContent();
+	loadMenuContent();
 
 	if(this->displaySurface == NULL){
 		return false;
@@ -412,6 +411,10 @@ void Application::render(){
 
 	if (showMenu)  {
 		menu->render();
+		newGameButton->render();
+		createGameButton->render();
+		joinGameButton->render();
+		exitGameButton->render();
 	}
 	else {
 		background->draw(0,0);
@@ -485,3 +488,10 @@ void Application::setDownIsPressed(int data){
 	downIsPressed.data = data;
 }
 
+void Application::loadMenuContent(){
+	menu = new Menu(displaySurface, "textures/gui/gui.png");
+	newGameButton = new Button(displaySurface, "textures/gui/newgame.png", Vector2D(360,190));
+	createGameButton = new Button(displaySurface, "textures/gui/create.png", Vector2D(330,290));
+	joinGameButton = new Button(displaySurface, "textures/gui/join.png", Vector2D(400,390));
+	exitGameButton = new Button(displaySurface, "textures/gui/exit.png", Vector2D(500,490));
+}
