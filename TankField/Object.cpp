@@ -182,3 +182,11 @@ bool Object::checkCollision(Object *object) {
 
 void Object::onCollision(Object *object){}
 
+void Object::setToCheckCollision(bool status){
+	this->toCheckCollision = status;
+}
+void Object::invertToCheckCollisionAll(){
+	for (vector<Object*>::iterator it = allObjects.begin(); it != allObjects.end(); it++)	{
+		(*it)->toCheckCollision = !(*it)->toCheckCollision; 
+	}
+}

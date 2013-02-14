@@ -42,6 +42,7 @@ private:
 	bool initialize();
 	void handleEvents();
 	void handleInput();
+	void handleMouseEvents();
 	void handlePlayer1Input(bool leftButton, bool rightButton, bool upButton, bool downButton, bool fireButton);
 	void handlePlayer2Input(bool leftButton, bool rightButton, bool upButton, bool downButton, bool fireButton);
 	void handleReceivedData();

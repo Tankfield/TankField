@@ -97,7 +97,6 @@ bool Application::initialize(){
 
 void Application::handleEvents(){
 	
-
 	while(SDL_PollEvent(&event)){
 		switch(event.type){
 		case SDL_QUIT:
@@ -118,12 +117,29 @@ void Application::handleInput(){
 	player1->stop();
 	player2->stop();
 
+	if(showMenu && !inGame){
+		menu->invertToCheckCollisionAll();
+		menu->setToCheckCollision(false);
+	}
+
 	if (keyState[SDLK_ESCAPE]) {
 		escButton = true;
 	}
 	else if(escButton){
+		if(inGame){
+			menu->invertToCheckCollisionAll();
+			menu->setToCheckCollision(false);
+		}
+		else if((!inGame && isServer) || (!inGame && isClient) || (!inGame && singlePlayer)){
+			menu->invertToCheckCollisionAll();
+			menu->setToCheckCollision(false);
+		}
 		showMenu = !showMenu;
 		escButton = false;
+	}
+
+	if(showMenu){
+		handleMouseEvents();
 	}
 
 	//player1 controls
@@ -139,6 +155,23 @@ void Application::handleInput(){
 		reset();
 	}
 
+}
+
+void Application::handleMouseEvents(){
+	if(SDL_GetMouseState(NULL, NULL)&SDL_BUTTON(1)){
+		if(newGameButton->isPressed()){
+			
+		}
+		else if(createGameButton->isPressed()){
+		
+		}
+		else if(joinGameButton->isPressed()){
+		
+		}
+		else if(exitGameButton->isPressed()){
+			this->isRunning = false;
+		}
+	}
 }
 
 void Application::handlePlayer1Input(bool leftButton, bool rightButton, bool upButton, bool downButton, bool fireButton){
@@ -384,15 +417,13 @@ void Application::update(){
 	float timeSinceLastTime = (SDL_GetTicks() / 1000.0f) - lastTime;
 	lastTime = SDL_GetTicks() / 1000.0f;
 
-	//update if not in menu
-	if(!showMenu){
-		if(toChangeTurn){
-			changeTurn();
-		}
-
-		handleReceivedData();
-		Object::updateAll(timeSinceLastTime);
+	if(toChangeTurn){
+		changeTurn();
 	}
+
+	handleReceivedData();
+	Object::updateAll(timeSinceLastTime);
+	
 
 }
 

@@ -59,6 +59,9 @@ public:
 	static void deleteAll();
 	static void removeDead();
 
+	void setToCheckCollision(bool status);
+	void invertToCheckCollisionAll();
+
 };
 
 

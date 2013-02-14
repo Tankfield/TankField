@@ -6,12 +6,12 @@ bool firedMissile = false;
 bool player1Turn = true;
 bool player2Turn = false;
 bool inGame = false;
-#ifdef _DEBUG
+//#ifdef _DEBUG
 bool isClient = false;
 bool isServer = false;
-bool singlePlayer = true;
-#else
-bool isClient = true;
-bool isServer = false;
 bool singlePlayer = false;
-#endif
+//#else
+//bool isClient = true;
+//bool isServer = false;
+//bool singlePlayer = false;
+//#endif
