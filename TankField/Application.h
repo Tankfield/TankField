@@ -93,6 +93,8 @@ private:
 	int mouseX;
 	int mouseY;
 
+	bool leftMouseButton;
+
 	bool keyState[322];
 	char buffer [33];
 

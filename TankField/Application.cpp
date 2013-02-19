@@ -11,7 +11,9 @@ Application::~Application(){
 	if(this->displaySurface != NULL) {
 		SDL_FreeSurface(displaySurface);
 	}
-	SDL_FreeSurface(displayText);
+	if(this->displayText != NULL){
+		//SDL_FreeSurface(displayText);
+	}
 	
     TTF_CloseFont(font);
 
@@ -87,7 +89,7 @@ bool Application::initialize(){
 	
 	memset(this->keyState, false, sizeof(this->keyState));
 	srand(time(NULL));
-	
+	leftMouseButton = false;
 	showMenu = true;
 
 	return true;
@@ -108,6 +110,16 @@ void Application::handleEvents(){
 		case SDL_KEYUP:
 			this->keyState[event.key.keysym.sym] = false;
 			break;
+		case SDL_MOUSEBUTTONDOWN:
+			if(event.button.button == SDL_BUTTON_LEFT){
+				leftMouseButton = true;
+			}
+			break;
+		case SDL_MOUSEBUTTONUP:
+			if(event.button.button == SDL_BUTTON_LEFT){
+				leftMouseButton = false;
+			}
+			break;
 		}
 	}
 }
@@ -118,8 +130,7 @@ void Application::handleInput(){
 	player2->stop();
 
 	if(showMenu && !inGame){
-		menu->invertToCheckCollisionAll();
-		menu->setToCheckCollision(false);
+	
 	}
 
 	if (keyState[SDLK_ESCAPE]) {
@@ -127,12 +138,10 @@ void Application::handleInput(){
 	}
 	else if(escButton){
 		if(inGame){
-			menu->invertToCheckCollisionAll();
-			menu->setToCheckCollision(false);
+			
 		}
 		else if((!inGame && isServer) || (!inGame && isClient) || (!inGame && singlePlayer)){
-			menu->invertToCheckCollisionAll();
-			menu->setToCheckCollision(false);
+		
 		}
 		showMenu = !showMenu;
 		escButton = false;
@@ -158,20 +167,21 @@ void Application::handleInput(){
 }
 
 void Application::handleMouseEvents(){
-	if(SDL_GetMouseState(NULL, NULL)&SDL_BUTTON(1)){
+	if(leftMouseButton){
 		if(newGameButton->isPressed()){
-			
+			exit(1);
 		}
 		else if(createGameButton->isPressed()){
-		
+			exit(2);
 		}
 		else if(joinGameButton->isPressed()){
-		
+			exit(3);
 		}
 		else if(exitGameButton->isPressed()){
 			this->isRunning = false;
 		}
 	}
+	newGameButton->setPressed(false);
 }
 
 void Application::handlePlayer1Input(bool leftButton, bool rightButton, bool upButton, bool downButton, bool fireButton){
@@ -456,7 +466,9 @@ void Application::render(){
 		joinGameButton->render();
 		exitGameButton->render();
 		SDL_GetMouseState(&mouseX, &mouseY);
-		mouse->render(mouseX, mouseY);
+		mouse->setPositionX(mouseX);
+		mouse->setPositionY(mouseY);
+		mouse->render();
 	}
 	else {
 		background->draw(0,0);

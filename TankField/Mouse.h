@@ -10,7 +10,7 @@ private:
 public:
 	Mouse(SDL_Surface* screen, char* texture);
 	
-	virtual void render(int x, int y);
+	virtual void render();
 
 	
 };

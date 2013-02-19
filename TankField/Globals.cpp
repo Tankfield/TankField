@@ -9,7 +9,7 @@ bool inGame = false;
 //#ifdef _DEBUG
 bool isClient = false;
 bool isServer = false;
-bool singlePlayer = false;
+bool singlePlayer = true;
 //#else
 //bool isClient = true;
 //bool isServer = false;

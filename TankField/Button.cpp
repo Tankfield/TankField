@@ -2,8 +2,7 @@
 
 Button::Button(SDL_Surface* screen, char* texture, Vector2D position) : Object(new Texture(texture, screen), position){
 	toRender = false;
-	toCheckCollision = false;
-	pressed = false;
+	toCheckCollision = true;
 }
 
 
