@@ -50,10 +50,11 @@ void Application::loadContent(){
 
 void Application::loadMenuContent(){
 	menu = new Menu(displaySurface, "textures/gui/gui.png");
-	newGameButton = new Button(displaySurface, "textures/gui/newgame.png", Vector2D(360,190));
-	createGameButton = new Button(displaySurface, "textures/gui/create.png", Vector2D(330,290));
-	joinGameButton = new Button(displaySurface, "textures/gui/join.png", Vector2D(400,390));
-	exitGameButton = new Button(displaySurface, "textures/gui/exit.png", Vector2D(500,490));
+	botGameButton = new Button(displaySurface, "textures/gui/botgame.png", Vector2D(BOTGAME_BUTTON_POS_X, BOTGAME_BUTTON_POS_Y));
+	versusButton = new Button(displaySurface, "textures/gui/versus.png", Vector2D(VERSUS_BUTTON_POS_X, VERSUS_BUTTON_POS_Y));
+	createGameButton = new Button(displaySurface, "textures/gui/create.png", Vector2D(CREATE_GAME_BUTTON_POS_X, CREATE_GAME_BUTTON_POS_Y));
+	joinGameButton = new Button(displaySurface, "textures/gui/join.png", Vector2D(JOIN_GAME_BUTTON_POS_X, JOIN_GAME_BUTTON_POS_Y));
+	exitGameButton = new Button(displaySurface, "textures/gui/exit.png", Vector2D(EXIT_BUTTON_POS_X, EXIT_BUTTON_POS_Y));
 	mouse = new Mouse(displaySurface, "textures/gui/mouse.png");
 }
 
@@ -91,6 +92,9 @@ bool Application::initialize(){
 	srand(time(NULL));
 	leftMouseButton = false;
 	showMenu = true;
+
+	server = NULL;
+	client = NULL;
 
 	return true;
 
@@ -140,7 +144,7 @@ void Application::handleInput(){
 		if(inGame){
 			
 		}
-		else if((!inGame && isServer) || (!inGame && isClient) || (!inGame && singlePlayer)){
+		else if((!inGame && isServer) || (!inGame && isClient) || (!inGame && isVersus)){
 		
 		}
 		showMenu = !showMenu;
@@ -152,11 +156,11 @@ void Application::handleInput(){
 	}
 
 	//player1 controls
-	if((singlePlayer && player1Turn) || (isServer && player1Turn)){
+	if((isVersus && player1Turn) || (isServer && player1Turn)){
 		handlePlayer1Input(keyState[SDLK_a], keyState[SDLK_d], keyState[SDLK_w], keyState[SDLK_s], keyState[SDLK_SPACE]);
 	}
 	//player2 controls
-	if((singlePlayer && player2Turn) || (isClient && player2Turn)){
+	if((isVersus && player2Turn) || (isClient && player2Turn)){
 		handlePlayer2Input(keyState[SDLK_LEFT], keyState[SDLK_RIGHT], keyState[SDLK_UP], keyState[SDLK_DOWN], keyState[SDLK_KP3]);
 	}
 	//resets
@@ -168,20 +172,27 @@ void Application::handleInput(){
 
 void Application::handleMouseEvents(){
 	if(leftMouseButton){
-		if(newGameButton->isPressed()){
-			exit(1);
-		}
-		else if(createGameButton->isPressed()){
-			exit(2);
+		if(createGameButton->isPressed()){
+			setGameMode(1);
 		}
 		else if(joinGameButton->isPressed()){
-			exit(3);
+			setGameMode(2);
+		}
+		else if(versusButton->isPressed()){
+			setGameMode(3);
+		}
+		else if(botGameButton->isPressed()){
+			setGameMode(4);
 		}
 		else if(exitGameButton->isPressed()){
 			this->isRunning = false;
 		}
 	}
-	newGameButton->setPressed(false);
+	botGameButton->setPressed(false);
+	versusButton->setPressed(false);
+	createGameButton->setPressed(false);
+	joinGameButton->setPressed(false);
+	exitGameButton->setPressed(false);
 }
 
 void Application::handlePlayer1Input(bool leftButton, bool rightButton, bool upButton, bool downButton, bool fireButton){
@@ -423,9 +434,11 @@ void Application::handleReceivedData(){
 void Application::update(){
 	static float lastTime = SDL_GetTicks() / 1000.0f;
 	//static float windDelay = WIND_DELAY;
-	
+
 	float timeSinceLastTime = (SDL_GetTicks() / 1000.0f) - lastTime;
 	lastTime = SDL_GetTicks() / 1000.0f;
+
+	
 
 	if(toChangeTurn){
 		changeTurn();
@@ -444,6 +457,10 @@ void Application::reset(){
 	tank1->setPositionY(TANK1_POS_Y);
 	tank2->setPositionX(TANK2_POS_X);
 	tank2->setPositionY(TANK2_POS_Y);
+	toChangeTurn = false;
+	firedMissile = false;
+	player1Turn = true;
+	player2Turn = false;
 }
 
 void Application::execute(){
@@ -461,7 +478,8 @@ void Application::render(){
 
 	if (showMenu)  {
 		menu->render();
-		newGameButton->render();
+		botGameButton->render();
+		versusButton->render();
 		createGameButton->render();
 		joinGameButton->render();
 		exitGameButton->render();
@@ -520,6 +538,59 @@ void Application::changeTurn(){
 
 void Application::changeWind(){
 	//wind = (rand() % 7 + 1) - 4;
+}
+
+void Application::joinServerOrHostServer(){
+	if(isServer) {
+		if(server != NULL){
+			server = new Server(3000);
+			client = NULL;
+			while(!server->clientConnected()){ 
+				SDL_Delay(100); 
+			}
+		}
+	}	
+	else if(isClient){
+		if(client != NULL){
+			client = new Client(HOST_IP, 3000);
+			server = NULL;
+		}
+	}
+}
+
+void Application::setGameMode(int mode){
+	switch(mode){
+		case 1:
+		isClient = false;
+		isServer = true;
+		isVersus = false;
+		isBotGame = false;
+		break;
+
+		case 2:
+		isClient = true;
+		isServer = false;
+		isVersus = false;
+		isBotGame = false;
+		break;
+
+		case 3:
+		isClient = false;
+		isServer = false;
+		isVersus = true;
+		isBotGame = false;
+		break;
+
+		case 4:
+		isClient = false;
+		isServer = false;
+		isVersus = false;
+		isBotGame = true;
+		break;
+	}
+	reset();
+	joinServerOrHostServer();
+	showMenu = false;
 }
 
 void Application::setXPosition(int data){

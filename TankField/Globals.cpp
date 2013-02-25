@@ -9,9 +9,10 @@ bool inGame = false;
 //#ifdef _DEBUG
 bool isClient = false;
 bool isServer = false;
-bool singlePlayer = true;
+bool isVersus = false;
+bool isBotGame = false;
 //#else
 //bool isClient = true;
 //bool isServer = false;
-//bool singlePlayer = false;
+//bool isVersus = false;
 //#endif

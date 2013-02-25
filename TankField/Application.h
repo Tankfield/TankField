@@ -56,6 +56,11 @@ private:
 	void changeTurn();
 	void changeWind();
 
+	void joinServerOrHostServer();
+
+	void setGameMode(int mode);
+
+
 	void setXPosition(int data);
 	void setFirePressed(int data);
 	void setUpIsPressed(int data);
@@ -85,10 +90,12 @@ private:
 	Server* server;
 	Client* client;
 	Menu* menu;
-	Button* newGameButton;
+	Button* versusButton;
+	Button* botGameButton;
 	Button* joinGameButton;
 	Button* createGameButton;
 	Button* exitGameButton;
+	Button* okButton;
 	Mouse* mouse;
 	int mouseX;
 	int mouseY;
