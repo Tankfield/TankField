@@ -39,13 +39,13 @@ void Application::loadContent(){
 	player1 = new Player(tank1, tankAnimation1, weaponAnimation1);
 	player2 = new Player(tank2, tankAnimation2, weaponAnimation2);	
 	
-	if (isServer) {
+	/*if (isServer) {
 		server = new Server(3000);
 		while(!server->clientConnected()) { SDL_Delay(100); }
 	}	
 
 	if (isClient)
-		client = new Client(HOST_IP, 3000);
+		client = new Client(HOST_IP, 3000);*/
 }
 
 void Application::loadMenuContent(){
@@ -154,6 +154,7 @@ void Application::handleInput(){
 	if(showMenu){
 		handleMouseEvents();
 	}
+	
 
 	//player1 controls
 	if((isVersus && player1Turn) || (isServer && player1Turn)){
@@ -226,6 +227,7 @@ void Application::handlePlayer1Input(bool leftButton, bool rightButton, bool upB
 	}
 
 
+		
 	if (leftButton){
 		if(!rightButton){
 			if(!player1->tank->outOfScreen()){
@@ -249,28 +251,30 @@ void Application::handlePlayer1Input(bool leftButton, bool rightButton, bool upB
 
 
 	//NETWORKING
-	//sending info
-	if(isServer && player1Turn){
-		//sending if tank has moved
-		if(leftButton || rightButton){
-			setXPosition(player1->tank->getPositionX());
-			server->sendData(&xPosition, PACKET_SIZE);
-		}
-		//sending if weapon has moved
-		if(sendButtonS){
-			setDownIsPressed(sendButtonS);
-			server->sendData(&downIsPressed, PACKET_SIZE);
-			sendButtonS = false;
-		}
-		if(sendButtonW){
-			setUpIsPressed(sendButtonW);
-			server->sendData(&upIsPressed, PACKET_SIZE);
-			sendButtonW = false;
-		}
-		//sending if fired a missile
-		if(fireButton){
-			setFirePressed(fireButton);
-			server->sendData(&firePressed, PACKET_SIZE);
+	if(server != NULL){
+		//sending info
+		if(isServer && player1Turn){
+			//sending if tank has moved
+			if(leftButton || rightButton){
+				setXPosition(player1->tank->getPositionX());
+				server->sendData(&xPosition, PACKET_SIZE);
+			}
+			//sending if weapon has moved
+			if(sendButtonS){
+				setDownIsPressed(sendButtonS);
+				server->sendData(&downIsPressed, PACKET_SIZE);
+				sendButtonS = false;
+			}
+			if(sendButtonW){
+				setUpIsPressed(sendButtonW);
+				server->sendData(&upIsPressed, PACKET_SIZE);
+				sendButtonW = false;
+			}
+			//sending if fired a missile
+			if(fireButton){
+				setFirePressed(fireButton);
+				server->sendData(&firePressed, PACKET_SIZE);
+			}
 		}
 	}
 }
@@ -315,6 +319,7 @@ void Application::handlePlayer2Input(bool leftButton, bool rightButton, bool upB
 		}
 	}
 
+	
 	if (rightButton){
 		if(!leftButton){
 			if(!player2->tank->outOfScreen()){
@@ -329,28 +334,30 @@ void Application::handlePlayer2Input(bool leftButton, bool rightButton, bool upB
 		firedMissile = true;
 	}
 	//NETWORKING
-	//sending info
-	if(isClient && player2Turn){
-		//sending if tank has moved
-		if(leftButton || rightButton){
-			setXPosition(player2->tank->getPositionX());
-			client->sendData(&xPosition, PACKET_SIZE);
-		}
-		//sending if weapon has moved
-		if(sendButtonDown){
-			setDownIsPressed(sendButtonDown);
-			client->sendData(&downIsPressed, PACKET_SIZE);
-			sendButtonDown = false;
-		}
-		if(sendButtonUp){
-			setUpIsPressed(sendButtonUp);
-			client->sendData(&upIsPressed, PACKET_SIZE);
-			sendButtonUp = false;
-		}
-		//sending if fired a missile
-		if(fireButton){
-			setFirePressed(fireButton);
-			client->sendData(&firePressed, PACKET_SIZE);
+	if(client != NULL){
+		//sending info
+		if(isClient && player2Turn){
+			//sending if tank has moved
+			if(leftButton || rightButton){
+				setXPosition(player2->tank->getPositionX());
+				client->sendData(&xPosition, PACKET_SIZE);
+			}
+			//sending if weapon has moved
+			if(sendButtonDown){
+				setDownIsPressed(sendButtonDown);
+				client->sendData(&downIsPressed, PACKET_SIZE);
+				sendButtonDown = false;
+			}
+			if(sendButtonUp){
+				setUpIsPressed(sendButtonUp);
+				client->sendData(&upIsPressed, PACKET_SIZE);
+				sendButtonUp = false;
+			}
+			//sending if fired a missile
+			if(fireButton){
+				setFirePressed(fireButton);
+				client->sendData(&firePressed, PACKET_SIZE);
+			}
 		}
 	}
 }
@@ -359,7 +366,7 @@ void Application::handleReceivedData(){
 	static bool goUp = false;
 	static bool goDown = false;
 	//server part
-	if(isServer && player2Turn){
+	if((isServer && player2Turn) && server != NULL){
 		if (server->clientConnected()) {	
 			if (server->receiveData(&receivedData, PACKET_SIZE)) {
 				if(receivedData.type == 1){	
@@ -394,7 +401,7 @@ void Application::handleReceivedData(){
 		}
 	}
 	//client part
-	else if(isClient && player1Turn){
+	else if((isClient && player1Turn) && client != NULL){
 		if (client->receiveData(&receivedData, PACKET_SIZE)){
 			if(receivedData.type == 1){
 				if(receivedData.data > player1->tank->getPositionX()){
@@ -443,11 +450,10 @@ void Application::update(){
 	if(toChangeTurn){
 		changeTurn();
 	}
-
+	joinServerOrHostServer();
 	handleReceivedData();
 	Object::updateAll(timeSinceLastTime);
 	
-
 }
 
 void Application::reset(){
@@ -542,7 +548,7 @@ void Application::changeWind(){
 
 void Application::joinServerOrHostServer(){
 	if(isServer) {
-		if(server != NULL){
+		if(server == NULL){
 			server = new Server(3000);
 			client = NULL;
 			while(!server->clientConnected()){ 
@@ -551,7 +557,7 @@ void Application::joinServerOrHostServer(){
 		}
 	}	
 	else if(isClient){
-		if(client != NULL){
+		if(client == NULL){
 			client = new Client(HOST_IP, 3000);
 			server = NULL;
 		}
@@ -589,7 +595,6 @@ void Application::setGameMode(int mode){
 		break;
 	}
 	reset();
-	joinServerOrHostServer();
 	showMenu = false;
 }
 
