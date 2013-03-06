@@ -19,6 +19,7 @@
 #include "Menu.h"
 #include "Button.h"
 #include "Mouse.h"
+#include "Bot.h"
 
 class Application{
 
@@ -60,6 +61,8 @@ private:
 
 	void setGameMode(int mode);
 
+	void createBot();
+	void createSecondPlayer();
 
 	void setXPosition(int data);
 	void setFirePressed(int data);
@@ -97,6 +100,8 @@ private:
 	Button* exitGameButton;
 	Button* okButton;
 	Mouse* mouse;
+	Bot* dummyBot;
+
 	int mouseX;
 	int mouseY;
 

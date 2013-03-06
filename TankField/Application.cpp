@@ -37,7 +37,7 @@ void Application::loadContent(){
 	tankAnimation2 = new Animation("textures/redtank.png", displaySurface, 4, 5, 30);
 	tank2 = new Tank(tankAnimation2, weapon2, Vector2D(TANK2_POS_X,TANK2_POS_Y), Vector2D(TANK2_WEAPON_POS_X,TANK2_WEAPON_POS_Y));
 	player1 = new Player(tank1, tankAnimation1, weaponAnimation1);
-	player2 = new Player(tank2, tankAnimation2, weaponAnimation2);	
+		
 	
 	/*if (isServer) {
 		server = new Server(3000);
@@ -95,6 +95,8 @@ bool Application::initialize(){
 
 	server = NULL;
 	client = NULL;
+	player2 = NULL;
+	dummyBot = NULL;
 
 	return true;
 
@@ -131,7 +133,12 @@ void Application::handleEvents(){
 void Application::handleInput(){
 	static bool escButton = false;
 	player1->stop();
-	player2->stop();
+	if(player2 != NULL){
+		player2->stop();
+	}
+	if(dummyBot != NULL){
+		dummyBot->stop();
+	}
 
 	if(showMenu && !inGame){
 	
@@ -157,12 +164,16 @@ void Application::handleInput(){
 	
 
 	//player1 controls
-	if((isVersus && player1Turn) || (isServer && player1Turn)){
+	if((isVersus && player1Turn) || (isServer && player1Turn) || (isBotGame && player1Turn)){
 		handlePlayer1Input(keyState[SDLK_a], keyState[SDLK_d], keyState[SDLK_w], keyState[SDLK_s], keyState[SDLK_SPACE]);
 	}
 	//player2 controls
 	if((isVersus && player2Turn) || (isClient && player2Turn)){
 		handlePlayer2Input(keyState[SDLK_LEFT], keyState[SDLK_RIGHT], keyState[SDLK_UP], keyState[SDLK_DOWN], keyState[SDLK_KP3]);
+	}
+	//bot game
+	if(isBotGame && player2Turn){
+		dummyBot->takeTurn();
 	}
 	//resets
 	if (this->keyState[SDLK_r]){
@@ -451,6 +462,12 @@ void Application::update(){
 		changeTurn();
 	}
 	joinServerOrHostServer();
+	if(isBotGame){
+		createBot();
+	}
+	if(!isBotGame){
+		createSecondPlayer();
+	}
 	handleReceivedData();
 	Object::updateAll(timeSinceLastTime);
 	
@@ -596,6 +613,14 @@ void Application::setGameMode(int mode){
 	}
 	reset();
 	showMenu = false;
+}
+
+void Application::createBot(){
+	dummyBot = new Bot(tank2, tankAnimation2, weaponAnimation2);
+}
+
+void Application::createSecondPlayer(){
+	player2 = new Player(tank2, tankAnimation2, weaponAnimation2);
 }
 
 void Application::setXPosition(int data){
