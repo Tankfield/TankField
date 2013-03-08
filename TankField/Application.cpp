@@ -75,6 +75,10 @@ bool Application::initialize(){
 	
 	loadContent();
 	loadMenuContent();
+
+	menu->invertToCheckCollisionAll();
+	menu->setToCheckCollision(false);
+
 	SDL_ShowCursor(0);
 	if(this->displaySurface == NULL){
 		return false;
@@ -156,6 +160,8 @@ void Application::handleInput(){
 		}
 		showMenu = !showMenu;
 		escButton = false;
+		menu->invertToCheckCollisionAll();
+		menu->setToCheckCollision(false);
 	}
 
 	if(showMenu){
@@ -612,6 +618,8 @@ void Application::setGameMode(int mode){
 		break;
 	}
 	reset();
+	menu->invertToCheckCollisionAll();
+	menu->setToCheckCollision(false);
 	showMenu = false;
 }
 
