@@ -256,8 +256,10 @@ void Application::handlePlayer1Input(bool leftButton, bool rightButton, bool upB
 
 	if (rightButton){
 		if(!leftButton){
-			player1->tank->moveRight();
-			player1->tankAnimation->runForward();
+			if(!player1->tank->isBlocking()){
+				player1->tank->moveRight();
+				player1->tankAnimation->runForward();
+			}
 		}
 	}
 
@@ -331,8 +333,10 @@ void Application::handlePlayer2Input(bool leftButton, bool rightButton, bool upB
 
 	if (leftButton){
 		if(!rightButton){
-			player2->tank->moveLeft();
-			player2->tankAnimation->runBackward();
+			if(!player2->tank->isBlocking()){
+				player2->tank->moveLeft();
+				player2->tankAnimation->runBackward();
+			}
 		}
 	}
 

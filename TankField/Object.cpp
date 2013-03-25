@@ -131,9 +131,9 @@ bool Object::outOfScreen(){
 }
 
 SDL_Rect Object::getTextureIntersection(SDL_Rect objectIntersection) {
-	SDL_Rect textureBounds = texture->getBounds();
+	static SDL_Rect textureBounds = texture->getBounds();
 
-	SDL_Rect textureIntersection;
+	static SDL_Rect textureIntersection;
 
 	textureIntersection.x = textureBounds.x + ((int)(objectIntersection.x - position.x) % texture->getWidth());
 	textureIntersection.y = textureBounds.y + ((int)(objectIntersection.y - position.y) % texture->getHeight());
@@ -147,8 +147,8 @@ bool Object::checkCollision(Object *object) {
 	#define MIN(x, y) (x < y) ? x : y
 	#define MAX(x, y) (x > y) ? x : y
 
-	SDL_Rect intersectionRect;
-	int x2, y2;
+	static SDL_Rect intersectionRect;
+	static int x2, y2;
 
 	intersectionRect.x = MAX(position.x, object->position.x);
 	intersectionRect.y = MAX(position.y, object->position.y);
@@ -167,7 +167,7 @@ bool Object::checkCollision(Object *object) {
 	SDL_Rect textureAIntersection = getTextureIntersection(intersectionRect);
 	SDL_Rect textureBIntersection = object->getTextureIntersection(intersectionRect);
 	
-	int threshold = 200;
+	static int threshold = 200;
 
 	for (int y = 0; y < intersectionRect.h; y++) {
 		for (int x = 0; x < intersectionRect.w; x++) {

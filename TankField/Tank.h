@@ -8,6 +8,7 @@ class Tank : public Object{
 private:
 	Vector2D weaponPosition;
 	int health;
+	bool blocking;
 public:
 	Weapon* weapon;
 	Tank(Texture* texture, Weapon* weapon, Vector2D tankPos, Vector2D weaponPos);
@@ -17,6 +18,8 @@ public:
 
 	int getHealth();
 	void setHealth(int hp);
+
+	bool isBlocking();
 
 	bool isDead();
 

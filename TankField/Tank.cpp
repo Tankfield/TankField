@@ -4,6 +4,7 @@
 Tank::Tank(Texture* texture, Weapon* weapon, Vector2D tankPos, Vector2D weaponPos) : Object(texture, tankPos), health(5) {
 	this->weapon = weapon;
 	weaponPosition = weaponPos;
+	blocking = false;
 }
 //still not used!
 float Tank::getWeaponPositionX(){
@@ -18,6 +19,10 @@ int Tank::getHealth(){
 
 void Tank::setHealth(int hp){
 	health = hp;
+}
+
+bool Tank::isBlocking(){
+	return blocking;
 }
 
 bool Tank::isDead(){
@@ -41,10 +46,12 @@ void Tank::moveDown(){
 
 void Tank::moveLeft(){
 	velocity = Vector2D(-1, 0) * speed;
+	blocking = false;
 }
 
 void Tank::moveRight(){
 	velocity = Vector2D(1, 0) * speed;
+	blocking = false;
 }
 
 void Tank::stop(){
@@ -75,7 +82,7 @@ void Tank::onCollision(Object *object) {
 	}
 	//to fix!!!
 	if (dynamic_cast<Terrain*>(object) != NULL){
-		this->position += (this->velocity * (-1)/10);
-		SDL_Delay(2);
-	}	
+		blocking = true;
+	}
+	
 }
