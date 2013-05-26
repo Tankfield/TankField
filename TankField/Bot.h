@@ -7,14 +7,25 @@
 class Bot : public Player{
 private:
 	void move();
-	void aim();
+	void aim(int difference);
 	void fire();
+	int difference;
+	bool moveRight;
+	bool moveLeft;
+	bool incDegrees;
+	bool decDegrees;
 
 public:
 	Bot(Tank *tank, Animation *tankAnimation, Animation *weaponAnimation);
 	~Bot();
 
-	void takeTurn();
+	bool toMoveRight();
+	bool toMoveLeft();
+	bool toIncDegrees();
+	bool toDecDegrees();
+	void clearFlags();
+
+	void takeTurn(int enemyPosition);
 	
 };
 

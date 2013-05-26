@@ -102,6 +102,9 @@ private:
 	Mouse* mouse;
 	Bot* dummyBot;
 
+	bool increasing;
+	bool decreasing;
+
 	int mouseX;
 	int mouseY;
 

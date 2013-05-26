@@ -9,6 +9,8 @@ private:
 	Vector2D weaponPosition;
 	int health;
 	bool blocking;
+
+	void hurt();
 public:
 	Weapon* weapon;
 	Tank(Texture* texture, Weapon* weapon, Vector2D tankPos, Vector2D weaponPos);

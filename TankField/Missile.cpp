@@ -38,6 +38,7 @@ void Missile::onCollision(Object *object) {
 	}
 	if (dynamic_cast<Tank*>(object) != NULL){
 		this->goDead();
+		printAsd = true;
 	}
 }
 

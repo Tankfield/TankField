@@ -6,6 +6,11 @@ Tank::Tank(Texture* texture, Weapon* weapon, Vector2D tankPos, Vector2D weaponPo
 	weaponPosition = weaponPos;
 	blocking = false;
 }
+
+void Tank::hurt(){
+	if(this->health > 0)
+		health--;
+}
 //still not used!
 float Tank::getWeaponPositionX(){
 	return weaponPosition.x;
@@ -78,7 +83,7 @@ void Tank::render(){
 
 void Tank::onCollision(Object *object) {
 	if (dynamic_cast<Missile*>(object) != NULL){
-		this->health--;
+		hurt();
 	}
 	//to fix!!!
 	if (dynamic_cast<Terrain*>(object) != NULL){

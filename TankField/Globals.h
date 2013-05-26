@@ -51,7 +51,7 @@
 
 #define MISSILE_FIRE_POWER 1100
 #define GRAVITY 1100
-#define WIND_POWER 150
+#define WIND_POWER 50
 
 
 #define HOST_IP "localhost"
@@ -76,3 +76,5 @@ extern bool isVersus;
 extern bool isBotGame;
 
 extern bool inGame;
+
+extern bool printAsd;

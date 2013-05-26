@@ -1,5 +1,6 @@
 #include "Globals.h"
 
+bool printAsd = false;
 float wind = 0.0f;
 bool toChangeTurn = false;
 bool firedMissile = false;

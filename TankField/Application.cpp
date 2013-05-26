@@ -106,7 +106,6 @@ bool Application::initialize(){
 
 }
 
-
 void Application::handleEvents(){
 	
 	while(SDL_PollEvent(&event)){
@@ -179,7 +178,44 @@ void Application::handleInput(){
 	}
 	//bot game
 	if(isBotGame && player2Turn){
-		dummyBot->takeTurn();
+		dummyBot->takeTurn(player1->tank->getPositionX());
+		//increasing = false;
+		//decreasing = false;
+		if(dummyBot->toMoveLeft()){
+			if(!player2->tank->isBlocking()){
+				player2->tank->moveLeft();
+				player2->tankAnimation->runBackward();
+			}
+		}
+		if(dummyBot->toMoveRight()){
+			if(!player2->tank->outOfScreen()){
+				player2->tank->moveRight();
+				player2->tankAnimation->runForward();
+			}
+		}
+		
+		if(increasing){
+			if(player2->tank->weapon->getDegrees() < 65){
+				player2->tank->weapon->incDegrees();
+				player2->weaponAnimation->runForward();
+			}
+			increasing = false;
+		}
+		else if(dummyBot->toIncDegrees()){
+			increasing = true;
+		}
+		
+		else if(decreasing){
+			if(player2->tank->weapon->getDegrees() > -65){
+				player2->tank->weapon->decDegrees();
+				player2->weaponAnimation->runBackward();
+			}
+			decreasing = false;
+		}
+		else if(dummyBot->toDecDegrees()){
+			decreasing = true;
+		}
+		dummyBot->clearFlags();
 	}
 	//resets
 	if (this->keyState[SDLK_r]){
@@ -466,8 +502,6 @@ void Application::update(){
 	float timeSinceLastTime = (SDL_GetTicks() / 1000.0f) - lastTime;
 	lastTime = SDL_GetTicks() / 1000.0f;
 
-	
-
 	if(toChangeTurn){
 		changeTurn();
 	}
@@ -551,26 +585,28 @@ void Application::showText( int x, int y, SDL_Surface* source, SDL_Surface* dest
 }
 
 void Application::changeTurn(){
-	if(player1Turn){
-		player1Turn = false;
-		player2Turn = true;
+	if((!player1->tank->isDead()) && (!player2->tank->isDead())){
+		if(player1Turn){
+			player1Turn = false;
+			player2Turn = true;
 
-		toChangeTurn = false;
-		changeWind();
-		firedMissile = false;
-	}
-	else if(player2Turn){
-		player2Turn = false;
-		player1Turn = true;
+			toChangeTurn = false;
+			changeWind();
+			firedMissile = false;
+		}
+		else if(player2Turn){
+			player2Turn = false;
+			player1Turn = true;
 
-		toChangeTurn = false;
-		changeWind();
-		firedMissile = false;
+			toChangeTurn = false;
+			changeWind();
+			firedMissile = false;
+		}
 	}
 }
 
 void Application::changeWind(){
-	//wind = (rand() % 7 + 1) - 4;
+	wind = (rand() % 7 + 1) - 4;
 }
 
 void Application::joinServerOrHostServer(){
