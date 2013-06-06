@@ -22,15 +22,16 @@ public:
 	virtual SDL_Rect getBounds();
 
 	virtual void update(float timeSinceLastTime);	
-
+	//not used
 	void lock();
-
+	void unlock();
+	////
 	unsigned int getAlpha(int x, int y);
 
-	void drawRectangle(unsigned int x, unsigned int y, unsigned int w, unsigned int h, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+	void reloadTexture(const char* filename);
 	void drawCircle(unsigned int x, unsigned int y, unsigned int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 
-	void unlock();
+	
 	SDL_Surface *displaySurface;
 protected:
 	

@@ -62,6 +62,10 @@ void Texture::unlock() {
 	SDL_UnlockSurface(surface);
 }
 
+void Texture::reloadTexture(const char* filename){
+	this->surface = this->loadImage(filename);
+}
+
 unsigned int Texture::getAlpha(int x, int y) {
     int bpp = surface->format->BytesPerPixel;
     Uint8* p = (Uint8*)surface->pixels + y * surface->pitch + x * bpp;

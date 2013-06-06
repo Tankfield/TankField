@@ -85,7 +85,6 @@ void Tank::onCollision(Object *object) {
 	if (dynamic_cast<Missile*>(object) != NULL){
 		hurt();
 	}
-	//to fix!!!
 	if (dynamic_cast<Terrain*>(object) != NULL){
 		blocking = true;
 	}

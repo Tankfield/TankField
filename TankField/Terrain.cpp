@@ -4,6 +4,10 @@
 Terrain::Terrain(SDL_Surface* screen) : Object(new Texture(getTerrain(), screen), Vector2D(200,200)){
 }
 
+void Terrain::reloadTexture(){
+	this->texture->reloadTexture(getTerrain());
+}
+
 void Terrain::brake(unsigned int x, unsigned int y) {
 	texture->drawCircle(x, y, 35, 0, 255, 0, 0);
 }

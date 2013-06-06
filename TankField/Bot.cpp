@@ -28,7 +28,7 @@ void Bot::clearFlags(){
 }
 
 void Bot::takeTurn(int enemyPosition){
-	move();
+	//move();
 	difference = this->tank->getPositionX() - enemyPosition;
 	aim(difference);
 	

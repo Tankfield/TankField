@@ -31,7 +31,9 @@ private:
 	
 	TTF_Font *font;
 	SDL_Color textColor;
+
 	bool isRunning;
+	bool toInsertServerIP;
 
 	SDL_Event event;
 
