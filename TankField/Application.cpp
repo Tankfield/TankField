@@ -88,7 +88,9 @@ bool Application::initialize(){
 
 	font = TTF_OpenFont("arial.ttf", 40);
 
-	SDL_Color textColor ={0, 0, 0};
+	textColor.r = 255;
+	textColor.g = 0;
+	textColor.b = 0;
 	
 	loadMenuContent();
 
