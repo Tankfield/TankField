@@ -76,7 +76,7 @@ bool Application::initialize(){
 	}
 	
 	loadContent();
-
+	toInsertServerIP = true;
 	SDL_ShowCursor(0);
 	if(this->displaySurface == NULL){
 		return false;
