@@ -123,7 +123,7 @@ void Application::handleEvents(){
 			if(toInsertServerIP){
 				if (this->keyState[SDLK_BACKSPACE]) {
 					menu->deleteCharacter();
-				} else if ((event.key.keysym.unicode == (Uint16)' ') || ((event.key.keysym.unicode >= (Uint16)'0') && (event.key.keysym.unicode <= (Uint16)'9')) || (event.key.keysym.unicode == (Uint16)'.')) { 
+				} else if ((event.key.keysym.unicode == (Uint16)' ') || (((event.key.keysym.unicode >= (Uint16)'0') && (event.key.keysym.unicode <= (Uint16)'9'))) || (event.key.keysym.unicode == (Uint16)'.') || ((event.key.keysym.unicode >= (Uint16)'a') && (event.key.keysym.unicode <= (Uint16)'z'))){ 
 					menu->typeCharacter((char)event.key.keysym.unicode); 			
 				}
 			}

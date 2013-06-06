@@ -1,3 +1,5 @@
+#include <string>
+
 //window size
 #define WINDOW_WIDTH 1200
 #define WINDOW_HEIGHT 600
@@ -54,7 +56,7 @@
 #define WIND_POWER 50
 
 
-#define HOST_IP "localhost"
+extern std::string HOST_IP;
 //46.253.13.147
 //78.90.125.149
 

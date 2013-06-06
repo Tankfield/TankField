@@ -5,6 +5,7 @@
 #include "Object.h"
 #include <SDL/SDL_ttf.h>
 #include <string>
+#include "Globals.h"
 
 using namespace std;
 

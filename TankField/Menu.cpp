@@ -30,7 +30,7 @@ void Menu::updateTypedTextTexture() {
 		SDL_FreeSurface(text);
 		text = NULL;
 	}
-
+	HOST_IP = str;
 	text = TTF_RenderText_Solid(font, str.c_str(), textColor);
 }
 
