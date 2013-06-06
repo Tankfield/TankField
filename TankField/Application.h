@@ -56,6 +56,7 @@ private:
 
 	void changeTurn();
 	void changeWind();
+	void setWind(int value);
 
 	void joinServerOrHostServer();
 
@@ -68,6 +69,8 @@ private:
 	void setFirePressed(int data);
 	void setUpIsPressed(int data);
 	void setDownIsPressed(int data);
+	void setWindData(int data);
+	void setResetIsPressed(int data);
 
 	struct networkData{
 		int type;
@@ -79,6 +82,8 @@ private:
 	networkData upIsPressed;
 	networkData downIsPressed;
 	networkData receivedData;
+	networkData windData;
+	networkData resetIsPressed;
 
 	Tank *tank1;
 	Tank *tank2;
@@ -101,6 +106,8 @@ private:
 	Button* okButton;
 	Mouse* mouse;
 	Bot* dummyBot;
+	Texture* redWinner;
+	Texture* greenWinner;
 
 	bool increasing;
 	bool decreasing;
@@ -116,7 +123,6 @@ private:
 	bool showMenu;
 
 public:
-
 
 	Application();
 	~Application();

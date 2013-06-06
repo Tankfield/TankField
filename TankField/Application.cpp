@@ -37,7 +37,8 @@ void Application::loadContent(){
 	tankAnimation2 = new Animation("textures/redtank.png", displaySurface, 4, 5, 30);
 	tank2 = new Tank(tankAnimation2, weapon2, Vector2D(TANK2_POS_X,TANK2_POS_Y), Vector2D(TANK2_WEAPON_POS_X,TANK2_WEAPON_POS_Y));
 	player1 = new Player(tank1, tankAnimation1, weaponAnimation1);
-		
+	greenWinner = new Texture("textures/gwin.png",displaySurface);
+	redWinner = new Texture("textures/rwin.png",displaySurface);	
 	
 	/*if (isServer) {
 		server = new Server(3000);
@@ -217,11 +218,16 @@ void Application::handleInput(){
 		}
 		dummyBot->clearFlags();
 	}
-	//resets
-	if (this->keyState[SDLK_r]){
-		reset();
+	//reset
+	if(!isClient && (isServer && !player2Turn)){
+		if (this->keyState[SDLK_r]){
+			reset();
+			if(isServer){
+				setResetIsPressed(true);
+				server->sendData(&resetIsPressed, PACKET_SIZE);
+			}
+		}
 	}
-
 }
 
 void Application::handleMouseEvents(){
@@ -454,6 +460,9 @@ void Application::handleReceivedData(){
 						player2->weaponAnimation->runBackward();
 					}
 				}
+				if(receivedData.type == 5){
+					setWind(receivedData.data);
+				}
 			}		
 		}
 	}
@@ -470,9 +479,7 @@ void Application::handleReceivedData(){
 					player1->tankAnimation->runBackward();
 				}	
 			}
-			
-
-			
+				
 			if(receivedData.type == 2){
 				if(receivedData.data){
 					tank1->fire();
@@ -489,6 +496,14 @@ void Application::handleReceivedData(){
 				if(receivedData.data){
 					player1->tank->weapon->incDegrees();
 					player1->weaponAnimation->runBackward();
+				}
+			}
+			if(receivedData.type == 5){
+				setWind(receivedData.data);
+			}
+			if(receivedData.type == 6){
+				if(receivedData.data){
+					reset();
 				}
 			}
 		}
@@ -569,7 +584,22 @@ void Application::render(){
 		itoa(wind,buffer,10);
 		displayText = TTF_RenderText_Solid(font, buffer, textColor);
 		showText(600, 150, displayText, displaySurface);
-
+		SDL_Rect rect = {535,100,130,20};
+		SDL_FillRect(displaySurface, &rect, 0xFF0000);
+		if (wind>=0){ 
+			SDL_Rect rect = {600,105,wind*20,10};
+			SDL_FillRect(displaySurface, &rect, 0xFFFFFF);
+		} else {
+			SDL_Rect rect = {600+(wind*20),105,-wind*20,10};
+			SDL_FillRect(displaySurface, &rect, 0xFFFFFF);
+		}
+		//winner
+		if (player1->tank->isDead())
+			redWinner->draw(340,150);
+		else if (player2->tank->isDead())
+			greenWinner->draw(330,150);
+		
+		 
 		Object::renderAll();
 	}
 
@@ -591,7 +621,13 @@ void Application::changeTurn(){
 			player2Turn = true;
 
 			toChangeTurn = false;
-			changeWind();
+			if(!isServer){
+				changeWind();
+				if(isClient){
+					setWindData(wind);
+					client->sendData(&windData, PACKET_SIZE);
+				}
+			}
 			firedMissile = false;
 		}
 		else if(player2Turn){
@@ -599,14 +635,24 @@ void Application::changeTurn(){
 			player1Turn = true;
 
 			toChangeTurn = false;
-			changeWind();
+			if(!isClient){
+				changeWind();
+				if(isServer){
+					setWindData(wind);
+					server->sendData(&windData, PACKET_SIZE);
+				}
+			}
 			firedMissile = false;
 		}
 	}
 }
 
 void Application::changeWind(){
-	wind = (rand() % 7 + 1) - 4;
+	wind = ((rand() % 7 + 1) - 4);
+}
+
+void Application::setWind(int value){
+	wind = value;
 }
 
 void Application::joinServerOrHostServer(){
@@ -689,4 +735,14 @@ void Application::setUpIsPressed(int data){
 void Application::setDownIsPressed(int data){
 	downIsPressed.type = 4;
 	downIsPressed.data = data;
+}
+
+void Application::setWindData(int data){
+	windData.type = 5;
+	windData.data = data;
+}
+
+void Application::setResetIsPressed(int data){
+	resetIsPressed.type = 6;
+	resetIsPressed.data = data;
 }
