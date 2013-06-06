@@ -76,7 +76,6 @@ bool Application::initialize(){
 	}
 	
 	loadContent();
-	toInsertServerIP = true;
 	SDL_ShowCursor(0);
 	if(this->displaySurface == NULL){
 		return false;
@@ -122,10 +121,10 @@ void Application::handleEvents(){
 			this->keyState[event.key.keysym.sym] = true;
 
 			// If in join
-			if(toInsertServerIP){
+			if(showMenu){
 				if (this->keyState[SDLK_BACKSPACE]) {
 					menu->deleteCharacter();
-				} else if ((event.key.keysym.unicode == (Uint16)' ') || (((event.key.keysym.unicode >= (Uint16)'0') && (event.key.keysym.unicode <= (Uint16)'9'))) || (event.key.keysym.unicode == (Uint16)'.') || ((event.key.keysym.unicode >= (Uint16)'a') && (event.key.keysym.unicode <= (Uint16)'z'))){ 
+				} else if ((((event.key.keysym.unicode >= (Uint16)'0') && (event.key.keysym.unicode <= (Uint16)'9'))) || (event.key.keysym.unicode == (Uint16)'.') || ((event.key.keysym.unicode >= (Uint16)'a') && (event.key.keysym.unicode <= (Uint16)'z'))){ 
 					menu->typeCharacter((char)event.key.keysym.unicode); 			
 				}
 			}
@@ -583,7 +582,7 @@ void Application::render(){
 		mouse->setPositionX(mouseX);
 		mouse->setPositionY(mouseY);
 		mouse->render();
-		showText(800,260, menu->getTypedTextTexture(), displaySurface);
+		showText(800,265, menu->getTypedTextTexture(), displaySurface);
 	}
 	else {
 		if(brokenMissileX != 0 && brokenMissileY != 0){
