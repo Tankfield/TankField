@@ -42,8 +42,7 @@ unsigned int Texture::getHeight(){
 	return height;
 }
 
-SDL_Rect Texture::getBounds()
-{
+SDL_Rect Texture::getBounds(){
 	SDL_Rect bounds;
 
 	bounds.x = 0;
@@ -91,4 +90,26 @@ unsigned int Texture::getAlpha(int x, int y) {
     SDL_GetRGBA(pixelColor, surface->format, &red, &green, &blue, &alpha);
  
     return alpha;
+}
+
+void Texture::drawCircle(unsigned int cx, unsigned int cy, unsigned int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a) { 
+	Uint32 pixel = SDL_MapRGBA(surface->format, r, g, b, a);	
+
+    for (double dy = 1; dy <= radius; dy += 1.0) { 
+        double dx = floor(sqrt((2.0 * radius * dy) - (dy * dy)));
+        int x = cx - dx;
+ 
+		if ((cy+radius-dy < surface->h) && (x < surface->w)) {
+			Uint8 *target_pixel_a = (Uint8 *)surface->pixels + ((int)(cy + radius - dy)) * surface->pitch + x * surface->format->BytesPerPixel;
+			Uint8 *target_pixel_b = (Uint8 *)surface->pixels + ((int)(cy - radius + dy)) * surface->pitch + x * surface->format->BytesPerPixel;;
+ 
+			for (; x <= cx + dx; x++){
+				*(Uint32 *)target_pixel_a = pixel;
+				target_pixel_a += surface->format->BytesPerPixel;
+
+				*(Uint32 *)target_pixel_b = pixel;				
+				target_pixel_b += surface->format->BytesPerPixel;
+			}
+		}
+    }
 }

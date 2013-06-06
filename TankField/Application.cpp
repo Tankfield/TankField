@@ -14,7 +14,7 @@ Application::~Application(){
 	if(this->displayText != NULL){
 		//SDL_FreeSurface(displayText);
 	}
-	
+	SDL_EnableUNICODE(SDL_DISABLE); 
     TTF_CloseFont(font);
 
     TTF_Quit();
@@ -50,7 +50,7 @@ void Application::loadContent(){
 }
 
 void Application::loadMenuContent(){
-	menu = new Menu(displaySurface, "textures/gui/gui.png");
+	menu = new Menu(displaySurface, "textures/gui/gui.png", font, textColor);
 	botGameButton = new Button(displaySurface, "textures/gui/botgame.png", Vector2D(BOTGAME_BUTTON_POS_X, BOTGAME_BUTTON_POS_Y));
 	versusButton = new Button(displaySurface, "textures/gui/versus.png", Vector2D(VERSUS_BUTTON_POS_X, VERSUS_BUTTON_POS_Y));
 	createGameButton = new Button(displaySurface, "textures/gui/create.png", Vector2D(CREATE_GAME_BUTTON_POS_X, CREATE_GAME_BUTTON_POS_Y));
@@ -69,16 +69,13 @@ bool Application::initialize(){
 	SDL_WM_SetCaption("TankField", NULL);
 	this->displaySurface = SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT , 32, SDL_SWSURFACE);
 
+	SDL_EnableUNICODE(SDL_ENABLE);
 
 	if(SDLNet_Init() < 0){
 		return false;
 	}
 	
 	loadContent();
-	loadMenuContent();
-
-	menu->invertToCheckCollisionAll();
-	menu->setToCheckCollision(false);
 
 	SDL_ShowCursor(0);
 	if(this->displaySurface == NULL){
@@ -93,6 +90,11 @@ bool Application::initialize(){
 
 	SDL_Color textColor ={0, 0, 0};
 	
+	loadMenuContent();
+
+	menu->invertToCheckCollisionAll();
+	menu->setToCheckCollision(false);
+
 	memset(this->keyState, false, sizeof(this->keyState));
 	srand(time(NULL));
 	leftMouseButton = false;
@@ -107,8 +109,8 @@ bool Application::initialize(){
 
 }
 
-void Application::handleEvents(){
-	
+void Application::handleEvents(){	
+
 	while(SDL_PollEvent(&event)){
 		switch(event.type){
 		case SDL_QUIT:
@@ -116,6 +118,17 @@ void Application::handleEvents(){
 			break;
 		case SDL_KEYDOWN:
 			this->keyState[event.key.keysym.sym] = true;
+
+			// If in join
+
+			if (this->keyState[SDLK_BACKSPACE]) {
+				menu->deleteCharacter();
+			} else if ((event.key.keysym.unicode == (Uint16)' ') || ((event.key.keysym.unicode >= (Uint16)'0') && (event.key.keysym.unicode <= (Uint16)'9')) || (event.key.keysym.unicode == (Uint16)'.')) { 
+				menu->typeCharacter((char)event.key.keysym.unicode); 			
+			}
+
+			// Endif
+
 			break;
 		case SDL_KEYUP:
 			this->keyState[event.key.keysym.sym] = false;
@@ -142,10 +155,6 @@ void Application::handleInput(){
 	}
 	if(dummyBot != NULL){
 		dummyBot->stop();
-	}
-
-	if(showMenu && !inGame){
-	
 	}
 
 	if (keyState[SDLK_ESCAPE]) {
@@ -219,14 +228,13 @@ void Application::handleInput(){
 		dummyBot->clearFlags();
 	}
 	//reset
-	if(!isClient && (isServer && !player2Turn)){
-		if (this->keyState[SDLK_r]){
+	if (this->keyState[SDLK_r]){
+		////FIXXXXXXXXXXXXXXXXXX
 			reset();
 			if(isServer){
 				setResetIsPressed(true);
 				server->sendData(&resetIsPressed, PACKET_SIZE);
 			}
-		}
 	}
 }
 
@@ -526,7 +534,8 @@ void Application::update(){
 	}
 	if(!isBotGame){
 		createSecondPlayer();
-	}
+	}	
+			
 	handleReceivedData();
 	Object::updateAll(timeSinceLastTime);
 	
@@ -569,8 +578,14 @@ void Application::render(){
 		mouse->setPositionX(mouseX);
 		mouse->setPositionY(mouseY);
 		mouse->render();
+		showText(100,100, menu->getTypedTextTexture(), displaySurface);
 	}
 	else {
+		if(brokenMissileX != 0 && brokenMissileY != 0){
+			terrain->brake(brokenMissileX - terrain->getPositionX(), brokenMissileY - terrain->getPositionY());
+			brokenMissileX = 0;
+			brokenMissileY = 0;
+		}
 		background->draw(0,0);
 		//player2
 		itoa(player1->tank->getHealth(),buffer,10);

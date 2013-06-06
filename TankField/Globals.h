@@ -61,7 +61,8 @@
 //packet sent through TCP
 #define PACKET_SIZE 8
 
-
+extern float brokenMissileX;
+extern float brokenMissileY;
 
 extern float wind;
 //player turns

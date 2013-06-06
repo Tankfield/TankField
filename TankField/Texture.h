@@ -3,7 +3,7 @@
 
 #include <SDL\SDL.h>
 #include <SDL\SDL_image.h>
-
+#include <cmath>
 
 
 class Texture{
@@ -26,6 +26,9 @@ public:
 	void lock();
 
 	unsigned int getAlpha(int x, int y);
+
+	void drawRectangle(unsigned int x, unsigned int y, unsigned int w, unsigned int h, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+	void drawCircle(unsigned int x, unsigned int y, unsigned int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 
 	void unlock();
 	SDL_Surface *displaySurface;

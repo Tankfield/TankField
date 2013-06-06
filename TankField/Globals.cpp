@@ -2,6 +2,8 @@
 
 bool printAsd = false;
 float wind = 0.0f;
+float brokenMissileX = 0.0f;
+float brokenMissileY = 0.0f;
 bool toChangeTurn = false;
 bool firedMissile = false;
 bool player1Turn = true;

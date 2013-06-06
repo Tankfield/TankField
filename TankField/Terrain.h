@@ -9,5 +9,7 @@ class Terrain : public Object {
 	
 public:
 	Terrain(SDL_Surface* screen);
+
+	void brake(unsigned int x, unsigned int y);
 };
 #endif

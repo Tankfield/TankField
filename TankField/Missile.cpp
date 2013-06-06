@@ -31,6 +31,8 @@ void Missile::onCollision(Object *object) {
 		this->goDead();
 	}
 	if (dynamic_cast<Terrain*>(object) != NULL){
+		brokenMissileX = this->position.x;
+		brokenMissileY = this->position.y;
 		this->goDead();
 	}
 	if (dynamic_cast<Ground*>(object) != NULL){
