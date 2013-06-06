@@ -55,6 +55,8 @@ private:
 	void reset();
 
 	void showText(int x, int y, SDL_Surface* source, SDL_Surface* destination);
+	void showWinner();
+	void showWind();
 
 	void changeTurn();
 	void changeWind();

@@ -555,7 +555,6 @@ void Application::reset(){
 	player2Turn = false;
 	terrain->reloadTexture();
 	setWind(0);
-	
 }
 
 void Application::execute(){
@@ -585,13 +584,14 @@ void Application::render(){
 		showText(800,265, menu->getTypedTextTexture(), displaySurface);
 	}
 	else {
+		//breaking the terrain
 		if(brokenMissileX != 0 && brokenMissileY != 0){
 			terrain->brake(brokenMissileX - terrain->getPositionX(), brokenMissileY - terrain->getPositionY());
 			brokenMissileX = 0;
 			brokenMissileY = 0;
 		}
 		background->draw(0,0);
-		//player2
+		//player1
 		itoa(player1->tank->getHealth(),buffer,10);
 		displayText = TTF_RenderText_Solid(font, buffer, textColor);
 		showText(20, 20, displayText, displaySurface);
@@ -600,25 +600,9 @@ void Application::render(){
 		displayText = TTF_RenderText_Solid(font, buffer, textColor);
 		showText(1170, 20, displayText, displaySurface);
 		//wind
-		itoa(wind,buffer,10);
-		displayText = TTF_RenderText_Solid(font, buffer, textColor);
-		showText(600, 150, displayText, displaySurface);
-		SDL_Rect rect = {535,100,130,20};
-		SDL_FillRect(displaySurface, &rect, 0xFF0000);
-		if (wind>=0){ 
-			SDL_Rect rect = {600,105,wind*20,10};
-			SDL_FillRect(displaySurface, &rect, 0xFFFFFF);
-		} else {
-			SDL_Rect rect = {600+(wind*20),105,-wind*20,10};
-			SDL_FillRect(displaySurface, &rect, 0xFFFFFF);
-		}
+		showWind();	
 		//winner
-		if (player1->tank->isDead())
-			redWinner->draw(340,150);
-		else if (player2->tank->isDead())
-			greenWinner->draw(330,150);
-		
-		 
+		showWinner();		 
 		Object::renderAll();
 	}
 
@@ -631,6 +615,28 @@ void Application::showText( int x, int y, SDL_Surface* source, SDL_Surface* dest
     offset.x = x;
     offset.y = y;
     SDL_BlitSurface(source, NULL, destination, &offset);
+}
+
+void Application::showWinner(){
+	if (player1->tank->isDead())
+		redWinner->draw(340,150);
+	else if (player2->tank->isDead())
+		greenWinner->draw(330,150);
+}
+
+void Application::showWind(){
+	itoa(wind,buffer,10);
+	displayText = TTF_RenderText_Solid(font, buffer, textColor);
+	showText(600, 150, displayText, displaySurface);
+	SDL_Rect rect = {535,100,130,20};
+	SDL_FillRect(displaySurface, &rect, 0xFF0000);
+	if (wind>=0){ 
+		SDL_Rect rect = {600,105,wind*20,10};
+		SDL_FillRect(displaySurface, &rect, 0xFFFFFF);
+	} else {
+		SDL_Rect rect = {600+(wind*20),105,-wind*20,10};
+		SDL_FillRect(displaySurface, &rect, 0xFFFFFF);
+	}
 }
 
 void Application::changeTurn(){
